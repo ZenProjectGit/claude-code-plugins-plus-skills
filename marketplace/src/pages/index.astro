@@ -106,6 +106,17 @@ const totalCategories = searchIndex.stats.categories.length;
             background-clip: text;
         }
 
+        .hero-byline {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            color: var(--brand-mid-gray);
+            letter-spacing: 0.08em;
+            margin-top: -1rem;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s var(--transition-smooth) 0.15s forwards;
+            opacity: 0;
+        }
+
         .hero-subtitle {
             font-family: 'Lora', Georgia, serif;
             font-size: clamp(1.15rem, 2.5vw, 1.5rem);
@@ -1188,6 +1199,7 @@ const totalCategories = searchIndex.stats.categories.length;
     <!-- Hero Section -->
     <section class="hero">
         <h1>The Ultimate<br><span>Claude Code</span> Skills Hub</h1>
+        <p class="hero-byline">by intent solutions io</p>
         <p class="hero-subtitle">
             Search {totalSkills} skills embedded in {totalPlugins} plugins. Learn with interactive tutorials. All open source and production-ready.
         </p>
