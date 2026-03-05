@@ -578,7 +578,7 @@ const pageDescription = `Search all ${searchIndex.stats.totalPlugins} plugins an
           >♡</button>
 
           <a
-            href={item.type === 'plugin' ? `/plugins/${item.name}/` : `/skills/${item.slug}/`}
+            href={item.type === 'plugin' ? `/plugins/${item.name}/` : (item.parentPlugin ? `/cowork` : `/skills/${item.slug}/`)}
             class="result-card-link"
           >
             <span class={`result-type-badge ${item.type}`}>
