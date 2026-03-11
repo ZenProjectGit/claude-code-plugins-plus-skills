@@ -77,6 +77,7 @@ export function buildProgram() {
     .command('doctor')
     .description('Run diagnostics on Claude Code installation and plugins')
     .option('--json', 'Output results as JSON')
+    .option('--fix', 'Automatically fix safe issues (create dirs, refresh catalogs)')
     .action(async (options) => {
       await doctorCheck(options);
     });
