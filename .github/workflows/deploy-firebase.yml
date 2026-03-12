@@ -78,9 +78,20 @@ jobs:
       - name: Install Cloud Function dependencies
         run: cd functions && npm install
 
-      - name: Deploy to Firebase
+      - name: Deploy Hosting
         run: |
-          npx firebase-tools deploy \
-            --only hosting:marketplace,functions,firestore:rules \
+          npx firebase-tools deploy --only hosting:marketplace \
+            --project claude-code-plugins-io \
+            --non-interactive
+
+      - name: Deploy Cloud Functions
+        run: |
+          npx firebase-tools deploy --only functions \
+            --project claude-code-plugins-io \
+            --non-interactive
+
+      - name: Deploy Firestore Rules
+        run: |
+          npx firebase-tools deploy --only firestore:rules \
             --project claude-code-plugins-io \
             --non-interactive
