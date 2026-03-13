@@ -1,13 +1,13 @@
 {
   "meta": {
     "version": "1.0.0",
-    "generated": "2026-03-12T23:52:32.248Z",
+    "generated": "2026-03-13T02:33:24.418Z",
     "generator": "scripts/generate-unified-search.mjs"
   },
   "stats": {
-    "totalPlugins": 342,
-    "totalSkills": 1398,
-    "totalItems": 1740,
+    "totalPlugins": 343,
+    "totalSkills": 1399,
+    "totalItems": 1742,
     "categories": [
       "ai-agency",
       "ai-ml",
@@ -1014,6 +1014,7 @@
       "playbooks",
       "playwright",
       "plots",
+      "plugin-development",
       "plugin-intelligence",
       "plugin-management",
       "plugins",
@@ -1425,7 +1426,7 @@
     "totalHooks": 8,
     "pluginsWithAgents": 38,
     "pluginsWithHooks": 8,
-    "officialPlugins": 274,
+    "officialPlugins": 275,
     "communityPlugins": 68,
     "communityContributors": 20
   },
@@ -12622,6 +12623,34 @@
       ],
       "skillCount": 1,
       "searchText": "skill creator create and validate production-grade agent skills with 100-point marketplace grading. supports creation workflows, eval-driven development, and auto-fix for spec compliance. skill-enhancers skill-creation validation meta-tooling grading anthropic-spec"
+    },
+    {
+      "type": "plugin",
+      "id": "validate-plugin",
+      "slug": "validate-plugin",
+      "name": "validate-plugin",
+      "displayName": "validate plugin",
+      "description": "Validate Claude Code plugin structure against official Anthropic spec and Intent Solutions enterprise standard with 100-point grading.",
+      "category": "skill-enhancers",
+      "keywords": [
+        "validation",
+        "plugin-development",
+        "quality-assurance",
+        "linting"
+      ],
+      "author": {
+        "name": "Jeremy Longshore",
+        "email": "jeremy@intentsolutions.io"
+      },
+      "authorType": "official",
+      "version": "1.0.0",
+      "isFeatured": false,
+      "isNew": true,
+      "badges": [
+        "new"
+      ],
+      "skillCount": 1,
+      "searchText": "validate plugin validate claude code plugin structure against official anthropic spec and intent solutions enterprise standard with 100-point grading. skill-enhancers validation plugin-development quality-assurance linting"
     },
     {
       "type": "skill",
@@ -45471,6 +45500,29 @@
         "category": "design"
       },
       "searchText": "ux-heuristics evaluate and improve interface usability using heuristic analysis. use when the user mentions \"usability audit\", \"ux review\", \"users are confused\", \"heuristic evaluation\", \"form usability\", or \"navigation problems\". covers nielsen''s 10 heuristics, severity ratings, and information architecture. for visual design fixes, see refactoring-ui. for conversion-focused audits, see cro-methodology. trigger with 'ux', 'heuristics'. design read glob grep claude-code codex openclaw"
+    },
+    {
+      "type": "skill",
+      "id": "validate-plugin",
+      "slug": "validate-plugin",
+      "name": "validate-plugin",
+      "description": "Validate a Claude Code plugin directory against the official Anthropic spec and Intent Solutions enterprise standard. Runs structural validation (plugin.json fields, file references, permissions) and content validation (SKILL.md grading, command/agent frontmatter). Use when building a new plugin, preparing for marketplace submission, or auditing existing plugins. Trigger with \"validate this plugin\", \"check plugin structure\", \"grade my plugin\", \"/validate-plugin\".",
+      "category": "skill-enhancers",
+      "allowedTools": [
+        "Read",
+        "Bash(python3:*)",
+        "Bash(jq:*)",
+        "Bash(chmod:*)",
+        "Glob",
+        "Grep"
+      ],
+      "compatibleWith": [],
+      "version": "1.0.0",
+      "parentPlugin": {
+        "name": "validate-plugin",
+        "category": "skill-enhancers"
+      },
+      "searchText": "validate-plugin validate a claude code plugin directory against the official anthropic spec and intent solutions enterprise standard. runs structural validation (plugin.json fields, file references, permissions) and content validation (skill.md grading, command/agent frontmatter). use when building a new plugin, preparing for marketplace submission, or auditing existing plugins. trigger with \"validate this plugin\", \"check plugin structure\", \"grade my plugin\", \"/validate-plugin\". skill-enhancers read bash(python3:*) bash(jq:*) bash(chmod:*) glob grep "
     },
     {
       "type": "skill",

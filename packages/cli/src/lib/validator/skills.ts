@@ -23,8 +23,11 @@ const REQUIRED_FIELDS = new Set(['name', 'description']);
 // Enterprise standard fields (Intent Solutions)
 const ENTERPRISE_REQUIRED = new Set(['allowed-tools', 'version', 'author', 'license']);
 
-// Optional fields per Anthropic spec
-const OPTIONAL_FIELDS = new Set(['model', 'disable-model-invocation', 'mode', 'tags', 'metadata']);
+// Optional fields per Anthropic spec + AgentSkills.io
+const OPTIONAL_FIELDS = new Set([
+  'model', 'disable-model-invocation', 'mode', 'tags', 'metadata', 'compatible-with',
+  'argument-hint', 'context', 'agent', 'user-invocable', 'hooks', 'compatibility',
+]);
 
 const DEPRECATED_FIELDS = new Set(['when_to_use']);
 

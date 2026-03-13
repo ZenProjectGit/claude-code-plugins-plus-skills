@@ -1,15 +1,15 @@
 {
   "meta": {
     "version": "1.0.0",
-    "generated": "2026-03-12T23:52:32.058Z",
+    "generated": "2026-03-13T02:33:24.261Z",
     "source": "marketplace.extended.json",
     "generator": "scripts/sync-catalog.mjs"
   },
   "stats": {
-    "totalPlugins": 342,
-    "totalSkills": 1411,
+    "totalPlugins": 343,
+    "totalSkills": 1412,
     "totalCommands": 66,
-    "pluginsWithSkills": 313,
+    "pluginsWithSkills": 314,
     "byCategory": {
       "productivity": 27,
       "security": 28,
@@ -19,7 +19,7 @@
       "devops": 37,
       "api-development": 25,
       "crypto": 26,
-      "skill-enhancers": 7,
+      "skill-enhancers": 8,
       "debugging": 1,
       "packages": 1,
       "database": 28,
@@ -39,12 +39,12 @@
       "saas-packs": 1
     },
     "byStatus": {
-      "active": 323,
+      "active": 324,
       "maintained": 19
     },
     "featured": 3,
-    "new": 321,
-    "generatedAt": "2026-03-12T23:52:32.058Z"
+    "new": 322,
+    "generatedAt": "2026-03-13T02:33:24.261Z"
   },
   "plugins": [
     {
@@ -11680,6 +11680,38 @@
         "new"
       ],
       "isFeatured": true,
+      "isNew": true,
+      "author": {
+        "name": "Jeremy Longshore",
+        "email": "jeremy@intentsolutions.io"
+      },
+      "type": "instruction-plugin"
+    },
+    {
+      "slug": "validate-plugin",
+      "name": "validate-plugin",
+      "displayName": "validate plugin",
+      "description": "Validate Claude Code plugin structure against official Anthropic spec and Intent Solutions enterprise standard with 100-point grading.",
+      "version": "1.0.0",
+      "category": "skill-enhancers",
+      "keywords": [
+        "validation",
+        "plugin-development",
+        "quality-assurance",
+        "linting"
+      ],
+      "hasSkills": true,
+      "skillCount": 1,
+      "commandCount": 0,
+      "installCommand": "/plugin install validate-plugin",
+      "sourcePath": "./plugins/skill-enhancers/validate-plugin",
+      "lastUpdatedEpoch": 1773369204,
+      "lastUpdatedDate": "2026-03-13T02:33:24.261Z",
+      "status": "active",
+      "badges": [
+        "new"
+      ],
+      "isFeatured": false,
       "isNew": true,
       "author": {
         "name": "Jeremy Longshore",

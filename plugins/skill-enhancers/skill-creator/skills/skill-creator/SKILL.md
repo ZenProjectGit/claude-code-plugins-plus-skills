@@ -36,6 +36,12 @@ scratch with full validation, or grade/audit existing skills with actionable fix
 - [Edge Cases](#edge-cases) — Name conflicts, long content, legacy metadata
 - [Error Handling](#error-handling) — Common errors and solutions
 - [Resources](#resources) — Reference files and scripts
+- [Running and Evaluating Test Cases](#running-and-evaluating-test-cases) — Subagent-based eval with viewer
+- [Improving the Skill](#improving-the-skill) — Iteration loop based on feedback
+- [Description Optimization (Automated)](#description-optimization-automated) — Automated trigger accuracy tuning
+- [Advanced: Blind Comparison](#advanced-blind-comparison) — A/B testing between skill versions
+- [Packaging](#packaging) — Create distributable .skill files
+- [Platform-Specific Notes](#platform-specific-notes) — Claude.ai and Cowork adaptations
 
 ## Instructions
 
@@ -72,8 +78,8 @@ Ask the user with AskUserQuestion:
 - Full package (all directories)
 
 **Location:**
-- Global: `~/.claude/skills/{name}/`
-- Project: `.claude/skills/{name}/`
+- Global: `~/.claude/skills/<skill-name>/`
+- Project: `.claude/skills/<skill-name>/`
 
 ### Step 2: Plan the Skill
 
@@ -219,7 +225,7 @@ Additional guidelines:
 
 **Templates** (`templates/`):
 - Boilerplate files used for generation
-- Use clear placeholder syntax (`{{PLACEHOLDER}}`)
+- Use clear variable syntax (`{{VARIABLE_NAME}}`)
 
 **Assets** (`assets/`):
 - Static resources (images, configs, data files)
@@ -321,8 +327,8 @@ When the user wants to validate, grade, or audit an existing skill:
 ### Step V1: Locate the Skill
 
 Ask for the SKILL.md path or detect from context. Common locations:
-- `~/.claude/skills/{name}/SKILL.md` (global)
-- `.claude/skills/{name}/SKILL.md` (project)
+- `~/.claude/skills/<skill-name>/SKILL.md` (global)
+- `.claude/skills/<skill-name>/SKILL.md` (project)
 
 ### Step V2: Run Validator
 
@@ -448,11 +454,56 @@ Output:
 
 ## Resources
 
-- ${CLAUDE_SKILL_DIR}/references/source-of-truth.md - Canonical specification (all fields, all rules)
-- ${CLAUDE_SKILL_DIR}/references/anthropic-comparison.md - Gap analysis vs Anthropic standards
-- ${CLAUDE_SKILL_DIR}/references/frontmatter-spec.md - Complete frontmatter field reference
-- ${CLAUDE_SKILL_DIR}/references/validation-rules.md - Two-tier validation + 100-point rubric
-- ${CLAUDE_SKILL_DIR}/references/workflows.md - Workflow pattern catalog
-- ${CLAUDE_SKILL_DIR}/references/output-patterns.md - Output format patterns
-- ${CLAUDE_SKILL_DIR}/templates/skill-template.md - SKILL.md skeleton template
-- ${CLAUDE_SKILL_DIR}/scripts/validate-skill.py - Automated validation + grading script
+**References:** `${CLAUDE_SKILL_DIR}/references/`
+- `source-of-truth.md` — Canonical spec | `frontmatter-spec.md` — Field reference | `validation-rules.md` — 100-point rubric
+- `workflows.md` — Workflow patterns | `output-patterns.md` — Output formats | `schemas.md` — JSON schemas (evals, grading, benchmarks)
+- `anthropic-comparison.md` — Gap analysis | `advanced-eval-workflow.md` — Eval, iteration, optimization, platform notes
+
+**Agents** (read when spawning subagents): `${CLAUDE_SKILL_DIR}/agents/`
+- `grader.md` — Assertion evaluation | `comparator.md` — Blind A/B comparison | `analyzer.md` — Benchmark analysis
+
+**Scripts:** `${CLAUDE_SKILL_DIR}/scripts/`
+- `validate-skill.py` — 100-point rubric grading | `quick_validate.py` — Lightweight validation
+- `aggregate_benchmark.py` — Benchmark stats | `run_eval.py` — Trigger accuracy testing
+- `run_loop.py` — Description optimization loop | `improve_description.py` — LLM-powered rewriting
+- `generate_report.py` — HTML reports | `package_skill.py` — .skill packaging | `utils.py` — Shared utilities
+
+**Eval Viewer:** `${CLAUDE_SKILL_DIR}/eval-viewer/` — `generate_review.py` + `viewer.html` (interactive output comparison)
+**Assets:** `${CLAUDE_SKILL_DIR}/assets/eval_review.html` (trigger eval set editor)
+**Templates:** `${CLAUDE_SKILL_DIR}/templates/skill-template.md` (SKILL.md skeleton)
+
+---
+
+## Running and Evaluating Test Cases
+
+For detailed empirical eval workflow (Steps E1-E5), read `${CLAUDE_SKILL_DIR}/references/advanced-eval-workflow.md`.
+
+**Quick summary:** Spawn with-skill and baseline subagents in parallel -> draft assertions while running -> capture timing data from task notifications -> grade with `${CLAUDE_SKILL_DIR}/agents/grader.md` -> aggregate with `scripts/aggregate_benchmark.py` -> launch `eval-viewer/generate_review.py` for interactive human review -> read `feedback.json`.
+
+---
+
+## Improving the Skill
+
+For iteration loop details, read `${CLAUDE_SKILL_DIR}/references/advanced-eval-workflow.md` (section "Improving the Skill").
+
+**Key principles:** Generalize from feedback (don't overfit), keep prompts lean, explain the *why* behind rules (not just prescriptions), and bundle repeated helper scripts.
+
+---
+
+## Description Optimization (Automated)
+
+For the full pipeline (Steps D1-D4), read `${CLAUDE_SKILL_DIR}/references/advanced-eval-workflow.md` (section "Description Optimization"). Quick summary: generate 20 realistic trigger eval queries -> review with user via `${CLAUDE_SKILL_DIR}/assets/eval_review.html` -> run `python -m scripts.run_loop` (60/40 train/test, 3 runs/query, up to 5 iterations) -> apply `best_description`.
+
+## Advanced: Blind Comparison
+
+For A/B testing between skill versions, read `${CLAUDE_SKILL_DIR}/agents/comparator.md` and `${CLAUDE_SKILL_DIR}/agents/analyzer.md`. Optional; most users won't need it.
+
+## Packaging
+
+`python -m scripts.package_skill <path/to/skill-folder> [output-directory]` — Creates distributable `.skill` zip after validation.
+
+## Platform-Specific Notes
+
+See `${CLAUDE_SKILL_DIR}/references/advanced-eval-workflow.md` (section "Platform-Specific Notes").
+- **Claude.ai**: No subagents — run tests yourself, skip benchmarking/description optimization.
+- **Cowork**: Full subagent workflow. Use `--static` for eval viewer. Generate viewer BEFORE self-evaluation.
