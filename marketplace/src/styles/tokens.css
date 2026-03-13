@@ -1,0 +1,53 @@
+/* ══════════════════════════════════════════════════════
+   Design Tokens — Single source of truth for the
+   Claude Code Plugins marketplace design system.
+   All card components reference these — never raw values.
+   ══════════════════════════════════════════════════════ */
+
+:root {
+  /* ── 8pt spacing grid ── */
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.5rem;   /* 24px */
+  --space-6: 2rem;     /* 32px */
+  --space-8: 3rem;     /* 48px */
+
+  /* ── Border radius scale ── */
+  --radius-sm: 6px;    /* tags, pills */
+  --radius-md: 8px;    /* compact cards */
+  --radius-lg: 12px;   /* standard cards */
+  --radius-xl: 16px;   /* featured cards, sections */
+
+  /* ── Card system (3 tiers) ──
+   * Compact:  inline items (related cards, gist headers, tags)
+   * Standard: grid cards (plugins, skills, contributors, collections)
+   * Featured: hero sections (killer skills, homepage features, spotlights)
+   */
+  --card-compact-padding: var(--space-4);
+  --card-compact-radius: var(--radius-md);
+
+  --card-standard-padding: var(--space-5);
+  --card-standard-radius: var(--radius-lg);
+
+  --card-featured-padding: var(--space-6);
+  --card-featured-radius: var(--radius-xl);
+
+  /* ── Hover choreography ── */
+  --card-transition: transform 0.2s ease, box-shadow 0.3s ease, border-color 0.2s ease;
+  --card-hover-lift: translateY(-2px);
+  --card-hover-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --card-hover-shadow-accent: 0 4px 16px rgba(234, 170, 0, 0.08);
+
+  /* ── Typography scale (consistent across all cards) ── */
+  --text-card-title: 1.1rem;
+  --text-card-desc: 0.875rem;
+  --text-card-meta: 0.8rem;
+  --text-card-tag: 0.8rem;
+  --text-line-height: 1.5;
+
+  /* ── Grid ── */
+  --grid-gap: var(--space-5);  /* 24px — consistent everywhere */
+  --grid-min-card: 300px;      /* minmax base for auto-fill grids */
+}
