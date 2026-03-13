@@ -327,6 +327,51 @@ const relatedSkills = (skillsCatalog as any).skills
       font-size: 0.75rem;
     }
 
+    .related-skills-section {
+      margin-top: 2rem;
+    }
+
+    .related-skills-heading {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--brand-dark);
+      margin-bottom: 1rem;
+    }
+
+    .related-skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .related-skill-card {
+      display: block;
+      padding: 1rem;
+      background: var(--card);
+      border: 1px solid var(--brand-light-gray);
+      border-radius: 8px;
+      text-decoration: none;
+      transition: border-color var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out);
+    }
+
+    .related-skill-card:hover {
+      border-color: var(--primary);
+      transform: var(--card-hover-lift);
+    }
+
+    .related-skill-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--brand-dark);
+      margin-bottom: 0.25rem;
+    }
+
+    .related-skill-description {
+      font-size: 0.8rem;
+      color: var(--brand-mid-gray);
+      line-height: 1.4;
+    }
+
     @media (max-width: 768px) {
       .skill-detail {
         padding: 1rem;
@@ -444,13 +489,13 @@ const relatedSkills = (skillsCatalog as any).skills
 
     <!-- Related Skills -->
     {relatedSkills.length > 0 && (
-      <section style="margin-top: 2rem;">
-        <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--brand-dark); margin-bottom: 1rem;">Related Skills</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem;">
+      <section class="related-skills-section">
+        <h2 class="related-skills-heading">Related Skills</h2>
+        <div class="related-skills-grid">
           {relatedSkills.map((related: any) => (
-            <a href={`/skills/${related.slug}/`} style="display: block; padding: 1rem; background: var(--card); border: 1px solid var(--brand-light-gray); border-radius: 8px; text-decoration: none; transition: border-color 0.2s, transform 0.2s;">
-              <h3 style="font-size: 0.95rem; font-weight: 600; color: var(--brand-dark); margin-bottom: 0.25rem;">{related.name}</h3>
-              <p style="font-size: 0.8rem; color: var(--brand-mid-gray); line-height: 1.4;">{related.description?.split('.')[0]}.</p>
+            <a href={`/skills/${related.slug}/`} class="related-skill-card">
+              <h3 class="related-skill-title">{related.name}</h3>
+              <p class="related-skill-description">{related.description?.split('.')[0]}.</p>
             </a>
           ))}
         </div>
