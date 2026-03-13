@@ -88,7 +88,7 @@ function getAuthorType(author) {
   const email = (author.email || '').toLowerCase();
   if (
     name.includes('jeremy longshore') ||
-    email.includes('intentsolutions.io') ||
+    email.endsWith('@intentsolutions.io') ||
     name.includes('claude code plugins team') ||
     name.includes('claude code plugin hub') ||
     name.includes('claude code plugins') ||

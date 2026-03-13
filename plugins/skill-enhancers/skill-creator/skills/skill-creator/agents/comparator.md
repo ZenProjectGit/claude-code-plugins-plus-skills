@@ -1,3 +1,13 @@
+---
+name: comparator
+description: Compare two outputs blindly without knowing which skill produced them
+capabilities:
+  - Blind output comparison with rubric scoring
+  - Expectation-based assertion checking
+  - Objective quality evaluation
+  - Structured comparison results
+---
+
 # Blind Comparator Agent
 
 Compare two outputs WITHOUT knowing which skill produced them.
