@@ -32,6 +32,10 @@ function nameToColor(name: string): string {
 }
 
 function getInitials(name: string): string {
+  const parts = name.split(' ').filter(Boolean);
+  if (parts.length > 1) {
+    return (parts[0][0] + (parts[1][0] || '')).toUpperCase();
+  }
   return name.slice(0, 2).toUpperCase();
 }
 
@@ -207,16 +211,17 @@ function getTopPluginSummary(plugins: any[]): string {
 
     /* ── Expanded Plugin List ── */
     .contributor-detail {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.3s ease;
     }
 
     .contributor-card.expanded .contributor-detail {
-      max-height: 1000px;
+      grid-template-rows: 1fr;
     }
 
     .contributor-plugin-list {
+      overflow: hidden;
       margin-top: 1rem;
       border-top: 1px solid var(--border);
       padding-top: 0.75rem;
@@ -436,7 +441,7 @@ function getTopPluginSummary(plugins: any[]): string {
           role="button"
           tabindex="0"
           aria-expanded="false"
-          aria-label={`${contrib.name}, ${contrib.plugins.length} plugins. Click to expand.`}
+          aria-label={`${contrib.name}, ${contrib.plugins.length} plugins`}
         >
           <div class="contributor-header">
             <div
