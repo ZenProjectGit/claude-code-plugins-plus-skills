@@ -114,12 +114,11 @@ jobs:
       - run: npm ci
 
       - name: Start LambdaTest Tunnel
-        run: |
-          wget https://downloads.lambdatest.com/tunnel/v3/linux/64bit/LT_Linux.zip
-          unzip LT_Linux.zip
-          ./LT --user ${{ secrets.LT_USERNAME }} --key ${{ secrets.LT_ACCESS_KEY }} \
-            --tunnelName ci-${{ github.run_id }} &
-          sleep 10  # wait for tunnel to establish
+        uses: LambdaTest/tunnel-action@v2
+        with:
+          user: ${{ secrets.LT_USERNAME }}
+          accessKey: ${{ secrets.LT_ACCESS_KEY }}
+          tunnelName: ci-${{ github.run_id }}
 
       - name: Run tests on LambdaTest
         env:

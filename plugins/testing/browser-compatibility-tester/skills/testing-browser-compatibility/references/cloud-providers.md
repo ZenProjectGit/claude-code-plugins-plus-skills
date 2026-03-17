@@ -396,7 +396,7 @@ Device minutes pricing. Plans include access to Kobiton's shared real device clo
 |---------|-------------|------------|------------|---------|
 | Desktop browsers | 3,000+ combos | 1,000+ combos | 3,000+ combos | Limited (mobile focus) |
 | Real mobile devices | Yes | Yes | Yes | Yes (primary strength) |
-| Secure tunnel | BrowserStackLocal | Sauce Connect | LT Tunnel | N/A (cloud devices) |
+| Secure tunnel | BrowserStackLocal | Sauce Connect | LT Tunnel | VPN access |
 | Scriptless automation | No | No | SmartUI visual | Yes (AI replay) |
 | Appium support | Yes | Yes | Yes | Yes |
 | Selenium support | Yes | Yes | Yes | Via Appium |

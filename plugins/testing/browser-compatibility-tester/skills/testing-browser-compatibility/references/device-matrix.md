@@ -1,4 +1,4 @@
-# Device & Browser Matrix Patterns
+# Device and Browser Matrix Patterns
 
 Pre-built browser/device/OS matrices for common testing scenarios. Choose the matrix that matches your project's requirements, then customize as needed.
 
@@ -41,7 +41,7 @@ export default defineConfig({
     { name: 'safari-mac', use: { ...devices['Desktop Safari'] } },
     { name: 'edge-win', use: { channel: 'msedge' } },
     { name: 'iphone-15', use: { ...devices['iPhone 15'] } },
-    { name: 'pixel-8', use: { ...devices['Pixel 7'] } }, // Pixel 7 profile, closest available
+    { name: 'pixel-8', use: { ...devices['Pixel 7'] } }, // Playwright uses 'Pixel 7' profile as the closest match for Pixel 8
     { name: 'ipad-pro', use: { ...devices['iPad Pro 11'] } },
   ],
 });
