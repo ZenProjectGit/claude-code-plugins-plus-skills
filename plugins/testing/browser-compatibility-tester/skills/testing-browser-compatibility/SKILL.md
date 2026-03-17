@@ -14,14 +14,17 @@ tags: [testing, cross-browser, mobile-testing, real-device, cloud-testing]
 ---
 # Browser Compatibility Tester
 
+## Table of Contents
+
+[Overview](#overview) | [Instructions](#instructions) (Local / Cloud) | [Examples](#examples) | [Error Handling](#error-handling) | [Output](#output) | [Resources](#resources)
+
 ## Overview
 
 Test web applications across multiple browsers, rendering engines, and real devices. Validates CSS rendering, JavaScript API support, layout consistency, and interactive behavior across Chromium (Chrome, Edge), Gecko (Firefox), and WebKit (Safari) -- locally with Playwright or on real devices via BrowserStack, Sauce Labs, LambdaTest, or Kobiton.
 
 ## Prerequisites
 
-- Playwright installed: `npx playwright install --with-deps`
-- Application running at a test URL
+- Playwright installed (`npx playwright install --with-deps`) and application running at a test URL
 - For cloud testing: provider credentials in environment variables (see `${CLAUDE_SKILL_DIR}/references/cloud-providers.md`)
 
 ## Instructions
@@ -36,17 +39,14 @@ Default mode. Zero cloud accounts needed.
    - Viewports: 375px, 768px, 1280px, 1920px
 
 2. Scan the codebase for compatibility risks:
-   - Grep for modern JS APIs: `IntersectionObserver`, `ResizeObserver`, `structuredClone`, `Array.at()`, `Promise.withResolvers()`
-   - Grep for modern CSS: `container queries`, `has()`, `@layer`, `subgrid`, `color-mix()`, `@starting-style`
-   - Cross-reference against caniuse data for the target matrix
-   - Flag usage without polyfills or `@supports` feature detection
+   - Grep for modern JS APIs (`IntersectionObserver`, `structuredClone`, `Array.at()`, `Promise.withResolvers()`)
+   - Grep for modern CSS (`container queries`, `has()`, `@layer`, `subgrid`, `color-mix()`)
+   - Cross-reference against caniuse data; flag usage without polyfills or `@supports`
 
 3. Write compatibility-focused tests:
-   - Layout tests: key elements render at expected positions/sizes per viewport
-   - CSS feature tests: modern features degrade gracefully behind `@supports`
-   - JS API tests: polyfills load in older browsers
-   - Form input tests: date, color, range inputs across engines
-   - Media tests: video/audio, WebP/AVIF support
+   - Layout: key elements render at expected positions/sizes per viewport
+   - CSS features: modern features degrade gracefully behind `@supports`
+   - JS APIs: polyfills load in older browsers; form inputs (date, color, range) across engines
    - Accessibility: run axe-core per browser (`@axe-core/playwright`)
 
 4. Execute and capture results:
@@ -56,7 +56,7 @@ Default mode. Zero cloud accounts needed.
 
 ### Mode 2: Cloud Real-Device Testing
 
-Route here when the user needs real physical devices, broader OS coverage, or carrier network conditions that Playwright emulation cannot replicate. Read `${CLAUDE_SKILL_DIR}/references/cloud-providers.md` for full auth, API, and capabilities details.
+Applies when real physical devices, broader OS coverage, or carrier network conditions are required beyond what Playwright emulation can replicate. Read `${CLAUDE_SKILL_DIR}/references/cloud-providers.md` for full auth, API, and capabilities details.
 
 **Provider selection:**
 
@@ -67,24 +67,22 @@ Route here when the user needs real physical devices, broader OS coverage, or ca
 | Auto-healing selectors, smart testing | LambdaTest |
 | Real physical devices, scriptless automation | **Kobiton** |
 
-Never hardcode credentials. Set provider env vars (`BROWSERSTACK_USERNAME`/`ACCESS_KEY`, `SAUCE_USERNAME`/`ACCESS_KEY`, `LT_USERNAME`/`ACCESS_KEY`, `KOBITON_USERNAME`/`API_KEY`). See `${CLAUDE_SKILL_DIR}/references/cloud-providers.md` for full auth details.
+Never hardcode credentials. Set provider env vars (`BROWSERSTACK_USERNAME`/`ACCESS_KEY`, `SAUCE_USERNAME`/`ACCESS_KEY`, `LT_USERNAME`/`ACCESS_KEY`, `KOBITON_USERNAME`/`API_KEY`).
 
 1. Verify credentials are set for the chosen provider
 2. Query available devices/browsers via provider API
-3. Configure WebDriver or Appium capabilities
+3. Configure WebDriver or Appium capabilities (see `${CLAUDE_SKILL_DIR}/references/cloud-providers.md`)
 4. Execute tests against cloud grid
 5. Retrieve session artifacts (screenshots, video, logs, network HAR)
-6. Aggregate results into compatibility report
-
-For CI/CD integration patterns, see `${CLAUDE_SKILL_DIR}/references/ci-cd-integration.md`.
+6. Aggregate results into compatibility report (CI/CD patterns: `${CLAUDE_SKILL_DIR}/references/ci-cd-integration.md`)
 
 ### Browser-Specific Checks
 
 - **Safari**: date input formatting, scroll behavior, backdrop-filter, PWA manifest, position: sticky in overflow
 - **Firefox**: scrollbar styling, gap in flexbox, subpixel rendering, print stylesheets
-- **Mobile**: touch events, viewport meta, safe area insets, virtual keyboard resize, 300ms tap delay
+- **Mobile**: touch events, viewport meta, safe area insets, virtual keyboard resize
 
-See `${CLAUDE_SKILL_DIR}/references/device-matrix.md` for pre-built matrices (top 10 browsers, mobile-first, enterprise, Kobiton real-device).
+Pre-built device matrices: `${CLAUDE_SKILL_DIR}/references/device-matrix.md` (top 10, mobile-first, enterprise, Kobiton real-device).
 
 ## Examples
 
@@ -113,6 +111,21 @@ test('nav renders correctly across browsers', async ({ page }) => {
 });
 ```
 
+**Kobiton real-device capabilities:**
+```json
+{
+  "platformName": "iOS",
+  "appium:deviceName": "iPhone 15 Pro",
+  "appium:platformVersion": "17",
+  "browserName": "Safari",
+  "kobiton:options": {
+    "sessionName": "Safari Compat Test",
+    "deviceGroup": "KOBITON",
+    "captureScreenshots": true
+  }
+}
+```
+
 ## Error Handling
 
 | Error | Cause | Solution |
@@ -120,24 +133,18 @@ test('nav renders correctly across browsers', async ({ page }) => {
 | WebKit fails, Chromium passes | CSS property unsupported in Safari | Add `-webkit-` prefix or `@supports` fallback |
 | Date input renders differently | Browsers implement `<input type="date">` differently | Use custom date picker component |
 | Test passes locally, fails on cloud | Real device rendering differs from emulation | Run critical paths on real devices for final validation |
-| Kobiton device unavailable | Device in use or offline | Query `GET /v1/devices` for online devices; use `deviceGroup` capability |
-| Cloud session timeout | Long test on slow device | Increase `sessionTimeout` capability; split into smaller test files |
+| Kobiton device unavailable | Device in use or offline | Query `GET /v1/devices` for online devices; use `deviceGroup` for flexible matching |
+| Cloud session timeout | Long test on slow device | Increase `sessionTimeout`; split into smaller test files |
 
 ## Output
 
-- Playwright config with multi-browser projects
-- Cross-browser test files in `tests/compatibility/`
+- Playwright config with multi-browser projects and test files in `tests/compatibility/`
 - Compatibility matrix report (pass/fail per browser, viewport, device)
-- Screenshots per browser for visual diff
-- Unsupported API list with polyfill/fallback recommendations
+- Screenshots per browser for visual diff; unsupported API list with polyfill recommendations
 - Cloud session URLs with video replay links (when using cloud providers)
 
 ## Resources
 
-- Playwright browsers: https://playwright.dev/docs/browsers
-- Can I Use: https://caniuse.com/
-- BrowserStack Automate: https://www.browserstack.com/automate
-- Sauce Labs: https://docs.saucelabs.com/
-- LambdaTest: https://www.lambdatest.com/support/docs/
-- Kobiton API: https://api.kobiton.com/docs/
+- Playwright: https://playwright.dev/docs/browsers | Can I Use: https://caniuse.com/
+- Cloud providers: https://www.browserstack.com/automate | https://docs.saucelabs.com/ | https://www.lambdatest.com/support/docs/ | https://api.kobiton.com/docs/
 - MDN Compat Data: https://github.com/mdn/browser-compat-data
