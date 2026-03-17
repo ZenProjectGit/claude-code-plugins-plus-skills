@@ -681,6 +681,10 @@ def check_stub_scripts(root: Path, script_files: List[Path]) -> List[Finding]:
     """Detect stub/placeholder scripts."""
     findings = []
     for path in script_files:
+        # Exempt __init__.py — empty is idiomatic Python
+        if path.name == "__init__.py":
+            continue
+
         try:
             content = path.read_text(encoding="utf-8")
         except Exception:
@@ -708,6 +712,10 @@ def check_stub_scripts(root: Path, script_files: List[Path]) -> List[Finding]:
         ]
         # Exclude shebang
         lines = [l for l in lines if not l.startswith("#!")]
+
+        # Exempt large scripts (>20 substantive lines) — clearly not stubs
+        if len(lines) > 20:
+            continue
 
         if len(lines) <= 2:
             findings.append(Finding(
@@ -738,10 +746,14 @@ def check_empty_shells(root: Path, plugin_dirs: List[Path]) -> List[Finding]:
         has_commands = list(plugin_dir.rglob("commands/*.md"))
         has_agents = list(plugin_dir.rglob("agents/*.md"))
 
-        # MCP plugins with src/ are OK
+        # MCP plugins with src/ or servers/ are OK
         has_src = (plugin_dir / "src").exists()
+        has_servers = (plugin_dir / "servers").exists()
 
-        if not has_skills and not has_commands and not has_agents and not has_src:
+        # Hooks-based plugins (e.g. prettier-markdown-hook) are OK
+        has_hooks = (plugin_dir / "hooks").exists()
+
+        if not has_skills and not has_commands and not has_agents and not has_src and not has_servers and not has_hooks:
             has_readme = (plugin_dir / "README.md").exists()
             has_plugin_json = (plugin_dir / ".claude-plugin" / "plugin.json").exists()
             if has_readme or has_plugin_json:
