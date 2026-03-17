@@ -231,10 +231,9 @@
     "usage": "<pre><code>\n/detect-bottlenecks\n</code></pre>"
   },
   "browser-compatibility-tester": {
-    "overview": "<p>Cross-browser testing with BrowserStack, Selenium Grid, and Playwright - test across Chrome, Firefox, Safari, Edge.</p>",
-    "features": "<ul>\n<li><strong>Multi-Browser Testing</strong>: Chrome, Firefox, Safari, Edge support</li>\n<li><strong>Cloud Integration</strong>: BrowserStack, Sauce Labs, LambdaTest</li>\n<li><strong>Parallel Execution</strong>: Run tests across browsers simultaneously</li>\n<li><strong>Screenshot Comparison</strong>: Visual compatibility verification</li>\n<li><strong>Issue Detection</strong>: Identify browser-specific bugs</li>\n<li><strong>CI/CD Ready</strong>: Automated cross-browser testing</li>\n</ul>",
-    "usage": "<pre><code>\n/browser-test\n/bt\n</code></pre>",
-    "useCases": "<pre><code>\n/browser-test\n\n</code></pre>"
+    "overview": "<p>Cross-browser and cross-device testing powered by Playwright locally and four major cloud platforms (BrowserStack, Sauce Labs, LambdaTest, Kobiton) for real-device validation. Tests CSS rendering, JavaScript API support, layout consistency, and interactive behavior across Chrome, Firefox, Safari, and Edge on desktop and mobile.</p>",
+    "features": "<ul>\n<li><strong>Multi-browser matrix</strong> -- Chrome, Firefox, Safari, Edge across desktop and mobile viewports</li>\n<li><strong>Local-first workflow</strong> -- Playwright projects with parallel execution; no cloud account needed to start</li>\n<li><strong>Cloud real-device testing</strong> -- Connect to BrowserStack, Sauce Labs, LambdaTest, or Kobiton when emulation is not enough</li>\n<li><strong>Screenshot comparison</strong> -- Capture per-browser screenshots and flag visual regressions</li>\n<li><strong>Compatibility scanning</strong> -- Grep for modern CSS/JS APIs and cross-reference against caniuse data</li>\n<li><strong>CI/CD integration</strong> -- GitHub Actions and CircleCI workflow examples for every provider</li>\n<li><strong>Accessibility checks</strong> -- Run axe-core audits per browser to catch engine-specific a11y gaps</li>\n</ul>",
+    "usage": "<pre><code>\n/browser-test\n/bt\n</code></pre>"
   },
   "cache-performance-optimizer": {
     "overview": "<p>Optimize caching strategies for improved application performance.</p>",
@@ -1407,6 +1406,9 @@
   },
   "wondelai-lean-startup": {
     "overview": "<p>Lean Startup methodology for validated learning and MVPs</p>"
+  },
+  "navigating-github": {
+    "overview": "<p><strong>Go from zero to GitHub in minutes, then learn git through hands-on lessons on your actual project.</strong></p>\n<p>This skill does two things:</p>\n<ol>\n<li><strong>Sets you up on GitHub</strong> — from installing the CLI to pushing your first commit</li>\n<li><strong>Teaches you git</strong> — 9 progressive lessons, each one hands-on with real commands</li>\n</ol>\n<p>No slides. No docs. No assumed knowledge. Run a command, see what happens, then understand why. The AI adapts to your level automatically.</p>"
   },
   "wondelai-made-to-stick": {
     "overview": "<p>Sticky messaging framework using the SUCCESs model</p>"
