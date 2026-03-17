@@ -1,13 +1,13 @@
 {
   "meta": {
     "version": "1.0.0",
-    "generated": "2026-03-16T02:56:12.054Z",
+    "generated": "2026-03-17T17:00:19.664Z",
     "generator": "scripts/generate-unified-search.mjs"
   },
   "stats": {
-    "totalPlugins": 344,
-    "totalSkills": 1404,
-    "totalItems": 1748,
+    "totalPlugins": 345,
+    "totalSkills": 1405,
+    "totalItems": 1750,
     "categories": [
       "ai-agency",
       "ai-ml",
@@ -112,6 +112,7 @@
       "Bash(diff:*)",
       "Bash(docker:*)",
       "Bash(docker:redis:*)",
+      "Bash(echo:*)",
       "Bash(fly:*)",
       "Bash(forensics:*)",
       "Bash(gcloud:*)",
@@ -151,6 +152,7 @@
       "Bash(ngrok:*)",
       "Bash(node:*)",
       "Bash(npm:*)",
+      "Bash(npx playwright:*)",
       "Bash(npx:*)",
       "Bash(open:*)",
       "Bash(performance:*)",
@@ -182,15 +184,16 @@
       "Bash(security:*)",
       "Bash(sentry-cli:*)",
       "Bash(sqlcmd:*)",
+      "Bash(ssh:*)",
       "Bash(sw_vers:*)",
       "Bash(system:*)\"",
       "Bash(system_profiler:*)",
       "Bash(tar:*)",
       "Bash(tcpdump:*)",
       "Bash(terraform:*)",
+      "Bash(test:*)",
       "Bash(test:a11y-*)",
       "Bash(test:api-*)",
-      "Bash(test:browser-*)",
       "Bash(test:chaos-*)",
       "Bash(test:contract-*)",
       "Bash(test:coverage-*)",
@@ -444,6 +447,7 @@
       "coderabbit",
       "cold-calling",
       "cold-email",
+      "collaboration",
       "collaborative",
       "color-palette",
       "commit",
@@ -768,6 +772,7 @@
       "integration-tests",
       "integromat",
       "intelligent-automation",
+      "interactive-learning",
       "interface-guidelines",
       "internationalization",
       "interpretability",
@@ -826,6 +831,7 @@
       "lead-magnet",
       "leak",
       "lean-startup",
+      "learning",
       "learning-rate",
       "learnings",
       "lifo",
@@ -1184,6 +1190,7 @@
       "serving",
       "session-replay",
       "sessions",
+      "setup",
       "sgd",
       "shadows",
       "shap",
@@ -1361,6 +1368,7 @@
       "version-control",
       "versioning",
       "vertex-ai",
+      "vibe-coding",
       "video",
       "video-editing",
       "video-generation",
@@ -1429,7 +1437,7 @@
     "totalHooks": 8,
     "pluginsWithAgents": 38,
     "pluginsWithHooks": 8,
-    "officialPlugins": 302,
+    "officialPlugins": 303,
     "communityPlugins": 42,
     "communityContributors": 16
   },
@@ -12685,6 +12693,44 @@
       ],
       "skillCount": 5,
       "searchText": "executive assistant skills ai-powered executive assistant skills that fully replace a human ea. research meeting attendees, draft emails, create meeting briefs, and manage action items. business-tools executive-assistant meeting-prep email productivity automation todoist"
+    },
+    {
+      "type": "plugin",
+      "id": "navigating-github",
+      "slug": "navigating-github",
+      "name": "navigating-github",
+      "displayName": "navigating github",
+      "description": "Interactive GitHub setup and learning companion. Guides users from zero to a working GitHub setup, then teaches git and GitHub through hands-on exercises on real repos. Adapts to any skill level with six modes: setup, learn, save, share, understand, fix.",
+      "category": "productivity",
+      "keywords": [
+        "github",
+        "git",
+        "learning",
+        "onboarding",
+        "beginner-friendly",
+        "interactive-learning",
+        "version-control",
+        "vibe-coding",
+        "setup",
+        "collaboration"
+      ],
+      "author": {
+        "name": "Jeremy Longshore",
+        "email": "jeremy@intentsolutions.io",
+        "url": "https://github.com/jeremylongshore"
+      },
+      "authorType": "official",
+      "version": "1.0.0",
+      "isFeatured": false,
+      "isNew": true,
+      "badges": [
+        "new"
+      ],
+      "skillCount": 1,
+      "verificationScore": 98,
+      "verificationGrade": "A",
+      "verificationBadge": "gold",
+      "searchText": "navigating github interactive github setup and learning companion. guides users from zero to a working github setup, then teaches git and github through hands-on exercises on real repos. adapts to any skill level with six modes: setup, learn, save, share, understand, fix. productivity github git learning onboarding beginner-friendly interactive-learning version-control vibe-coding setup collaboration"
     },
     {
       "type": "skill",
@@ -35809,6 +35855,39 @@
     },
     {
       "type": "skill",
+      "id": "navigating-github",
+      "slug": "navigating-github",
+      "name": "navigating-github",
+      "description": "First-time GitHub setup and interactive git learning. Walks users from zero to a working GitHub repo, then teaches git through 9 hands-on lessons on their actual project. Adapts language and depth to skill level — inferred from environment, not questionnaires. Two modes: Setup (guided onboarding) and Learn (progressive curriculum from commits to CI/CD). Use when the user asks to set up GitHub, learn git, or says \"teach me github\". Trigger with \"set up my repo\", \"help me with github\", \"teach me github\", \"learn git\", \"what are branches\", \"teach me PRs\", or \"how do I use github\".",
+      "category": "productivity",
+      "allowedTools": [
+        "Read",
+        "Write",
+        "Glob",
+        "Grep",
+        "Bash(git:*)",
+        "Bash(gh:*)",
+        "Bash(ssh:*)",
+        "Bash(test:*)",
+        "Bash(echo:*)",
+        "AskUserQuestion"
+      ],
+      "compatibleWith": [
+        "claude-code",
+        "cursor",
+        "windsurf",
+        "aider",
+        "continue"
+      ],
+      "version": "2.0.0",
+      "parentPlugin": {
+        "name": "navigating-github",
+        "category": "productivity"
+      },
+      "searchText": "navigating-github first-time github setup and interactive git learning. walks users from zero to a working github repo, then teaches git through 9 hands-on lessons on their actual project. adapts language and depth to skill level — inferred from environment, not questionnaires. two modes: setup (guided onboarding) and learn (progressive curriculum from commits to ci/cd). use when the user asks to set up github, learn git, or says \"teach me github\". trigger with \"set up my repo\", \"help me with github\", \"teach me github\", \"learn git\", \"what are branches\", \"teach me prs\", or \"how do i use github\". productivity read write glob grep bash(git:*) bash(gh:*) bash(ssh:*) bash(test:*) bash(echo:*) askuserquestion claude-code cursor windsurf aider continue"
+    },
+    {
+      "type": "skill",
       "id": "negotiation",
       "slug": "negotiation",
       "name": "negotiation",
@@ -44504,7 +44583,7 @@
       "id": "testing-browser-compatibility",
       "slug": "testing-browser-compatibility",
       "name": "testing-browser-compatibility",
-      "description": "Test across multiple browsers and devices for cross-browser compatibility. Use when ensuring cross-browser or device compatibility. Trigger with phrases like \"test browser compatibility\", \"check cross-browser\", or \"validate on browsers\".",
+      "description": "Test across multiple browsers and devices for cross-browser compatibility. Use when ensuring cross-browser or device compatibility with BrowserStack, Sauce Labs, LambdaTest, or Kobiton. Trigger with phrases like \"test browser compatibility\", \"check cross-browser\", \"validate on browsers\", \"test on real devices\", \"kobiton test\".",
       "category": "testing",
       "allowedTools": [
         "Read",
@@ -44512,19 +44591,21 @@
         "Edit",
         "Grep",
         "Glob",
-        "Bash(test:browser-*)"
+        "Bash(npx playwright:*)",
+        "Bash(npm:*)",
+        "Bash(curl:*)"
       ],
       "compatibleWith": [
         "claude-code",
         "codex",
         "openclaw"
       ],
-      "version": "1.0.0",
+      "version": "2.0.0",
       "parentPlugin": {
         "name": "browser-compatibility-tester",
         "category": "testing"
       },
-      "searchText": "testing-browser-compatibility test across multiple browsers and devices for cross-browser compatibility. use when ensuring cross-browser or device compatibility. trigger with phrases like \"test browser compatibility\", \"check cross-browser\", or \"validate on browsers\". testing read write edit grep glob bash(test:browser-*) claude-code codex openclaw"
+      "searchText": "testing-browser-compatibility test across multiple browsers and devices for cross-browser compatibility. use when ensuring cross-browser or device compatibility with browserstack, sauce labs, lambdatest, or kobiton. trigger with phrases like \"test browser compatibility\", \"check cross-browser\", \"validate on browsers\", \"test on real devices\", \"kobiton test\". testing read write edit grep glob bash(npx playwright:*) bash(npm:*) bash(curl:*) claude-code codex openclaw"
     },
     {
       "type": "skill",

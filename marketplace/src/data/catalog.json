@@ -1,17 +1,17 @@
 {
   "meta": {
     "version": "1.0.0",
-    "generated": "2026-03-16T02:56:11.846Z",
+    "generated": "2026-03-17T17:00:19.406Z",
     "source": "marketplace.extended.json",
     "generator": "scripts/sync-catalog.mjs"
   },
   "stats": {
-    "totalPlugins": 344,
-    "totalSkills": 1417,
-    "totalCommands": 66,
-    "pluginsWithSkills": 315,
+    "totalPlugins": 345,
+    "totalSkills": 1418,
+    "totalCommands": 67,
+    "pluginsWithSkills": 316,
     "byCategory": {
-      "productivity": 27,
+      "productivity": 28,
       "security": 28,
       "testing": 25,
       "ai-ml": 53,
@@ -39,12 +39,12 @@
       "saas-packs": 1
     },
     "byStatus": {
-      "active": 325,
+      "active": 326,
       "maintained": 19
     },
     "featured": 4,
-    "new": 323,
-    "generatedAt": "2026-03-16T02:56:11.846Z"
+    "new": 324,
+    "generatedAt": "2026-03-17T17:00:19.406Z"
   },
   "plugins": [
     {
@@ -11751,6 +11751,45 @@
         "name": "Martin Gontovnikas",
         "email": "gonto@hypergrowthpartners.com",
         "url": "https://github.com/mgonto"
+      },
+      "type": "instruction-plugin"
+    },
+    {
+      "slug": "navigating-github",
+      "name": "navigating-github",
+      "displayName": "navigating github",
+      "description": "Interactive GitHub setup and learning companion. Guides users from zero to a working GitHub setup, then teaches git and GitHub through hands-on exercises on real repos. Adapts to any skill level with six modes: setup, learn, save, share, understand, fix.",
+      "version": "1.0.0",
+      "category": "productivity",
+      "keywords": [
+        "github",
+        "git",
+        "learning",
+        "onboarding",
+        "beginner-friendly",
+        "interactive-learning",
+        "version-control",
+        "vibe-coding",
+        "setup",
+        "collaboration"
+      ],
+      "hasSkills": true,
+      "skillCount": 1,
+      "commandCount": 1,
+      "installCommand": "/plugin install navigating-github",
+      "sourcePath": "./plugins/productivity/navigating-github",
+      "lastUpdatedEpoch": 1773710582,
+      "lastUpdatedDate": "2026-03-17T01:23:02.054Z",
+      "status": "active",
+      "badges": [
+        "new"
+      ],
+      "isFeatured": false,
+      "isNew": true,
+      "author": {
+        "name": "Jeremy Longshore",
+        "email": "jeremy@intentsolutions.io",
+        "url": "https://github.com/jeremylongshore"
       },
       "type": "instruction-plugin"
     }
