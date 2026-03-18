@@ -1446,11 +1446,18 @@
   "wondelai-web-typography": {
     "overview": "<p>Web typography framework for readable, beautiful type</p>"
   },
+  "pm-ai-partner": {
+    "overview": "<p>Structured thinking partner for Product Managers. 12 agent skills, 6 workflow commands, 3 automation hooks.</p>"
+  },
   "validate-plugin": {
     "overview": "<p>Validates full Claude Code plugin directory structure against the official Anthropic spec and Intent Solutions enterprise standard.</p>",
     "usage": "<p>Say \"validate this plugin\" or \"/validate-plugin\" pointing at any plugin directory.</p>"
   },
   "executive-assistant-skills": {
     "overview": "<p>AI-powered executive assistant skills for Claude Code that <strong>fully replace a human EA</strong>. These skills were born from a real experiment by Martin Gontovnikas (<a href=\"https://github.com/mgonto\">@mgonto</a>), Auth0's former VP of Marketing/Growth, who discovered that a set of well-crafted Claude Code skills could handle everything his executive assistant used to do — meeting prep, email drafting, action item tracking, and daily digests.</p>\n<p>The result: a suite of 5 skills that autonomously research attendees before meetings, draft personalized emails, extract and manage action items in Todoist, and deliver a morning executive briefing — all without human intervention.</p>"
+  },
+  "box-cloud-filesystem": {
+    "overview": "<p>Transparent cloud filesystem for AI agents using the official <a href=\"https://www.box.com/\">Box</a> CLI (<code>@box/cli</code>). Upload, download, search, share, and sync files to Box cloud storage with operational safety guardrails. Works with any Box account — personal, business, or enterprise.</p>\n<p><strong>Compatible with:</strong> Claude Code, Codex, Perplexity Computer, OpenClaw, and any agent platform that supports skills or system prompts.</p>",
+    "usage": "<p><strong>Transparent mode</strong> — initialize a workspace, then work normally:</p>\n<pre><code>\n./scripts/box-init-workspace.sh 123456789 /tmp/box-workspace\n\n</code></pre>\n<p><strong>Explicit mode</strong> — use Box CLI directly with the skill's guidance:</p>\n<pre><code>\nbox search \"quarterly report\" --json           # Find files\nbox files:download FILE_ID --destination ./     # Download\nbox files:upload ./report.md --parent-id 123    # Upload new\nbox files:versions:upload FILE_ID ./report.md   # Update existing (preserves history)\nbox files:share FILE_ID --access collaborators  # Share (never defaults to public)\n</code></pre>"
   }
 }

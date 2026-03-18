@@ -1,17 +1,17 @@
 {
   "meta": {
     "version": "1.0.0",
-    "generated": "2026-03-17T17:00:19.406Z",
+    "generated": "2026-03-18T00:05:55.682Z",
     "source": "marketplace.extended.json",
     "generator": "scripts/sync-catalog.mjs"
   },
   "stats": {
-    "totalPlugins": 345,
-    "totalSkills": 1418,
-    "totalCommands": 67,
-    "pluginsWithSkills": 316,
+    "totalPlugins": 349,
+    "totalSkills": 1436,
+    "totalCommands": 73,
+    "pluginsWithSkills": 323,
     "byCategory": {
-      "productivity": 28,
+      "productivity": 31,
       "security": 28,
       "testing": 25,
       "ai-ml": 53,
@@ -31,7 +31,7 @@
       "finance": 1,
       "code-quality": 2,
       "automation": 2,
-      "community": 5,
+      "community": 6,
       "development": 1,
       "data-engineering": 2,
       "enterprise": 2,
@@ -39,12 +39,12 @@
       "saas-packs": 1
     },
     "byStatus": {
-      "active": 326,
+      "active": 330,
       "maintained": 19
     },
-    "featured": 4,
-    "new": 324,
-    "generatedAt": "2026-03-17T17:00:19.406Z"
+    "featured": 5,
+    "new": 328,
+    "generatedAt": "2026-03-18T00:05:55.682Z"
   },
   "plugins": [
     {
@@ -1663,8 +1663,8 @@
         "meetings",
         "productivity"
       ],
-      "hasSkills": false,
-      "skillCount": 0,
+      "hasSkills": true,
+      "skillCount": 1,
       "commandCount": 0,
       "installCommand": "/plugin install calendar-to-workflow",
       "sourcePath": "./plugins/skill-enhancers/calendar-to-workflow",
@@ -4047,8 +4047,8 @@
         "automation",
         "code-generation"
       ],
-      "hasSkills": false,
-      "skillCount": 0,
+      "hasSkills": true,
+      "skillCount": 1,
       "commandCount": 0,
       "installCommand": "/plugin install file-to-code",
       "sourcePath": "./plugins/skill-enhancers/file-to-code",
@@ -6262,8 +6262,8 @@
         "automation",
         "deployment"
       ],
-      "hasSkills": false,
-      "skillCount": 0,
+      "hasSkills": true,
+      "skillCount": 1,
       "commandCount": 0,
       "installCommand": "/plugin install research-to-deploy",
       "sourcePath": "./plugins/skill-enhancers/research-to-deploy",
@@ -6420,8 +6420,8 @@
         "automation",
         "integration"
       ],
-      "hasSkills": false,
-      "skillCount": 0,
+      "hasSkills": true,
+      "skillCount": 1,
       "commandCount": 0,
       "installCommand": "/plugin install search-to-slack",
       "sourcePath": "./plugins/skill-enhancers/search-to-slack",
@@ -9519,8 +9519,8 @@
         "merge",
         "code-review"
       ],
-      "hasSkills": false,
-      "skillCount": 0,
+      "hasSkills": true,
+      "skillCount": 1,
       "commandCount": 1,
       "installCommand": "/plugin install gh-dash",
       "sourcePath": "./plugins/devops/gh-dash",
@@ -11790,6 +11790,149 @@
         "name": "Jeremy Longshore",
         "email": "jeremy@intentsolutions.io",
         "url": "https://github.com/jeremylongshore"
+      },
+      "type": "instruction-plugin"
+    },
+    {
+      "slug": "box-cloud-filesystem",
+      "name": "box-cloud-filesystem",
+      "displayName": "box cloud filesystem",
+      "description": "Transparent cloud filesystem for AI agents using Box CLI (@box/cli). Upload, download, search, share, and sync files to Box cloud storage with operational safety guardrails.",
+      "version": "1.0.0",
+      "category": "productivity",
+      "keywords": [
+        "box",
+        "cloud-storage",
+        "filesystem",
+        "file-sync",
+        "box-cli",
+        "upload",
+        "download",
+        "document-management",
+        "collaboration",
+        "ai-agent-storage"
+      ],
+      "hasSkills": true,
+      "skillCount": 1,
+      "commandCount": 0,
+      "installCommand": "/plugin install box-cloud-filesystem",
+      "sourcePath": "./plugins/productivity/box-cloud-filesystem",
+      "lastUpdatedEpoch": 1773792355,
+      "lastUpdatedDate": "2026-03-18T00:05:55.682Z",
+      "status": "active",
+      "badges": [
+        "new"
+      ],
+      "isFeatured": true,
+      "isNew": true,
+      "author": {
+        "name": "Jeremy Longshore",
+        "email": "jeremy@intentsolutions.io"
+      },
+      "type": "instruction-plugin"
+    },
+    {
+      "slug": "geepers",
+      "name": "geepers",
+      "displayName": "geepers",
+      "description": "Multi-agent orchestration system with 51 specialized agents for development workflows, code quality, deployment, research, and more. Built with MCP tools and Claude Code plugin agents.",
+      "version": "1.0.0",
+      "category": "community",
+      "keywords": [
+        "mcp",
+        "orchestration",
+        "multi-agent",
+        "development-workflow",
+        "code-quality",
+        "deployment",
+        "geepers",
+        "claude-code"
+      ],
+      "hasSkills": false,
+      "skillCount": 0,
+      "commandCount": 0,
+      "installCommand": "/plugin install geepers",
+      "sourcePath": "./plugins/community/geepers-agents",
+      "lastUpdatedEpoch": 1773792355,
+      "lastUpdatedDate": "2026-03-18T00:05:55.682Z",
+      "status": "active",
+      "badges": [
+        "new"
+      ],
+      "isFeatured": false,
+      "isNew": true,
+      "author": {
+        "name": "Luke Steuber"
+      },
+      "type": "instruction-plugin"
+    },
+    {
+      "slug": "lumera-agent-memory",
+      "name": "lumera-agent-memory",
+      "displayName": "lumera agent memory",
+      "description": "Durable agent memory with Cascade object storage, client-side encryption, and local full-text search index. Persists agent context across sessions.",
+      "version": "1.0.0",
+      "category": "productivity",
+      "keywords": [
+        "mcp",
+        "memory",
+        "cascade",
+        "storage",
+        "encryption",
+        "search",
+        "fts",
+        "agent"
+      ],
+      "hasSkills": false,
+      "skillCount": 0,
+      "commandCount": 0,
+      "installCommand": "/plugin install lumera-agent-memory",
+      "sourcePath": "./plugins/mcp/lumera-agent-memory",
+      "lastUpdatedEpoch": 1773792355,
+      "lastUpdatedDate": "2026-03-18T00:05:55.682Z",
+      "status": "active",
+      "badges": [
+        "new"
+      ],
+      "isFeatured": false,
+      "isNew": true,
+      "author": {
+        "name": "Intent Solutions IO",
+        "email": "jeremy@intentsolutions.io"
+      },
+      "type": "instruction-plugin"
+    },
+    {
+      "slug": "pm-ai-partner",
+      "name": "pm-ai-partner",
+      "displayName": "pm ai partner",
+      "description": "12 PM-specific agent skills, 6 workflow commands, 3 automation hooks for Product Managers",
+      "version": "1.0.0",
+      "category": "productivity",
+      "keywords": [
+        "product-management",
+        "pm",
+        "ai-partner",
+        "skills",
+        "commands",
+        "hooks"
+      ],
+      "hasSkills": true,
+      "skillCount": 12,
+      "commandCount": 6,
+      "installCommand": "/plugin install pm-ai-partner",
+      "sourcePath": "./plugins/productivity/pm-ai-partner",
+      "lastUpdatedEpoch": 1773792355,
+      "lastUpdatedDate": "2026-03-18T00:05:55.682Z",
+      "status": "active",
+      "badges": [
+        "new"
+      ],
+      "isFeatured": false,
+      "isNew": true,
+      "author": {
+        "name": "Ahmed Khaled",
+        "email": "ahmd.khaled.a.mohamed@gmail.com"
       },
       "type": "instruction-plugin"
     }

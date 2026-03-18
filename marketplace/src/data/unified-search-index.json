@@ -1,13 +1,13 @@
 {
   "meta": {
     "version": "1.0.0",
-    "generated": "2026-03-17T17:00:19.664Z",
+    "generated": "2026-03-18T00:05:55.955Z",
     "generator": "scripts/generate-unified-search.mjs"
   },
   "stats": {
-    "totalPlugins": 345,
-    "totalSkills": 1405,
-    "totalItems": 1750,
+    "totalPlugins": 349,
+    "totalSkills": 1423,
+    "totalItems": 1772,
     "categories": [
       "ai-agency",
       "ai-ml",
@@ -43,6 +43,7 @@
       "\"Read",
       "AskUserQuestion",
       "AskUserQuestion\"",
+      "Bash",
       "Bash(analysis:*)\"",
       "Bash(ansible:*)",
       "Bash(api:auth-*)",
@@ -79,6 +80,7 @@
       "Bash(az:*)",
       "Bash(az:storage:*)",
       "Bash(bandit:*)",
+      "Bash(box:*)",
       "Bash(brew:*)",
       "Bash(cat:*)",
       "Bash(chmod:*)",
@@ -278,6 +280,7 @@
       "ai",
       "ai-acceleration",
       "ai-agency",
+      "ai-agent-storage",
       "ai-agents",
       "ai-applications",
       "ai-art",
@@ -292,6 +295,7 @@
       "ai-ide",
       "ai-integration",
       "ai-notes",
+      "ai-partner",
       "ai-powered",
       "ai-review",
       "ai-safety",
@@ -378,6 +382,8 @@
       "blue-ocean",
       "bonuses",
       "bottleneck",
+      "box",
+      "box-cli",
       "brand-guidelines",
       "brand-identity",
       "brand-script",
@@ -430,6 +436,7 @@
       "cloud-gpu",
       "cloud-ide",
       "cloud-run",
+      "cloud-storage",
       "cloudformation",
       "clustering",
       "clusters",
@@ -450,6 +457,7 @@
       "collaboration",
       "collaborative",
       "color-palette",
+      "commands",
       "commit",
       "commits",
       "communication",
@@ -568,11 +576,13 @@
       "docker-compose",
       "docs",
       "documenso",
+      "document-management",
       "document-signing",
       "documentation",
       "documents",
       "don-norman",
       "donald-miller",
+      "download",
       "dr",
       "drift",
       "e-signature",
@@ -590,6 +600,7 @@
       "embedding",
       "embeddings",
       "emotion",
+      "encryption",
       "endpoints",
       "engagement",
       "engineering",
@@ -644,7 +655,9 @@
       "fees",
       "fifo",
       "figma",
+      "file-sync",
       "files",
+      "filesystem",
       "filmmaking",
       "finance",
       "financial-analysis",
@@ -669,6 +682,7 @@
       "framework",
       "free-ai",
       "frontend-cloud",
+      "fts",
       "fullstack",
       "funding-rate",
       "funnels",
@@ -683,6 +697,7 @@
       "gatsby",
       "gcp",
       "gcr",
+      "geepers",
       "gemini",
       "generative-ai",
       "generator",
@@ -1026,6 +1041,7 @@
       "plugin-intelligence",
       "plugin-management",
       "plugins",
+      "pm",
       "polarity",
       "polecats",
       "policycenter",
@@ -1055,6 +1071,7 @@
       "procedure",
       "product-analytics",
       "product-design",
+      "product-management",
       "product-market-fit",
       "product-strategy",
       "production",
@@ -1341,6 +1358,7 @@
       "ui-testing",
       "uikit",
       "unit-tests",
+      "upload",
       "uptime",
       "usability",
       "user-experience",
@@ -1434,12 +1452,12 @@
       "zod"
     ],
     "totalAgents": 116,
-    "totalHooks": 8,
+    "totalHooks": 13,
     "pluginsWithAgents": 38,
-    "pluginsWithHooks": 8,
-    "officialPlugins": 303,
-    "communityPlugins": 42,
-    "communityContributors": 16
+    "pluginsWithHooks": 10,
+    "officialPlugins": 305,
+    "communityPlugins": 44,
+    "communityContributors": 17
   },
   "items": [
     {
@@ -3013,7 +3031,7 @@
       "isFeatured": false,
       "isNew": false,
       "badges": [],
-      "skillCount": 0,
+      "skillCount": 1,
       "searchText": "calendar to workflow enhances calendar skills by automating meeting prep and workflow triggers skill-enhancers calendar automation meetings productivity"
     },
     {
@@ -5301,7 +5319,7 @@
       "isFeatured": false,
       "isNew": false,
       "badges": [],
-      "skillCount": 0,
+      "skillCount": 1,
       "searchText": "file to code converts file references into executable code implementations skill-enhancers files automation code-generation"
     },
     {
@@ -7428,7 +7446,7 @@
       "isFeatured": false,
       "isNew": false,
       "badges": [],
-      "skillCount": 0,
+      "skillCount": 1,
       "searchText": "research to deploy transforms research findings into deployed solutions automatically skill-enhancers research automation deployment"
     },
     {
@@ -7575,7 +7593,7 @@
       "isFeatured": false,
       "isNew": false,
       "badges": [],
-      "skillCount": 0,
+      "skillCount": 1,
       "searchText": "search to slack automatically posts search results to slack channels skill-enhancers search slack automation integration"
     },
     {
@@ -10549,7 +10567,7 @@
       "badges": [
         "new"
       ],
-      "skillCount": 0,
+      "skillCount": 1,
       "searchText": "gh dash github pr dashboard for claude code. view pr status, ci/cd progress, bot comments, and merge prs directly from your terminal. devops github pull-request ci-cd dashboard devops merge code-review"
     },
     {
@@ -12731,6 +12749,136 @@
       "verificationGrade": "A",
       "verificationBadge": "gold",
       "searchText": "navigating github interactive github setup and learning companion. guides users from zero to a working github setup, then teaches git and github through hands-on exercises on real repos. adapts to any skill level with six modes: setup, learn, save, share, understand, fix. productivity github git learning onboarding beginner-friendly interactive-learning version-control vibe-coding setup collaboration"
+    },
+    {
+      "type": "plugin",
+      "id": "box-cloud-filesystem",
+      "slug": "box-cloud-filesystem",
+      "name": "box-cloud-filesystem",
+      "displayName": "box cloud filesystem",
+      "description": "Transparent cloud filesystem for AI agents using Box CLI (@box/cli). Upload, download, search, share, and sync files to Box cloud storage with operational safety guardrails.",
+      "category": "productivity",
+      "keywords": [
+        "box",
+        "cloud-storage",
+        "filesystem",
+        "file-sync",
+        "box-cli",
+        "upload",
+        "download",
+        "document-management",
+        "collaboration",
+        "ai-agent-storage"
+      ],
+      "author": {
+        "name": "Jeremy Longshore",
+        "email": "jeremy@intentsolutions.io"
+      },
+      "authorType": "official",
+      "version": "1.0.0",
+      "isFeatured": true,
+      "isNew": true,
+      "badges": [
+        "new"
+      ],
+      "skillCount": 1,
+      "verificationScore": 0,
+      "verificationGrade": "N/A",
+      "verificationBadge": "none",
+      "searchText": "box cloud filesystem transparent cloud filesystem for ai agents using box cli (@box/cli). upload, download, search, share, and sync files to box cloud storage with operational safety guardrails. productivity box cloud-storage filesystem file-sync box-cli upload download document-management collaboration ai-agent-storage"
+    },
+    {
+      "type": "plugin",
+      "id": "geepers",
+      "slug": "geepers",
+      "name": "geepers",
+      "displayName": "geepers",
+      "description": "Multi-agent orchestration system with 51 specialized agents for development workflows, code quality, deployment, research, and more. Built with MCP tools and Claude Code plugin agents.",
+      "category": "community",
+      "keywords": [
+        "mcp",
+        "orchestration",
+        "multi-agent",
+        "development-workflow",
+        "code-quality",
+        "deployment",
+        "geepers",
+        "claude-code"
+      ],
+      "author": {
+        "name": "Luke Steuber"
+      },
+      "authorType": "community",
+      "version": "1.0.0",
+      "isFeatured": false,
+      "isNew": true,
+      "badges": [
+        "new"
+      ],
+      "skillCount": 0,
+      "searchText": "geepers multi-agent orchestration system with 51 specialized agents for development workflows, code quality, deployment, research, and more. built with mcp tools and claude code plugin agents. community mcp orchestration multi-agent development-workflow code-quality deployment geepers claude-code"
+    },
+    {
+      "type": "plugin",
+      "id": "lumera-agent-memory",
+      "slug": "lumera-agent-memory",
+      "name": "lumera-agent-memory",
+      "displayName": "lumera agent memory",
+      "description": "Durable agent memory with Cascade object storage, client-side encryption, and local full-text search index. Persists agent context across sessions.",
+      "category": "productivity",
+      "keywords": [
+        "mcp",
+        "memory",
+        "cascade",
+        "storage",
+        "encryption",
+        "search",
+        "fts",
+        "agent"
+      ],
+      "author": {
+        "name": "Intent Solutions IO",
+        "email": "jeremy@intentsolutions.io"
+      },
+      "authorType": "official",
+      "version": "1.0.0",
+      "isFeatured": false,
+      "isNew": true,
+      "badges": [
+        "new"
+      ],
+      "skillCount": 0,
+      "searchText": "lumera agent memory durable agent memory with cascade object storage, client-side encryption, and local full-text search index. persists agent context across sessions. productivity mcp memory cascade storage encryption search fts agent"
+    },
+    {
+      "type": "plugin",
+      "id": "pm-ai-partner",
+      "slug": "pm-ai-partner",
+      "name": "pm-ai-partner",
+      "displayName": "pm ai partner",
+      "description": "12 PM-specific agent skills, 6 workflow commands, 3 automation hooks for Product Managers",
+      "category": "productivity",
+      "keywords": [
+        "product-management",
+        "pm",
+        "ai-partner",
+        "skills",
+        "commands",
+        "hooks"
+      ],
+      "author": {
+        "name": "Ahmed Khaled",
+        "email": "ahmd.khaled.a.mohamed@gmail.com"
+      },
+      "authorType": "community",
+      "version": "1.0.0",
+      "isFeatured": false,
+      "isNew": true,
+      "badges": [
+        "new"
+      ],
+      "skillCount": 12,
+      "searchText": "pm ai partner 12 pm-specific agent skills, 6 workflow commands, 3 automation hooks for product managers productivity product-management pm ai-partner skills commands hooks"
     },
     {
       "type": "skill",
@@ -15848,6 +15996,35 @@
     },
     {
       "type": "skill",
+      "id": "box-cloud-filesystem",
+      "slug": "box-cloud-filesystem",
+      "name": "box-cloud-filesystem",
+      "description": "Cloud filesystem operations via Box CLI. Use when the user mentions Box, cloud files, cloud storage, uploading to the cloud, sharing files, document management, or syncing project files offsite. Trigger with \"upload to box\", \"save to cloud\", \"pull from box\", \"search my box files\", \"share this file\", \"box sync\", \"cloud backup\", or \"box filesystem\".",
+      "category": "productivity",
+      "allowedTools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash(box:*)",
+        "Bash(npm:*)",
+        "Bash(npx:*)",
+        "Glob",
+        "Grep"
+      ],
+      "compatibleWith": [
+        "claude-code",
+        "codex",
+        "openclaw"
+      ],
+      "version": "1.0.0",
+      "parentPlugin": {
+        "name": "box-cloud-filesystem",
+        "category": "productivity"
+      },
+      "searchText": "box-cloud-filesystem cloud filesystem operations via box cli. use when the user mentions box, cloud files, cloud storage, uploading to the cloud, sharing files, document management, or syncing project files offsite. trigger with \"upload to box\", \"save to cloud\", \"pull from box\", \"search my box files\", \"share this file\", \"box sync\", \"cloud backup\", or \"box filesystem\". productivity read write edit bash(box:*) bash(npm:*) bash(npx:*) glob grep claude-code codex openclaw"
+    },
+    {
+      "type": "skill",
       "id": "brand-strategy",
       "slug": "brand-strategy",
       "name": "brand-strategy",
@@ -15871,6 +16048,30 @@
         "category": "business-tools"
       },
       "searchText": "brand-strategy a 7-part brand strategy framework for building comprehensive brand foundations. trigger with phrases like \"create brand strategy\", \"build brand brief\", \"define brand positioning\", \"brand messaging\", \"audience architecture\", \"brand truth\", or \"go-to-market brand plan\". use when working with brand strategy. business-tools read write edit glob grep claude-code codex openclaw"
+    },
+    {
+      "type": "skill",
+      "id": "builder",
+      "slug": "builder",
+      "name": "builder",
+      "description": "Hands-on implementation partner for creating tools, scripts, dashboards, and prototypes. Use when the user wants to build something tangible — apps, scripts, automations, or internal tools. Triggers include \"build\", \"create tool\", \"make app\", \"implement\", \"prototype\", \"automate\", or when the goal is working software.",
+      "category": "productivity",
+      "allowedTools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "Bash(npm:*)",
+        "Bash(node:*)"
+      ],
+      "compatibleWith": [],
+      "version": "1.0.0",
+      "parentPlugin": {
+        "name": "pm-ai-partner",
+        "category": "productivity"
+      },
+      "searchText": "builder hands-on implementation partner for creating tools, scripts, dashboards, and prototypes. use when the user wants to build something tangible — apps, scripts, automations, or internal tools. triggers include \"build\", \"create tool\", \"make app\", \"implement\", \"prototype\", \"automate\", or when the goal is working software. productivity read write edit glob grep bash(npm:*) bash(node:*) "
     },
     {
       "type": "skill",
@@ -16195,6 +16396,32 @@
         "category": "crypto"
       },
       "searchText": "calculating-crypto-taxes calculate cryptocurrency tax obligations with cost basis tracking, capital gains computation, and form 8949 generation. use when calculating crypto taxes, generating tax reports, comparing cost basis methods, or identifying taxable events. trigger with phrases like \"calculate crypto taxes\", \"generate tax report\", \"cost basis fifo\", \"capital gains\", \"form 8949\", or \"crypto taxable events\". crypto read write bash(crypto:tax-*) claude-code codex openclaw"
+    },
+    {
+      "type": "skill",
+      "id": "calendar-to-workflow",
+      "slug": "calendar-to-workflow",
+      "name": "calendar-to-workflow",
+      "description": "Converts calendar events and schedules into Claude Code workflows, meeting prep documents, and standup notes. Use when the user mentions calendar events, meeting prep, standup generation, or scheduling workflows. Trigger with phrases like \"prep for my meetings\", \"generate standup notes\", \"create workflow from calendar\", or \"summarize today's schedule\".",
+      "category": "skill-enhancers",
+      "allowedTools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Glob",
+        "Grep"
+      ],
+      "compatibleWith": [
+        "claude-code",
+        "codex"
+      ],
+      "version": "1.0.0",
+      "parentPlugin": {
+        "name": "calendar-to-workflow",
+        "category": "skill-enhancers"
+      },
+      "searchText": "calendar-to-workflow converts calendar events and schedules into claude code workflows, meeting prep documents, and standup notes. use when the user mentions calendar events, meeting prep, standup generation, or scheduling workflows. trigger with phrases like \"prep for my meetings\", \"generate standup notes\", \"create workflow from calendar\", or \"summarize today's schedule\". skill-enhancers read write edit bash glob grep claude-code codex"
     },
     {
       "type": "skill",
@@ -18421,6 +18648,26 @@
     },
     {
       "type": "skill",
+      "id": "competitor-analyst",
+      "slug": "competitor-analyst",
+      "name": "competitor-analyst",
+      "description": "Competitive analysis and market positioning partner for Product Managers. Use when the user needs to analyze competitors, map market positioning, identify feature gaps, or prepare for competitive conversations. Triggers include \"competitor\", \"competitive analysis\", \"market map\", \"feature comparison\", \"how does X compare\", \"positioning\", or when evaluating the competitive landscape.",
+      "category": "productivity",
+      "allowedTools": [
+        "Read",
+        "Glob",
+        "Grep"
+      ],
+      "compatibleWith": [],
+      "version": "1.0.0",
+      "parentPlugin": {
+        "name": "pm-ai-partner",
+        "category": "productivity"
+      },
+      "searchText": "competitor-analyst competitive analysis and market positioning partner for product managers. use when the user needs to analyze competitors, map market positioning, identify feature gaps, or prepare for competitive conversations. triggers include \"competitor\", \"competitive analysis\", \"market map\", \"feature comparison\", \"how does x compare\", \"positioning\", or when evaluating the competitive landscape. productivity read glob grep "
+    },
+    {
+      "type": "skill",
       "id": "configuring-auto-scaling-policies",
       "slug": "configuring-auto-scaling-policies",
       "name": "configuring-auto-scaling-policies",
@@ -19379,6 +19626,28 @@
         "category": "saas-packs"
       },
       "searchText": "customerio-webhooks-events implement customer.io webhook handling. use when processing delivery events, handling callbacks, or integrating customer.io event streams. trigger with phrases like \"customer.io webhook\", \"customer.io events\", \"customer.io callback\", \"customer.io delivery status\". saas-packs read write edit bash(gh:*) bash(curl:*) claude-code codex openclaw"
+    },
+    {
+      "type": "skill",
+      "id": "data-analyst",
+      "slug": "data-analyst",
+      "name": "data-analyst",
+      "description": "Data exploration and analysis partner for Product Managers. Use when the user needs to query databases, analyze metrics, create dashboards, or extract insights from data. Triggers include \"query\", \"analyze data\", \"metrics\", \"BigQuery\", \"SQL\", \"dashboard\", \"what does the data say\", or when working with quantitative information.",
+      "category": "productivity",
+      "allowedTools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash(npm:*)",
+        "Bash(node:*)"
+      ],
+      "compatibleWith": [],
+      "version": "1.0.0",
+      "parentPlugin": {
+        "name": "pm-ai-partner",
+        "category": "productivity"
+      },
+      "searchText": "data-analyst data exploration and analysis partner for product managers. use when the user needs to query databases, analyze metrics, create dashboards, or extract insights from data. triggers include \"query\", \"analyze data\", \"metrics\", \"bigquery\", \"sql\", \"dashboard\", \"what does the data say\", or when working with quantitative information. productivity read grep glob bash(npm:*) bash(node:*) "
     },
     {
       "type": "skill",
@@ -20950,6 +21219,26 @@
         "category": "security"
       },
       "searchText": "detecting-sql-injection-vulnerabilities detect and analyze sql injection vulnerabilities in application code and database queries. use when you need to scan code for sql injection risks, review query construction, validate input sanitization, or implement secure query patterns. trigger with phrases like \"detect sql injection\", \"scan for sqli vulnerabilities\", \"review database queries\", or \"check sql security\". security read write edit grep glob bash(code-scan:*) bash(security-test:*) claude-code codex openclaw"
+    },
+    {
+      "type": "skill",
+      "id": "devil-advocate",
+      "slug": "devil-advocate",
+      "name": "devil-advocate",
+      "description": "Constructive critic and stress-tester for ideas and proposals. Use when the user needs someone to challenge their thinking, find weaknesses, anticipate objections, or strengthen an argument. Triggers include \"challenge\", \"critique\", \"push back\", \"poke holes\", \"stress test\", \"what am I missing\", or \"play devil's advocate\".",
+      "category": "productivity",
+      "allowedTools": [
+        "Read",
+        "Glob",
+        "Grep"
+      ],
+      "compatibleWith": [],
+      "version": "1.0.0",
+      "parentPlugin": {
+        "name": "pm-ai-partner",
+        "category": "productivity"
+      },
+      "searchText": "devil-advocate constructive critic and stress-tester for ideas and proposals. use when the user needs someone to challenge their thinking, find weaknesses, anticipate objections, or strengthen an argument. triggers include \"challenge\", \"critique\", \"push back\", \"poke holes\", \"stress test\", \"what am i missing\", or \"play devil's advocate\". productivity read glob grep "
     },
     {
       "type": "skill",
@@ -23264,6 +23553,32 @@
         "category": "devops"
       },
       "searchText": "fairdb-backup-manager manage use when you need to work with backup and recovery. this skill provides backup automation and disaster recovery with comprehensive guidance and automation. trigger with phrases like \"create backups\", \"automate backups\", or \"implement disaster recovery\". devops read write edit grep glob bash(tar:*) bash(rsync:*) bash(aws:s3:*) claude-code codex openclaw"
+    },
+    {
+      "type": "skill",
+      "id": "file-to-code",
+      "slug": "file-to-code",
+      "name": "file-to-code",
+      "description": "Generates production-ready code from file specifications such as CSV files, JSON schemas, SQL DDL, protobuf definitions, or requirements documents. Use when the user wants to convert a data file or specification into working code. Trigger with phrases like \"generate code from this CSV\", \"create an API from this schema\", \"build a parser for this file\", or \"turn this spec into code\".",
+      "category": "skill-enhancers",
+      "allowedTools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Glob",
+        "Grep"
+      ],
+      "compatibleWith": [
+        "claude-code",
+        "codex"
+      ],
+      "version": "1.0.0",
+      "parentPlugin": {
+        "name": "file-to-code",
+        "category": "skill-enhancers"
+      },
+      "searchText": "file-to-code generates production-ready code from file specifications such as csv files, json schemas, sql ddl, protobuf definitions, or requirements documents. use when the user wants to convert a data file or specification into working code. trigger with phrases like \"generate code from this csv\", \"create an api from this schema\", \"build a parser for this file\", or \"turn this spec into code\". skill-enhancers read write edit bash glob grep claude-code codex"
     },
     {
       "type": "skill",
@@ -26069,6 +26384,31 @@
     },
     {
       "type": "skill",
+      "id": "gh-dash",
+      "slug": "gh-dash",
+      "name": "gh-dash",
+      "description": "Provides a GitHub pull request dashboard directly in the terminal. Use when the user wants to view PR status, check CI/CD progress, review bot comments, or merge pull requests without leaving Claude Code. Trigger with phrases like \"show PR dashboard\", \"PR status\", \"check CI progress\", \"merge this PR\", or \"review pull request\".",
+      "category": "devops",
+      "allowedTools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Glob",
+        "Grep"
+      ],
+      "compatibleWith": [
+        "claude-code"
+      ],
+      "version": "1.0.0",
+      "parentPlugin": {
+        "name": "gh-dash",
+        "category": "devops"
+      },
+      "searchText": "gh-dash provides a github pull request dashboard directly in the terminal. use when the user wants to view pr status, check ci/cd progress, review bot comments, or merge pull requests without leaving claude code. trigger with phrases like \"show pr dashboard\", \"pr status\", \"check ci progress\", \"merge this pr\", or \"review pull request\". devops read write edit bash glob grep claude-code"
+    },
+    {
+      "type": "skill",
       "id": "google-cloud-agent-sdk-master",
       "slug": "google-cloud-agent-sdk-master",
       "name": "google-cloud-agent-sdk-master",
@@ -27999,6 +28339,26 @@
         "category": "business-tools"
       },
       "searchText": "hundred-million-offers create irresistible offers using the value equation, bonus stacking, risk-reversing guarantees, and ethical scarcity. use when the user mentions \"pricing strategy\", \"irresistible offer\", \"bonuses and guarantees\", \"value-to-price ratio\", or \"offer naming\". covers the magic naming formula and starving-crowd targeting. for product positioning, see obviously-awesome. for outbound sales, see predictable-revenue. trigger with 'hundred', 'million', 'offers'. business-tools read glob grep claude-code codex openclaw"
+    },
+    {
+      "type": "skill",
+      "id": "hypothesis-tester",
+      "slug": "hypothesis-tester",
+      "name": "hypothesis-tester",
+      "description": "Structured hypothesis formulation, experiment design, and results interpretation for Product Managers. Use when the user needs to validate an assumption, design an A/B test, evaluate experiment results, or decide whether to ship based on data. Triggers include \"hypothesis\", \"A/B test\", \"experiment\", \"validate assumption\", \"test this\", \"should we ship\", or when making a decision that should be data-informed.",
+      "category": "productivity",
+      "allowedTools": [
+        "Read",
+        "Glob",
+        "Grep"
+      ],
+      "compatibleWith": [],
+      "version": "1.0.0",
+      "parentPlugin": {
+        "name": "pm-ai-partner",
+        "category": "productivity"
+      },
+      "searchText": "hypothesis-tester structured hypothesis formulation, experiment design, and results interpretation for product managers. use when the user needs to validate an assumption, design an a/b test, evaluate experiment results, or decide whether to ship based on data. triggers include \"hypothesis\", \"a/b test\", \"experiment\", \"validate assumption\", \"test this\", \"should we ship\", or when making a decision that should be data-informed. productivity read glob grep "
     },
     {
       "type": "skill",
@@ -34955,6 +35315,26 @@
     },
     {
       "type": "skill",
+      "id": "meeting-prep-2",
+      "slug": "meeting-prep-2",
+      "name": "meeting-prep",
+      "description": "Meeting preparation assistant for Product Managers. Use when the user needs to prepare for a meeting, create talking points, anticipate questions, or structure a discussion. Triggers include \"prepare for meeting\", \"meeting prep\", \"talking points\", \"get ready for\", \"1:1 prep\", or when preparing for any scheduled conversation.",
+      "category": "productivity",
+      "allowedTools": [
+        "Read",
+        "Glob",
+        "Grep"
+      ],
+      "compatibleWith": [],
+      "version": "1.0.0",
+      "parentPlugin": {
+        "name": "pm-ai-partner",
+        "category": "productivity"
+      },
+      "searchText": "meeting-prep meeting preparation assistant for product managers. use when the user needs to prepare for a meeting, create talking points, anticipate questions, or structure a discussion. triggers include \"prepare for meeting\", \"meeting prep\", \"talking points\", \"get ready for\", \"1:1 prep\", or when preparing for any scheduled conversation. productivity read glob grep "
+    },
+    {
+      "type": "skill",
       "id": "memory",
       "slug": "memory",
       "name": "memory",
@@ -37231,7 +37611,7 @@
       "id": "openrouter-caching-strategy",
       "slug": "openrouter-caching-strategy",
       "name": "openrouter-caching-strategy",
-      "description": "Implement response caching for OpenRouter efficiency. Use when optimizing costs or reducing latency for repeated queries. Trigger with phrases like 'openrouter cache', 'cache llm responses', 'openrouter redis', 'semantic caching'.",
+      "description": "Implement response caching to reduce costs and latency. Use when dealing with repeated queries or high-volume scenarios. Trigger with phrases like 'openrouter cache', 'cache responses', 'openrouter caching', 'reduce api calls'.",
       "category": "saas-packs",
       "allowedTools": [
         "Read",
@@ -37249,14 +37629,14 @@
         "name": "openrouter-pack",
         "category": "saas-packs"
       },
-      "searchText": "openrouter-caching-strategy implement response caching for openrouter efficiency. use when optimizing costs or reducing latency for repeated queries. trigger with phrases like 'openrouter cache', 'cache llm responses', 'openrouter redis', 'semantic caching'. saas-packs read write edit grep claude-code codex openclaw"
+      "searchText": "openrouter-caching-strategy implement response caching to reduce costs and latency. use when dealing with repeated queries or high-volume scenarios. trigger with phrases like 'openrouter cache', 'cache responses', 'openrouter caching', 'reduce api calls'. saas-packs read write edit grep claude-code codex openclaw"
     },
     {
       "type": "skill",
       "id": "openrouter-common-errors",
       "slug": "openrouter-common-errors",
       "name": "openrouter-common-errors",
-      "description": "Execute diagnose and fix common OpenRouter API errors. Use when troubleshooting failed requests. Trigger with phrases like 'openrouter error', 'openrouter not working', 'openrouter 401', 'openrouter 429', 'fix openrouter'.",
+      "description": "Diagnose and fix common OpenRouter API errors. Use when encountering error codes or unexpected failures. Trigger with phrases like 'openrouter error', 'openrouter 401', 'openrouter 429', 'fix openrouter'.",
       "category": "saas-packs",
       "allowedTools": [
         "Read",
@@ -37274,14 +37654,14 @@
         "name": "openrouter-pack",
         "category": "saas-packs"
       },
-      "searchText": "openrouter-common-errors execute diagnose and fix common openrouter api errors. use when troubleshooting failed requests. trigger with phrases like 'openrouter error', 'openrouter not working', 'openrouter 401', 'openrouter 429', 'fix openrouter'. saas-packs read write edit grep claude-code codex openclaw"
+      "searchText": "openrouter-common-errors diagnose and fix common openrouter api errors. use when encountering error codes or unexpected failures. trigger with phrases like 'openrouter error', 'openrouter 401', 'openrouter 429', 'fix openrouter'. saas-packs read write edit grep claude-code codex openclaw"
     },
     {
       "type": "skill",
       "id": "openrouter-compliance-review",
       "slug": "openrouter-compliance-review",
       "name": "openrouter-compliance-review",
-      "description": "Execute conduct security and compliance review of OpenRouter integration. Use when preparing for audits or security assessments. Trigger with phrases like 'openrouter security review', 'openrouter compliance', 'openrouter audit', 'security assessment'.",
+      "description": "Run a compliance review of your OpenRouter integration. Use when preparing for audits or governance reviews. Trigger with phrases like 'openrouter compliance', 'openrouter governance', 'openrouter security review', 'audit openrouter setup'.",
       "category": "saas-packs",
       "allowedTools": [
         "Read",
@@ -37299,14 +37679,14 @@
         "name": "openrouter-pack",
         "category": "saas-packs"
       },
-      "searchText": "openrouter-compliance-review execute conduct security and compliance review of openrouter integration. use when preparing for audits or security assessments. trigger with phrases like 'openrouter security review', 'openrouter compliance', 'openrouter audit', 'security assessment'. saas-packs read write edit grep claude-code codex openclaw"
+      "searchText": "openrouter-compliance-review run a compliance review of your openrouter integration. use when preparing for audits or governance reviews. trigger with phrases like 'openrouter compliance', 'openrouter governance', 'openrouter security review', 'audit openrouter setup'. saas-packs read write edit grep claude-code codex openclaw"
     },
     {
       "type": "skill",
       "id": "openrouter-context-optimization",
       "slug": "openrouter-context-optimization",
       "name": "openrouter-context-optimization",
-      "description": "Optimize context window usage and token efficiency. Use when managing costs or hitting context limits. Trigger with phrases like 'openrouter context', 'openrouter tokens', 'reduce tokens', 'context window'.",
+      "description": "Optimize token usage and context window management. Use when reducing costs or fitting more information into model context. Trigger with phrases like 'openrouter context', 'token optimization', 'context window', 'reduce tokens'.",
       "category": "saas-packs",
       "allowedTools": [
         "Read",
@@ -37324,14 +37704,14 @@
         "name": "openrouter-pack",
         "category": "saas-packs"
       },
-      "searchText": "openrouter-context-optimization optimize context window usage and token efficiency. use when managing costs or hitting context limits. trigger with phrases like 'openrouter context', 'openrouter tokens', 'reduce tokens', 'context window'. saas-packs read write edit grep claude-code codex openclaw"
+      "searchText": "openrouter-context-optimization optimize token usage and context window management. use when reducing costs or fitting more information into model context. trigger with phrases like 'openrouter context', 'token optimization', 'context window', 'reduce tokens'. saas-packs read write edit grep claude-code codex openclaw"
     },
     {
       "type": "skill",
       "id": "openrouter-cost-controls",
       "slug": "openrouter-cost-controls",
       "name": "openrouter-cost-controls",
-      "description": "Implement budget controls and cost limits for OpenRouter. Use when managing spending or preventing overruns. Trigger with phrases like 'openrouter budget', 'openrouter spending limit', 'cost control', 'openrouter billing alert'.",
+      "description": "Implement cost control mechanisms for OpenRouter usage. Use when managing budgets or preventing overspend. Trigger with phrases like 'openrouter budget', 'openrouter spending limit', 'cost control', 'openrouter limit spend'.",
       "category": "saas-packs",
       "allowedTools": [
         "Read",
@@ -37349,14 +37729,14 @@
         "name": "openrouter-pack",
         "category": "saas-packs"
       },
-      "searchText": "openrouter-cost-controls implement budget controls and cost limits for openrouter. use when managing spending or preventing overruns. trigger with phrases like 'openrouter budget', 'openrouter spending limit', 'cost control', 'openrouter billing alert'. saas-packs read write edit grep claude-code codex openclaw"
+      "searchText": "openrouter-cost-controls implement cost control mechanisms for openrouter usage. use when managing budgets or preventing overspend. trigger with phrases like 'openrouter budget', 'openrouter spending limit', 'cost control', 'openrouter limit spend'. saas-packs read write edit grep claude-code codex openclaw"
     },
     {
       "type": "skill",
       "id": "openrouter-data-privacy",
       "slug": "openrouter-data-privacy",
       "name": "openrouter-data-privacy",
-      "description": "Implement data privacy controls for OpenRouter requests. Use when handling PII or meeting compliance requirements. Trigger with phrases like 'openrouter privacy', 'openrouter pii', 'openrouter gdpr', 'openrouter data protection'.",
+      "description": "Implement data privacy controls for OpenRouter API usage. Use when handling sensitive data or meeting privacy regulations. Trigger with phrases like 'openrouter privacy', 'openrouter data handling', 'openrouter pii', 'openrouter gdpr'.",
       "category": "saas-packs",
       "allowedTools": [
         "Read",
@@ -37374,14 +37754,14 @@
         "name": "openrouter-pack",
         "category": "saas-packs"
       },
-      "searchText": "openrouter-data-privacy implement data privacy controls for openrouter requests. use when handling pii or meeting compliance requirements. trigger with phrases like 'openrouter privacy', 'openrouter pii', 'openrouter gdpr', 'openrouter data protection'. saas-packs read write edit grep claude-code codex openclaw"
+      "searchText": "openrouter-data-privacy implement data privacy controls for openrouter api usage. use when handling sensitive data or meeting privacy regulations. trigger with phrases like 'openrouter privacy', 'openrouter data handling', 'openrouter pii', 'openrouter gdpr'. saas-packs read write edit grep claude-code codex openclaw"
     },
     {
       "type": "skill",
       "id": "openrouter-debug-bundle",
       "slug": "openrouter-debug-bundle",
       "name": "openrouter-debug-bundle",
-      "description": "Execute set up comprehensive logging and debugging for OpenRouter. Use when investigating issues or monitoring requests. Trigger with phrases like 'openrouter debug', 'openrouter logging', 'openrouter trace', 'monitor openrouter'.",
+      "description": "Create debug bundles for troubleshooting OpenRouter issues. Use when diagnosing API failures or unexpected behavior. Trigger with phrases like 'openrouter debug', 'openrouter troubleshoot', 'debug openrouter', 'openrouter issue'.",
       "category": "saas-packs",
       "allowedTools": [
         "Read",
@@ -37399,14 +37779,14 @@
         "name": "openrouter-pack",
         "category": "saas-packs"
       },
-      "searchText": "openrouter-debug-bundle execute set up comprehensive logging and debugging for openrouter. use when investigating issues or monitoring requests. trigger with phrases like 'openrouter debug', 'openrouter logging', 'openrouter trace', 'monitor openrouter'. saas-packs read write edit grep claude-code codex openclaw"
+      "searchText": "openrouter-debug-bundle create debug bundles for troubleshooting openrouter issues. use when diagnosing api failures or unexpected behavior. trigger with phrases like 'openrouter debug', 'openrouter troubleshoot', 'debug openrouter', 'openrouter issue'. saas-packs read write edit grep claude-code codex openclaw"
     },
     {
       "type": "skill",
       "id": "openrouter-fallback-config",
       "slug": "openrouter-fallback-config",
       "name": "openrouter-fallback-config",
-      "description": "Configure model fallback chains for high availability. Use when building fault-tolerant LLM systems. Trigger with phrases like 'openrouter fallback', 'openrouter backup model', 'openrouter redundancy', 'model failover'.",
+      "description": "Configure model fallback chains for reliability. Use when building resilient systems that need high availability. Trigger with phrases like 'openrouter fallback', 'model fallback', 'openrouter backup model', 'failover config'.",
       "category": "saas-packs",
       "allowedTools": [
         "Read",
@@ -37424,7 +37804,7 @@
         "name": "openrouter-pack",
         "category": "saas-packs"
       },
-      "searchText": "openrouter-fallback-config configure model fallback chains for high availability. use when building fault-tolerant llm systems. trigger with phrases like 'openrouter fallback', 'openrouter backup model', 'openrouter redundancy', 'model failover'. saas-packs read write edit grep claude-code codex openclaw"
+      "searchText": "openrouter-fallback-config configure model fallback chains for reliability. use when building resilient systems that need high availability. trigger with phrases like 'openrouter fallback', 'model fallback', 'openrouter backup model', 'failover config'. saas-packs read write edit grep claude-code codex openclaw"
     },
     {
       "type": "skill",
@@ -37506,7 +37886,7 @@
       "id": "openrouter-known-pitfalls",
       "slug": "openrouter-known-pitfalls",
       "name": "openrouter-known-pitfalls",
-      "description": "Execute avoid common OpenRouter mistakes and anti-patterns. Use when reviewing code or onboarding developers. Trigger with phrases like 'openrouter pitfalls', 'openrouter mistakes', 'openrouter gotchas', 'openrouter common issues'.",
+      "description": "Avoid common OpenRouter integration pitfalls and gotchas. Use proactively when designing or reviewing an integration. Trigger with phrases like 'openrouter pitfalls', 'openrouter gotchas', 'openrouter mistakes', 'openrouter best practices'.",
       "category": "saas-packs",
       "allowedTools": [
         "Read",
@@ -37524,14 +37904,14 @@
         "name": "openrouter-pack",
         "category": "saas-packs"
       },
-      "searchText": "openrouter-known-pitfalls execute avoid common openrouter mistakes and anti-patterns. use when reviewing code or onboarding developers. trigger with phrases like 'openrouter pitfalls', 'openrouter mistakes', 'openrouter gotchas', 'openrouter common issues'. saas-packs read write edit grep claude-code codex openclaw"
+      "searchText": "openrouter-known-pitfalls avoid common openrouter integration pitfalls and gotchas. use proactively when designing or reviewing an integration. trigger with phrases like 'openrouter pitfalls', 'openrouter gotchas', 'openrouter mistakes', 'openrouter best practices'. saas-packs read write edit grep claude-code codex openclaw"
     },
     {
       "type": "skill",
       "id": "openrouter-load-balancing",
       "slug": "openrouter-load-balancing",
       "name": "openrouter-load-balancing",
-      "description": "Execute distribute requests across multiple OpenRouter configurations. Use when scaling or implementing geographic distribution. Trigger with phrases like 'openrouter load balance', 'distribute requests', 'openrouter scaling', 'multi-key openrouter'.",
+      "description": "Distribute OpenRouter requests for high availability. Use when building scalable systems that need load distribution. Trigger with phrases like 'openrouter load balance', 'distribute requests', 'openrouter scaling', 'high availability'.",
       "category": "saas-packs",
       "allowedTools": [
         "Read",
@@ -37549,14 +37929,14 @@
         "name": "openrouter-pack",
         "category": "saas-packs"
       },
-      "searchText": "openrouter-load-balancing execute distribute requests across multiple openrouter configurations. use when scaling or implementing geographic distribution. trigger with phrases like 'openrouter load balance', 'distribute requests', 'openrouter scaling', 'multi-key openrouter'. saas-packs read write edit grep claude-code codex openclaw"
+      "searchText": "openrouter-load-balancing distribute openrouter requests for high availability. use when building scalable systems that need load distribution. trigger with phrases like 'openrouter load balance', 'distribute requests', 'openrouter scaling', 'high availability'. saas-packs read write edit grep claude-code codex openclaw"
     },
     {
       "type": "skill",
       "id": "openrouter-model-availability",
       "slug": "openrouter-model-availability",
       "name": "openrouter-model-availability",
-      "description": "Build check model availability and implement fallback chains. Use when building resilient systems or handling model outages. Trigger with phrases like 'openrouter availability', 'openrouter fallback', 'openrouter model down', 'openrouter health check'.",
+      "description": "Monitor model availability and implement health checks. Use when building reliable systems that depend on specific models. Trigger with phrases like 'openrouter model status', 'model availability', 'openrouter health check', 'is model available'.",
       "category": "saas-packs",
       "allowedTools": [
         "Read",
@@ -37574,7 +37954,7 @@
         "name": "openrouter-pack",
         "category": "saas-packs"
       },
-      "searchText": "openrouter-model-availability build check model availability and implement fallback chains. use when building resilient systems or handling model outages. trigger with phrases like 'openrouter availability', 'openrouter fallback', 'openrouter model down', 'openrouter health check'. saas-packs read write edit grep claude-code codex openclaw"
+      "searchText": "openrouter-model-availability monitor model availability and implement health checks. use when building reliable systems that depend on specific models. trigger with phrases like 'openrouter model status', 'model availability', 'openrouter health check', 'is model available'. saas-packs read write edit grep claude-code codex openclaw"
     },
     {
       "type": "skill",
@@ -37606,7 +37986,7 @@
       "id": "openrouter-model-routing",
       "slug": "openrouter-model-routing",
       "name": "openrouter-model-routing",
-      "description": "Implement advanced model routing with A/B testing. Use when optimizing model selection or running experiments. Trigger with phrases like 'openrouter a/b test', 'model experiment', 'openrouter routing', 'model comparison'.",
+      "description": "Implement intelligent model routing strategies with OpenRouter. Use when optimizing cost/quality tradeoffs across models. Trigger with phrases like 'openrouter routing', 'model selection', 'route requests', 'model routing strategy'.",
       "category": "saas-packs",
       "allowedTools": [
         "Read",
@@ -37624,14 +38004,14 @@
         "name": "openrouter-pack",
         "category": "saas-packs"
       },
-      "searchText": "openrouter-model-routing implement advanced model routing with a/b testing. use when optimizing model selection or running experiments. trigger with phrases like 'openrouter a/b test', 'model experiment', 'openrouter routing', 'model comparison'. saas-packs read write edit grep claude-code codex openclaw"
+      "searchText": "openrouter-model-routing implement intelligent model routing strategies with openrouter. use when optimizing cost/quality tradeoffs across models. trigger with phrases like 'openrouter routing', 'model selection', 'route requests', 'model routing strategy'. saas-packs read write edit grep claude-code codex openclaw"
     },
     {
       "type": "skill",
       "id": "openrouter-multi-provider",
       "slug": "openrouter-multi-provider",
       "name": "openrouter-multi-provider",
-      "description": "Execute work with multiple providers through OpenRouter. Use when comparing providers or building provider-agnostic systems. Trigger with phrases like 'openrouter providers', 'openrouter multi-model', 'compare models', 'provider selection'.",
+      "description": "Use multiple AI providers through OpenRouter. Use when leveraging different providers for different capabilities. Trigger with phrases like 'openrouter providers', 'multi provider', 'openrouter openai anthropic', 'use multiple models'.",
       "category": "saas-packs",
       "allowedTools": [
         "Read",
@@ -37649,14 +38029,14 @@
         "name": "openrouter-pack",
         "category": "saas-packs"
       },
-      "searchText": "openrouter-multi-provider execute work with multiple providers through openrouter. use when comparing providers or building provider-agnostic systems. trigger with phrases like 'openrouter providers', 'openrouter multi-model', 'compare models', 'provider selection'. saas-packs read write edit grep claude-code codex openclaw"
+      "searchText": "openrouter-multi-provider use multiple ai providers through openrouter. use when leveraging different providers for different capabilities. trigger with phrases like 'openrouter providers', 'multi provider', 'openrouter openai anthropic', 'use multiple models'. saas-packs read write edit grep claude-code codex openclaw"
     },
     {
       "type": "skill",
       "id": "openrouter-openai-compat",
       "slug": "openrouter-openai-compat",
       "name": "openrouter-openai-compat",
-      "description": "Configure OpenRouter as an OpenAI API drop-in replacement. Use when migrating from OpenAI or using OpenAI-compatible libraries. Trigger with phrases like 'openrouter openai', 'openrouter drop-in', 'openrouter compatibility', 'migrate to openrouter'.",
+      "description": "Leverage OpenRouter's OpenAI API compatibility layer. Use when migrating from OpenAI or maintaining dual compatibility. Trigger with phrases like 'openrouter openai compatible', 'openrouter drop-in', 'openrouter migration from openai', 'openai to openrouter'.",
       "category": "saas-packs",
       "allowedTools": [
         "Read",
@@ -37674,14 +38054,14 @@
         "name": "openrouter-pack",
         "category": "saas-packs"
       },
-      "searchText": "openrouter-openai-compat configure openrouter as an openai api drop-in replacement. use when migrating from openai or using openai-compatible libraries. trigger with phrases like 'openrouter openai', 'openrouter drop-in', 'openrouter compatibility', 'migrate to openrouter'. saas-packs read write edit grep claude-code codex openclaw"
+      "searchText": "openrouter-openai-compat leverage openrouter's openai api compatibility layer. use when migrating from openai or maintaining dual compatibility. trigger with phrases like 'openrouter openai compatible', 'openrouter drop-in', 'openrouter migration from openai', 'openai to openrouter'. saas-packs read write edit grep claude-code codex openclaw"
     },
     {
       "type": "skill",
       "id": "openrouter-performance-tuning",
       "slug": "openrouter-performance-tuning",
       "name": "openrouter-performance-tuning",
-      "description": "Optimize OpenRouter performance and latency. Use when reducing response times or improving throughput. Trigger with phrases like 'openrouter performance', 'openrouter latency', 'speed up openrouter', 'openrouter optimization'.",
+      "description": "Optimize OpenRouter request latency and throughput. Use when performance is critical for your application. Trigger with phrases like 'openrouter performance', 'openrouter latency', 'openrouter speed', 'optimize openrouter'.",
       "category": "saas-packs",
       "allowedTools": [
         "Read",
@@ -37699,14 +38079,14 @@
         "name": "openrouter-pack",
         "category": "saas-packs"
       },
-      "searchText": "openrouter-performance-tuning optimize openrouter performance and latency. use when reducing response times or improving throughput. trigger with phrases like 'openrouter performance', 'openrouter latency', 'speed up openrouter', 'openrouter optimization'. saas-packs read write edit grep claude-code codex openclaw"
+      "searchText": "openrouter-performance-tuning optimize openrouter request latency and throughput. use when performance is critical for your application. trigger with phrases like 'openrouter performance', 'openrouter latency', 'openrouter speed', 'optimize openrouter'. saas-packs read write edit grep claude-code codex openclaw"
     },
     {
       "type": "skill",
       "id": "openrouter-pricing-basics",
       "slug": "openrouter-pricing-basics",
       "name": "openrouter-pricing-basics",
-      "description": "Execute understand OpenRouter pricing and cost estimation. Use when budgeting or optimizing costs. Trigger with phrases like 'openrouter pricing', 'openrouter costs', 'openrouter budget', 'openrouter token pricing'.",
+      "description": "Understand OpenRouter model pricing tiers and cost calculation. Use when budgeting or comparing model costs. Trigger with phrases like 'openrouter pricing', 'openrouter cost', 'model pricing', 'openrouter budget'.",
       "category": "saas-packs",
       "allowedTools": [
         "Read",
@@ -37724,14 +38104,14 @@
         "name": "openrouter-pack",
         "category": "saas-packs"
       },
-      "searchText": "openrouter-pricing-basics execute understand openrouter pricing and cost estimation. use when budgeting or optimizing costs. trigger with phrases like 'openrouter pricing', 'openrouter costs', 'openrouter budget', 'openrouter token pricing'. saas-packs read write edit grep claude-code codex openclaw"
+      "searchText": "openrouter-pricing-basics understand openrouter model pricing tiers and cost calculation. use when budgeting or comparing model costs. trigger with phrases like 'openrouter pricing', 'openrouter cost', 'model pricing', 'openrouter budget'. saas-packs read write edit grep claude-code codex openclaw"
     },
     {
       "type": "skill",
       "id": "openrouter-prod-checklist",
       "slug": "openrouter-prod-checklist",
       "name": "openrouter-prod-checklist",
-      "description": "Execute pre-launch production readiness checklist for OpenRouter. Use when preparing to deploy to production. Trigger with phrases like 'openrouter production', 'openrouter go-live', 'openrouter launch checklist', 'deploy openrouter'.",
+      "description": "Validate production readiness of your OpenRouter integration. Use before deploying to production. Trigger with phrases like 'openrouter production', 'openrouter launch checklist', 'production ready', 'openrouter deploy'.",
       "category": "saas-packs",
       "allowedTools": [
         "Read",
@@ -37749,14 +38129,14 @@
         "name": "openrouter-pack",
         "category": "saas-packs"
       },
-      "searchText": "openrouter-prod-checklist execute pre-launch production readiness checklist for openrouter. use when preparing to deploy to production. trigger with phrases like 'openrouter production', 'openrouter go-live', 'openrouter launch checklist', 'deploy openrouter'. saas-packs read write edit grep claude-code codex openclaw"
+      "searchText": "openrouter-prod-checklist validate production readiness of your openrouter integration. use before deploying to production. trigger with phrases like 'openrouter production', 'openrouter launch checklist', 'production ready', 'openrouter deploy'. saas-packs read write edit grep claude-code codex openclaw"
     },
     {
       "type": "skill",
       "id": "openrouter-rate-limits",
       "slug": "openrouter-rate-limits",
       "name": "openrouter-rate-limits",
-      "description": "Handle OpenRouter rate limits with proper backoff strategies. Use when experiencing 429 errors or building high-throughput systems. Trigger with phrases like 'openrouter rate limit', 'openrouter 429', 'openrouter throttle', 'openrouter backoff'.",
+      "description": "Understand and handle OpenRouter rate limits effectively. Use when building high-throughput systems. Trigger with phrases like 'openrouter rate limit', 'openrouter 429', 'openrouter throttle', 'request limits'.",
       "category": "saas-packs",
       "allowedTools": [
         "Read",
@@ -37774,14 +38154,14 @@
         "name": "openrouter-pack",
         "category": "saas-packs"
       },
-      "searchText": "openrouter-rate-limits handle openrouter rate limits with proper backoff strategies. use when experiencing 429 errors or building high-throughput systems. trigger with phrases like 'openrouter rate limit', 'openrouter 429', 'openrouter throttle', 'openrouter backoff'. saas-packs read write edit grep claude-code codex openclaw"
+      "searchText": "openrouter-rate-limits understand and handle openrouter rate limits effectively. use when building high-throughput systems. trigger with phrases like 'openrouter rate limit', 'openrouter 429', 'openrouter throttle', 'request limits'. saas-packs read write edit grep claude-code codex openclaw"
     },
     {
       "type": "skill",
       "id": "openrouter-reference-architecture",
       "slug": "openrouter-reference-architecture",
       "name": "openrouter-reference-architecture",
-      "description": "Execute production reference architecture for OpenRouter deployments. Use when designing or reviewing system architecture. Trigger with phrases like 'openrouter architecture', 'openrouter design', 'production openrouter', 'openrouter infrastructure'.",
+      "description": "Design scalable architectures using OpenRouter. Use when planning system design or reviewing architecture. Trigger with phrases like 'openrouter architecture', 'openrouter system design', 'openrouter infrastructure', 'openrouter at scale'.",
       "category": "saas-packs",
       "allowedTools": [
         "Read",
@@ -37799,14 +38179,14 @@
         "name": "openrouter-pack",
         "category": "saas-packs"
       },
-      "searchText": "openrouter-reference-architecture execute production reference architecture for openrouter deployments. use when designing or reviewing system architecture. trigger with phrases like 'openrouter architecture', 'openrouter design', 'production openrouter', 'openrouter infrastructure'. saas-packs read write edit grep claude-code codex openclaw"
+      "searchText": "openrouter-reference-architecture design scalable architectures using openrouter. use when planning system design or reviewing architecture. trigger with phrases like 'openrouter architecture', 'openrouter system design', 'openrouter infrastructure', 'openrouter at scale'. saas-packs read write edit grep claude-code codex openclaw"
     },
     {
       "type": "skill",
       "id": "openrouter-routing-rules",
       "slug": "openrouter-routing-rules",
       "name": "openrouter-routing-rules",
-      "description": "Implement intelligent model routing based on request characteristics. Use when optimizing for cost, speed, or quality per request. Trigger with phrases like 'openrouter routing', 'model selection', 'smart routing', 'dynamic model'.",
+      "description": "Define custom routing rules for OpenRouter requests. Use when implementing complex routing logic beyond simple model selection. Trigger with phrases like 'openrouter rules', 'routing rules', 'custom routing', 'openrouter request routing'.",
       "category": "saas-packs",
       "allowedTools": [
         "Read",
@@ -37824,14 +38204,14 @@
         "name": "openrouter-pack",
         "category": "saas-packs"
       },
-      "searchText": "openrouter-routing-rules implement intelligent model routing based on request characteristics. use when optimizing for cost, speed, or quality per request. trigger with phrases like 'openrouter routing', 'model selection', 'smart routing', 'dynamic model'. saas-packs read write edit grep claude-code codex openclaw"
+      "searchText": "openrouter-routing-rules define custom routing rules for openrouter requests. use when implementing complex routing logic beyond simple model selection. trigger with phrases like 'openrouter rules', 'routing rules', 'custom routing', 'openrouter request routing'. saas-packs read write edit grep claude-code codex openclaw"
     },
     {
       "type": "skill",
       "id": "openrouter-sdk-patterns",
       "slug": "openrouter-sdk-patterns",
       "name": "openrouter-sdk-patterns",
-      "description": "Implement common SDK patterns for OpenRouter integration. Use when building production applications. Trigger with phrases like 'openrouter sdk', 'openrouter client pattern', 'openrouter best practices', 'openrouter code patterns'.",
+      "description": "Implement common SDK usage patterns for OpenRouter. Use when building reusable client libraries or wrappers. Trigger with phrases like 'openrouter sdk', 'openrouter client library', 'openrouter wrapper', 'openrouter patterns'.",
       "category": "saas-packs",
       "allowedTools": [
         "Read",
@@ -37849,7 +38229,7 @@
         "name": "openrouter-pack",
         "category": "saas-packs"
       },
-      "searchText": "openrouter-sdk-patterns implement common sdk patterns for openrouter integration. use when building production applications. trigger with phrases like 'openrouter sdk', 'openrouter client pattern', 'openrouter best practices', 'openrouter code patterns'. saas-packs read write edit grep claude-code codex openclaw"
+      "searchText": "openrouter-sdk-patterns implement common sdk usage patterns for openrouter. use when building reusable client libraries or wrappers. trigger with phrases like 'openrouter sdk', 'openrouter client library', 'openrouter wrapper', 'openrouter patterns'. saas-packs read write edit grep claude-code codex openclaw"
     },
     {
       "type": "skill",
@@ -37881,7 +38261,7 @@
       "id": "openrouter-team-setup",
       "slug": "openrouter-team-setup",
       "name": "openrouter-team-setup",
-      "description": "Configure OpenRouter for team and organizational use. Use when setting up multi-user access or department billing. Trigger with phrases like 'openrouter team', 'openrouter organization', 'multi-user openrouter', 'openrouter rbac'.",
+      "description": "Configure OpenRouter for multi-user team environments. Use when setting up shared access or team-level controls. Trigger with phrases like 'openrouter team', 'openrouter multi-user', 'openrouter organization', 'team api keys'.",
       "category": "saas-packs",
       "allowedTools": [
         "Read",
@@ -37899,14 +38279,14 @@
         "name": "openrouter-pack",
         "category": "saas-packs"
       },
-      "searchText": "openrouter-team-setup configure openrouter for team and organizational use. use when setting up multi-user access or department billing. trigger with phrases like 'openrouter team', 'openrouter organization', 'multi-user openrouter', 'openrouter rbac'. saas-packs read write edit grep claude-code codex openclaw"
+      "searchText": "openrouter-team-setup configure openrouter for multi-user team environments. use when setting up shared access or team-level controls. trigger with phrases like 'openrouter team', 'openrouter multi-user', 'openrouter organization', 'team api keys'. saas-packs read write edit grep claude-code codex openclaw"
     },
     {
       "type": "skill",
       "id": "openrouter-upgrade-migration",
       "slug": "openrouter-upgrade-migration",
       "name": "openrouter-upgrade-migration",
-      "description": "Execute migrate and upgrade OpenRouter SDK versions safely. Use when updating dependencies or migrating configurations. Trigger with phrases like 'openrouter upgrade', 'openrouter migration', 'update openrouter', 'openrouter breaking changes'.",
+      "description": "Migrate or upgrade your OpenRouter integration. Use when updating SDK versions, switching models, or modernizing your setup. Trigger with phrases like 'openrouter migrate', 'openrouter upgrade', 'openrouter update', 'switch openrouter model'.",
       "category": "saas-packs",
       "allowedTools": [
         "Read",
@@ -37924,14 +38304,14 @@
         "name": "openrouter-pack",
         "category": "saas-packs"
       },
-      "searchText": "openrouter-upgrade-migration execute migrate and upgrade openrouter sdk versions safely. use when updating dependencies or migrating configurations. trigger with phrases like 'openrouter upgrade', 'openrouter migration', 'update openrouter', 'openrouter breaking changes'. saas-packs read write edit grep claude-code codex openclaw"
+      "searchText": "openrouter-upgrade-migration migrate or upgrade your openrouter integration. use when updating sdk versions, switching models, or modernizing your setup. trigger with phrases like 'openrouter migrate', 'openrouter upgrade', 'openrouter update', 'switch openrouter model'. saas-packs read write edit grep claude-code codex openclaw"
     },
     {
       "type": "skill",
       "id": "openrouter-usage-analytics",
       "slug": "openrouter-usage-analytics",
       "name": "openrouter-usage-analytics",
-      "description": "Track and analyze OpenRouter usage patterns. Use when optimizing costs or understanding usage. Trigger with phrases like 'openrouter analytics', 'openrouter usage', 'openrouter metrics', 'track openrouter'.",
+      "description": "Track and analyze OpenRouter API usage patterns. Use when optimizing costs or understanding usage trends. Trigger with phrases like 'openrouter analytics', 'openrouter usage', 'openrouter metrics', 'track openrouter'.",
       "category": "saas-packs",
       "allowedTools": [
         "Read",
@@ -37949,7 +38329,7 @@
         "name": "openrouter-pack",
         "category": "saas-packs"
       },
-      "searchText": "openrouter-usage-analytics track and analyze openrouter usage patterns. use when optimizing costs or understanding usage. trigger with phrases like 'openrouter analytics', 'openrouter usage', 'openrouter metrics', 'track openrouter'. saas-packs read write edit grep claude-code codex openclaw"
+      "searchText": "openrouter-usage-analytics track and analyze openrouter api usage patterns. use when optimizing costs or understanding usage trends. trigger with phrases like 'openrouter analytics', 'openrouter usage', 'openrouter metrics', 'track openrouter'. saas-packs read write edit grep claude-code codex openclaw"
     },
     {
       "type": "skill",
@@ -39998,6 +40378,26 @@
     },
     {
       "type": "skill",
+      "id": "product-brief",
+      "slug": "product-brief",
+      "name": "product-brief",
+      "description": "Structured product brief and PRD creation assistant. Use when the user needs to write a product brief, PRD, feature spec, or any document that defines what to build and why. Triggers include \"product brief\", \"PRD\", \"spec\", \"feature doc\", \"write a brief\", \"define this feature\", or when scoping work for engineering.",
+      "category": "productivity",
+      "allowedTools": [
+        "Read",
+        "Glob",
+        "Grep"
+      ],
+      "compatibleWith": [],
+      "version": "1.0.0",
+      "parentPlugin": {
+        "name": "pm-ai-partner",
+        "category": "productivity"
+      },
+      "searchText": "product-brief structured product brief and prd creation assistant. use when the user needs to write a product brief, prd, feature spec, or any document that defines what to build and why. triggers include \"product brief\", \"prd\", \"spec\", \"feature doc\", \"write a brief\", \"define this feature\", or when scoping work for engineering. productivity read glob grep "
+    },
+    {
+      "type": "skill",
       "id": "profiling-application-performance",
       "slug": "profiling-application-performance",
       "name": "profiling-application-performance",
@@ -40849,6 +41249,34 @@
         "category": "saas-packs"
       },
       "searchText": "replit-webhooks-events implement replit webhook signature validation and event handling. use when setting up webhook endpoints, implementing signature verification, or handling replit event notifications securely. trigger with phrases like \"replit webhook\", \"replit events\", \"replit webhook signature\", \"handle replit events\", \"replit notifications\". saas-packs read write edit bash(curl:*) claude-code codex openclaw"
+    },
+    {
+      "type": "skill",
+      "id": "research-to-deploy",
+      "slug": "research-to-deploy",
+      "name": "research-to-deploy",
+      "description": "Researches infrastructure best practices and generates deployment-ready configurations, Terraform modules, Dockerfiles, and CI/CD pipelines. Use when the user needs to deploy services, set up infrastructure, or create cloud configurations based on current best practices. Trigger with phrases like \"research and deploy\", \"set up Cloud Run\", \"create Terraform for\", \"deploy this to AWS\", or \"generate infrastructure configs\".",
+      "category": "skill-enhancers",
+      "allowedTools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Glob",
+        "Grep",
+        "WebSearch",
+        "WebFetch"
+      ],
+      "compatibleWith": [
+        "claude-code",
+        "codex"
+      ],
+      "version": "1.0.0",
+      "parentPlugin": {
+        "name": "research-to-deploy",
+        "category": "skill-enhancers"
+      },
+      "searchText": "research-to-deploy researches infrastructure best practices and generates deployment-ready configurations, terraform modules, dockerfiles, and ci/cd pipelines. use when the user needs to deploy services, set up infrastructure, or create cloud configurations based on current best practices. trigger with phrases like \"research and deploy\", \"set up cloud run\", \"create terraform for\", \"deploy this to aws\", or \"generate infrastructure configs\". skill-enhancers read write edit bash glob grep websearch webfetch claude-code codex"
     },
     {
       "type": "skill",
@@ -42202,6 +42630,34 @@
         "category": "business-tools"
       },
       "searchText": "scorecard-marketing build quiz and assessment funnels that generate qualified leads at 30-50% conversion. use when the user mentions \"lead magnet\", \"quiz funnel\", \"assessment tool\", \"lead generation\", or \"score-based segmentation\". covers question design, dynamic results by tier, and automated follow-up sequences. for landing page conversion, see cro-methodology. for full marketing plans, see one-page-marketing. trigger with 'scorecard', 'marketing'. business-tools read glob grep claude-code codex openclaw"
+    },
+    {
+      "type": "skill",
+      "id": "search-to-slack",
+      "slug": "search-to-slack",
+      "name": "search-to-slack",
+      "description": "Takes web search results and formats them as polished Slack messages, digests, or thread summaries ready to post to channels. Use when the user wants to research a topic and share findings on Slack. Trigger with phrases like \"research and post to Slack\", \"create a Slack digest\", \"summarize and share in #channel\", or \"format search results for Slack\".",
+      "category": "skill-enhancers",
+      "allowedTools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Glob",
+        "Grep",
+        "WebSearch",
+        "WebFetch"
+      ],
+      "compatibleWith": [
+        "claude-code",
+        "codex"
+      ],
+      "version": "1.0.0",
+      "parentPlugin": {
+        "name": "search-to-slack",
+        "category": "skill-enhancers"
+      },
+      "searchText": "search-to-slack takes web search results and formats them as polished slack messages, digests, or thread summaries ready to post to channels. use when the user wants to research a topic and share findings on slack. trigger with phrases like \"research and post to slack\", \"create a slack digest\", \"summarize and share in #channel\", or \"format search results for slack\". skill-enhancers read write edit bash glob grep websearch webfetch claude-code codex"
     },
     {
       "type": "skill",
@@ -43808,6 +44264,26 @@
     },
     {
       "type": "skill",
+      "id": "stakeholder-update",
+      "slug": "stakeholder-update",
+      "name": "stakeholder-update",
+      "description": "Stakeholder communication assistant for status updates, progress reports, and executive summaries. Use when the user needs to write a stakeholder update, status report, progress summary, or any upward communication. Triggers include \"stakeholder update\", \"status update\", \"progress report\", \"update leadership\", \"weekly update\", or \"executive summary\".",
+      "category": "productivity",
+      "allowedTools": [
+        "Read",
+        "Glob",
+        "Grep"
+      ],
+      "compatibleWith": [],
+      "version": "1.0.0",
+      "parentPlugin": {
+        "name": "pm-ai-partner",
+        "category": "productivity"
+      },
+      "searchText": "stakeholder-update stakeholder communication assistant for status updates, progress reports, and executive summaries. use when the user needs to write a stakeholder update, status report, progress summary, or any upward communication. triggers include \"stakeholder update\", \"status update\", \"progress report\", \"update leadership\", \"weekly update\", or \"executive summary\". productivity read glob grep "
+    },
+    {
+      "type": "skill",
       "id": "storybrand-messaging",
       "slug": "storybrand-messaging",
       "name": "storybrand-messaging",
@@ -43829,6 +44305,26 @@
         "category": "business-tools"
       },
       "searchText": "storybrand-messaging build clear brand messaging using narrative structure that positions the customer as hero. use when the user mentions \"brand message\", \"website copy\", \"elevator pitch\", \"one-liner\", \"messaging isn''t resonating\", or \"brand script\". covers landing page copy, marketing collateral, and consistent communication. for memorable messaging, see made-to-stick. for product positioning, see obviously-awesome. trigger with 'storybrand', 'messaging'. business-tools read glob grep claude-code codex openclaw"
+    },
+    {
+      "type": "skill",
+      "id": "strategic-clarity",
+      "slug": "strategic-clarity",
+      "name": "strategic-clarity",
+      "description": "Guided workflow for establishing team identity, boundaries, and strategic clarity. Use when starting a new role, inheriting ambiguity, when a team lacks clear identity, or when you need to define \"what we own\" vs \"what we don't\". Triggers include \"strategic clarity\", \"team identity\", \"new role\", \"inherited ambiguity\", \"what does my team own\", or \"define our boundaries\".",
+      "category": "productivity",
+      "allowedTools": [
+        "Read",
+        "Glob",
+        "Grep"
+      ],
+      "compatibleWith": [],
+      "version": "1.0.0",
+      "parentPlugin": {
+        "name": "pm-ai-partner",
+        "category": "productivity"
+      },
+      "searchText": "strategic-clarity guided workflow for establishing team identity, boundaries, and strategic clarity. use when starting a new role, inheriting ambiguity, when a team lacks clear identity, or when you need to define \"what we own\" vs \"what we don't\". triggers include \"strategic clarity\", \"team identity\", \"new role\", \"inherited ambiguity\", \"what does my team own\", or \"define our boundaries\". productivity read glob grep "
     },
     {
       "type": "skill",
@@ -44580,6 +45076,27 @@
     },
     {
       "type": "skill",
+      "id": "technical-analyst",
+      "slug": "technical-analyst",
+      "name": "technical-analyst",
+      "description": "Technical analysis translator for Product Managers. Use when the user needs to understand a system, codebase, API, or technical concept in PM-friendly terms. Triggers include \"understand system\", \"explain code\", \"technical analysis\", \"how does X work\", \"what does this service do\", or when exploring unfamiliar technical territory.",
+      "category": "productivity",
+      "allowedTools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash(git:*)"
+      ],
+      "compatibleWith": [],
+      "version": "1.0.0",
+      "parentPlugin": {
+        "name": "pm-ai-partner",
+        "category": "productivity"
+      },
+      "searchText": "technical-analyst technical analysis translator for product managers. use when the user needs to understand a system, codebase, api, or technical concept in pm-friendly terms. triggers include \"understand system\", \"explain code\", \"technical analysis\", \"how does x work\", \"what does this service do\", or when exploring unfamiliar technical territory. productivity read grep glob bash(git:*) "
+    },
+    {
+      "type": "skill",
       "id": "testing-browser-compatibility",
       "slug": "testing-browser-compatibility",
       "name": "testing-browser-compatibility",
@@ -44687,6 +45204,26 @@
         "category": "testing"
       },
       "searchText": "testing-visual-regression detect visual changes in ui components using screenshot comparison. use when detecting unintended ui changes or pixel differences. trigger with phrases like \"test visual changes\", \"compare screenshots\", or \"detect ui regressions\". testing read write edit grep glob bash(test:visual-*) claude-code codex openclaw"
+    },
+    {
+      "type": "skill",
+      "id": "thought-partner",
+      "slug": "thought-partner",
+      "name": "thought-partner",
+      "description": "Collaborative thinking partner for exploring ideas, challenges, and decisions. Use when the user says \"think through\", \"explore\", \"brainstorm\", \"help me figure out\", asks open-ended questions about strategy or priorities, or needs to work through a problem without a clear solution yet.",
+      "category": "productivity",
+      "allowedTools": [
+        "Read",
+        "Glob",
+        "Grep"
+      ],
+      "compatibleWith": [],
+      "version": "1.0.0",
+      "parentPlugin": {
+        "name": "pm-ai-partner",
+        "category": "productivity"
+      },
+      "searchText": "thought-partner collaborative thinking partner for exploring ideas, challenges, and decisions. use when the user says \"think through\", \"explore\", \"brainstorm\", \"help me figure out\", asks open-ended questions about strategy or priorities, or needs to work through a problem without a clear solution yet. productivity read glob grep "
     },
     {
       "type": "skill",
@@ -48320,6 +48857,26 @@
         "category": "saas-packs"
       },
       "searchText": "windsurf-webhooks-events implement windsurf webhook signature validation and event handling. use when setting up webhook endpoints, implementing signature verification, or handling windsurf event notifications securely. trigger with phrases like \"windsurf webhook\", \"windsurf events\", \"windsurf webhook signature\", \"handle windsurf events\", \"windsurf notifications\". saas-packs read write edit bash(curl:*) claude-code codex openclaw"
+    },
+    {
+      "type": "skill",
+      "id": "writer",
+      "slug": "writer",
+      "name": "writer",
+      "description": "Professional writing assistant for PM documents. Use when the user needs to write, draft, or polish documents like briefs, updates, emails, or presentations. Triggers include \"write\", \"draft\", \"document\", \"help me write\", \"create a brief\", \"polish this\", or when producing any written deliverable.",
+      "category": "productivity",
+      "allowedTools": [
+        "Read",
+        "Glob",
+        "Grep"
+      ],
+      "compatibleWith": [],
+      "version": "1.0.0",
+      "parentPlugin": {
+        "name": "pm-ai-partner",
+        "category": "productivity"
+      },
+      "searchText": "writer professional writing assistant for pm documents. use when the user needs to write, draft, or polish documents like briefs, updates, emails, or presentations. triggers include \"write\", \"draft\", \"document\", \"help me write\", \"create a brief\", \"polish this\", or when producing any written deliverable. productivity read glob grep "
     },
     {
       "type": "skill",
