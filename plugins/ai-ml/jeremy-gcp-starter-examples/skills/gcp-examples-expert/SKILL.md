@@ -9,6 +9,8 @@ license: MIT
 effort: medium
 argument-hint: "[framework or use-case]"
 compatible-with: claude-code, codex, openclaw
+tags: [ai, gcp, gcp-examples]
+
 ---
 # GCP Examples Expert
 

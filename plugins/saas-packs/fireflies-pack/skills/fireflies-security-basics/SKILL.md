@@ -11,6 +11,8 @@ version: 1.0.0
 license: MIT
 author: Jeremy Longshore <jeremy@intentsolutions.io>
 compatible-with: claude-code, codex, openclaw
+tags: [saas, fireflies, api, security, audit]
+
 ---
 # Fireflies.ai Security Basics
 

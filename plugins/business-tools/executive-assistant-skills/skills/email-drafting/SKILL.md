@@ -1,6 +1,9 @@
 ---
 name: email-drafting
 description: Draft email replies for Gonto's Gmail accounts (m@gon.to, gonto@hypergrowthpartners.com). Handles intro acceptances, scheduling intent, thanks/ack, and positive short replies. Use when user asks to draft or reply to an email, or when Gmail webhook triggers arrive for auto-draft classification. Draft-only mode — never sends automatically.
+compatible-with: claude-code
+tags: [business, webhooks, email-drafting]
+
 ---
 # Email Drafting Skill
 

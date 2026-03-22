@@ -6,6 +6,8 @@ allowed-tools: "Read, Write, Bash(performance:*), Bash(monitoring:*), Grep"
 license: MIT
 author: Jeremy Longshore <jeremy@intentsolutions.io>
 compatible-with: claude-code, codex, openclaw
+tags: [performance, scaling, analyzing-system]
+
 ---
 # Throughput Analyzer
 

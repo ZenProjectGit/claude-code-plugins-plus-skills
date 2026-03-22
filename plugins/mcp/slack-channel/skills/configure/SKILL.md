@@ -7,6 +7,9 @@ license: MIT
 user-invocable: true
 argument-hint: "<bot-token> <app-token>"
 allowed-tools: [Read, Write, "Bash(cmd:chmod)"]
+compatible-with: claude-code
+tags: [mcp, configure]
+
 ---
 
 # /slack-channel:configure

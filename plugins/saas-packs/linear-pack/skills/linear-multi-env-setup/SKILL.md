@@ -11,6 +11,8 @@ version: 1.0.0
 license: MIT
 author: Jeremy Longshore <jeremy@intentsolutions.io>
 compatible-with: claude-code, codex, openclaw
+tags: [saas, linear, deployment, api]
+
 ---
 # Linear Multi-Environment Setup
 

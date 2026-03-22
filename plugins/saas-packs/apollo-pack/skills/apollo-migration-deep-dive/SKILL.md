@@ -11,6 +11,8 @@ version: 1.0.0
 license: MIT
 author: Jeremy Longshore <jeremy@intentsolutions.io>
 compatible-with: claude-code, codex, openclaw
+tags: [saas, apollo, migration, scaling]
+
 ---
 # Apollo Migration Deep Dive
 

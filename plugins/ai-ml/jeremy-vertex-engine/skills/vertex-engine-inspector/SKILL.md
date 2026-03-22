@@ -9,6 +9,8 @@ license: MIT
 compatible-with: claude-code, codex, openclaw
 argument-hint: "<project-id> <agent-engine-id> [location]"
 effort: high
+tags: [ai, deployment, security, compliance]
+
 ---
 # Vertex Engine Inspector
 

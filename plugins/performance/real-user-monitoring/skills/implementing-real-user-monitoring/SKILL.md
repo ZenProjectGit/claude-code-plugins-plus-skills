@@ -6,6 +6,8 @@ allowed-tools: "Read, Write, Edit, Grep, Glob, Bash(npm:*), Bash(rum:*)"
 license: MIT
 author: Jeremy Longshore <jeremy@intentsolutions.io>
 compatible-with: claude-code, codex, openclaw
+tags: [performance, monitoring, real-user]
+
 ---
 # Real User Monitoring
 

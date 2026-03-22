@@ -9,6 +9,8 @@ version: 1.0.0
 author: Jeremy Longshore <jeremy@intentsolutions.io>
 license: MIT
 compatible-with: claude-code, codex, openclaw
+tags: [productivity, agent-context]
+
 ---
 # Agent Context Loader
 

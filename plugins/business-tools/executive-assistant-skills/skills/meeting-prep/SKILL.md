@@ -1,6 +1,9 @@
 ---
 name: meeting-prep
 description: Prepare briefings for today's meetings — attendee research, email history, past meeting notes, LinkedIn, and company context. Use when running the daily meeting prep cron, or when user asks to prepare for meetings, review who they're meeting with, or get context on upcoming calls.
+compatible-with: claude-code
+tags: [business, meeting-prep]
+
 ---
 # Daily Meeting Prep
 

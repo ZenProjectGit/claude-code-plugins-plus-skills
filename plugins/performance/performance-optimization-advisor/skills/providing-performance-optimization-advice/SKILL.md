@@ -6,6 +6,8 @@ allowed-tools: "Read, Write, Edit, Grep, Glob, Bash(profiling:*), Bash(analysis:
 license: MIT
 author: Jeremy Longshore <jeremy@intentsolutions.io>
 compatible-with: claude-code, codex, openclaw
+tags: [performance, providing-performance]
+
 ---
 # Performance Optimization Advisor
 

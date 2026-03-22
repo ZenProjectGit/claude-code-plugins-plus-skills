@@ -6,6 +6,8 @@ allowed-tools: "Read, Write, Edit, Grep, Glob, Bash(security:*), Bash(scan:*), B
 license: MIT
 author: Jeremy Longshore <jeremy@intentsolutions.io>
 compatible-with: claude-code, codex, openclaw
+tags: [security, compliance, audit]
+
 ---
 # Owasp Compliance Checker
 

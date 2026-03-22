@@ -6,6 +6,8 @@ version: "0.1.0"
 author: "Mattyp <mattyp@claudecodeplugins.io>"
 license: "MIT"
 compatible-with: claude-code, codex, openclaw
+tags: [automation, changelog-orchestrator]
+
 ---
 # Changelog Orchestrator
 

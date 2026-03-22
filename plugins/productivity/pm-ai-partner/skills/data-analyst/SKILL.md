@@ -6,6 +6,9 @@ author: Ahmed Khaled Mohamed <ahmd.khaled.a.mohamed@gmail.com>
 license: MIT
 allowed-tools: Read, Grep, Glob, Bash(npm:*), Bash(node:*)
 argument-hint: [metric or question]
+compatible-with: claude-code
+tags: [productivity, database, dashboard]
+
 ---
 
 # Data Analyst Mode

@@ -6,6 +6,8 @@ allowed-tools: "Read, Bash(monitoring:*), Bash(metrics:*), Bash(logs:*), Grep, G
 license: MIT
 author: Jeremy Longshore <jeremy@intentsolutions.io>
 compatible-with: claude-code, codex, openclaw
+tags: [performance, database, monitoring]
+
 ---
 # Error Rate Monitor
 

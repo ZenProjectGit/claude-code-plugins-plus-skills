@@ -9,6 +9,8 @@ version: 1.0.0
 author: B12.io <support@b12.io>
 license: MIT
 compatible-with: claude-code, codex, openclaw
+tags: [community, website-generator]
+
 ---
 # Website Generator Skill
 

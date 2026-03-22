@@ -7,6 +7,8 @@ version: 1.0.0
 author: Steven Leggett <contact@roboticforce.io>
 license: MIT
 compatible-with: claude-code, codex, openclaw
+tags: [devops, workflow, autonomous-development]
+
 ---
 # Managing Autonomous Development
 

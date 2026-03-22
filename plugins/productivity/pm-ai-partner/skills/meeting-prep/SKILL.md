@@ -6,6 +6,9 @@ author: Ahmed Khaled Mohamed <ahmd.khaled.a.mohamed@gmail.com>
 license: MIT
 allowed-tools: Read, Glob, Grep
 argument-hint: [meeting topic or attendee]
+compatible-with: claude-code
+tags: [productivity, meeting-prep]
+
 ---
 
 # Meeting Prep Skill

@@ -6,6 +6,8 @@ allowed-tools: "Read, WebFetch, WebSearch, Grep"
 license: MIT
 author: Jeremy Longshore <jeremy@intentsolutions.io>
 compatible-with: claude-code, codex, openclaw
+tags: [security, validating-cors]
+
 ---
 # Validating CORS Policies
 

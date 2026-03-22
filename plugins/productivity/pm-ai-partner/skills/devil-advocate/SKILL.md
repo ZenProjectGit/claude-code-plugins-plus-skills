@@ -6,6 +6,9 @@ author: Ahmed Khaled Mohamed <ahmd.khaled.a.mohamed@gmail.com>
 license: MIT
 allowed-tools: Read, Glob, Grep
 argument-hint: [idea or proposal to challenge]
+compatible-with: claude-code
+tags: [productivity, testing, devil-advocate]
+
 ---
 
 # Devil's Advocate Mode

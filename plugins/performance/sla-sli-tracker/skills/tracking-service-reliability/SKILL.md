@@ -6,6 +6,8 @@ allowed-tools: "Read, Write, Edit, Grep, Glob, Bash(monitoring:*), Bash(metrics:
 license: MIT
 author: Jeremy Longshore <jeremy@intentsolutions.io>
 compatible-with: claude-code, codex, openclaw
+tags: [performance, monitoring, tracking-service]
+
 ---
 # Sla Sli Tracker
 

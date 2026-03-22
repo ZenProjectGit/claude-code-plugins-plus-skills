@@ -7,6 +7,8 @@ version: 1.0.0
 author: Jeremy Longshore <jeremy@intentsolutions.io>
 license: MIT
 compatible-with: claude-code, codex, openclaw
+tags: [ai, analyzing-text]
+
 ---
 # Sentiment Analysis Tool
 

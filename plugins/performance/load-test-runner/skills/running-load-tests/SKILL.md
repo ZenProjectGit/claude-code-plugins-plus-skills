@@ -6,6 +6,8 @@ allowed-tools: "Read, Write, Edit, Grep, Glob, Bash(k6:*), Bash(jmeter:*), Bash(
 license: MIT
 author: Jeremy Longshore <jeremy@intentsolutions.io>
 compatible-with: claude-code, codex, openclaw
+tags: [performance, testing, load-tests]
+
 ---
 # Load Test Runner
 

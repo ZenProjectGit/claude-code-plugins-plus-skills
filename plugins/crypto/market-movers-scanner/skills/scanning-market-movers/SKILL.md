@@ -11,6 +11,8 @@ version: 2.0.0
 author: Jeremy Longshore <jeremy@intentsolutions.io>
 license: MIT
 compatible-with: claude-code, codex, openclaw
+tags: [crypto, scanning-market]
+
 ---
 # Scanning Market Movers
 

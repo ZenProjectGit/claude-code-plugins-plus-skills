@@ -6,6 +6,8 @@ allowed-tools: "Read, Write, Bash(prometheus:*), Bash(metrics:*), Bash(monitorin
 license: MIT
 author: Jeremy Longshore <jeremy@intentsolutions.io>
 compatible-with: claude-code, codex, openclaw
+tags: [performance, database, monitoring]
+
 ---
 # Metrics Aggregator
 

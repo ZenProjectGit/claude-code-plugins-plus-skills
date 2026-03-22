@@ -11,6 +11,8 @@ version: 1.0.0
 author: Jeremy Longshore <jeremy@intentsolutions.io>
 license: MIT
 compatible-with: claude-code, codex, openclaw
+tags: [database, azure, archiving-databases]
+
 ---
 # Database Archival System
 

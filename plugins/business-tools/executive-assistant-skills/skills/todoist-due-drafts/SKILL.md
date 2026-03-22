@@ -1,6 +1,9 @@
 ---
 name: todoist-due-drafts
 description: Check Todoist for tasks due today (and overdue) that involve pinging, emailing, or following up with someone. Auto-draft the emails using meeting context and notify via WhatsApp. Use when running the daily due-drafts cron, or when user asks to process email tasks from Todoist.
+compatible-with: claude-code
+tags: [business, todoist-due]
+
 ---
 # Todoist Due-Today Email Drafts
 

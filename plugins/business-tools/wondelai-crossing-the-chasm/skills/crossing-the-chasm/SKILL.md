@@ -7,6 +7,8 @@ license: MIT
 author: Wondelai <hello@wondelai.com>
 version: 1.0.1
 compatible-with: claude-code, codex, openclaw
+tags: [business, crossing-chasm]
+
 ---
 # Crossing the Chasm Framework
 

@@ -1,6 +1,9 @@
 ---
 name: executive-digest
 description: "Generate the daily executive digest — a single WhatsApp summary of everything needing attention: stalled scheduling, pending intros, unanswered emails, promised follow-ups, open Todoist tasks, and upcoming calendar events. Use when running the daily digest cron, or when user asks for a status digest, daily summary, \"what's pending\", or \"catch me up\"."
+compatible-with: claude-code
+tags: [business, executive-digest]
+
 ---
 # Daily Executive Digest
 

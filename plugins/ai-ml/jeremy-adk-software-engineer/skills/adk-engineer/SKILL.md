@@ -8,6 +8,8 @@ author: Jeremy Longshore <jeremy@intentsolutions.io>
 license: MIT
 effort: high
 compatible-with: claude-code, codex, openclaw
+tags: [ai, deployment, testing]
+
 ---
 # ADK Engineer
 

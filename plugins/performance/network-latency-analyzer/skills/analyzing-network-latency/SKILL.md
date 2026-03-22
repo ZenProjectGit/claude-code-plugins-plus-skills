@@ -6,6 +6,8 @@ allowed-tools: "Read, Write, Bash(curl:*), Bash(ping:*), Bash(traceroute:*), Gre
 license: MIT
 author: Jeremy Longshore <jeremy@intentsolutions.io>
 compatible-with: claude-code, codex, openclaw
+tags: [performance, api, analyzing-network]
+
 ---
 # Network Latency Analyzer
 

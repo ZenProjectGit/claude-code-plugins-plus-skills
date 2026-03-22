@@ -7,6 +7,8 @@ version: 1.0.0
 author: Damien Laine <damien.laine@gmail.com>
 license: MIT
 compatible-with: claude-code, codex, openclaw
+tags: [community, spec-writing]
+
 ---
 # Spec Writing
 

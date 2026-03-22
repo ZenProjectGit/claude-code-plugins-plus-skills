@@ -6,6 +6,9 @@ author: Ahmed Khaled Mohamed <ahmd.khaled.a.mohamed@gmail.com>
 license: MIT
 allowed-tools: Read, Glob, Grep
 argument-hint: [feature name]
+compatible-with: claude-code
+tags: [productivity, product-brief]
+
 ---
 
 # Product Brief Skill

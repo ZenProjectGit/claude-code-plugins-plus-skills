@@ -11,6 +11,8 @@ allowed-tools: Read, Write, Edit, Grep, Glob, Bash(python3:*), Bash(pip:*), Bash
 license: MIT
 author: Jeremy Longshore <jeremy@intentsolutions.io>
 compatible-with: claude-code, codex, openclaw
+tags: [security, testing, audit]
+
 ---
 # Penetration Testing Skill
 

@@ -6,6 +6,9 @@ author: Ahmed Khaled Mohamed <ahmd.khaled.a.mohamed@gmail.com>
 license: MIT
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(npm:*), Bash(node:*)
 argument-hint: [what to build]
+compatible-with: claude-code
+tags: [productivity, dashboard, builder]
+
 ---
 
 # Builder Mode

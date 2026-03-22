@@ -10,6 +10,9 @@ allowed-tools: Read, Write, Edit, Bash(git:*)
 version: 1.1.0
 author: builtbyzac
 license: MIT
+compatible-with: claude-code
+tags: [productivity, audit, memory-kit]
+
 ---
 
 # Memory Kit

@@ -6,6 +6,8 @@ allowed-tools: "Read, Write, Edit, Grep, Glob, Bash(ci:*), Bash(metrics:*), Bash
 license: MIT
 author: Jeremy Longshore <jeremy@intentsolutions.io>
 compatible-with: claude-code, codex, openclaw
+tags: [performance, ci-cd, detecting-performance]
+
 ---
 # Performance Regression Detector
 

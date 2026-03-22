@@ -6,6 +6,9 @@ author: Ahmed Khaled Mohamed <ahmd.khaled.a.mohamed@gmail.com>
 license: MIT
 allowed-tools: Read, Glob, Grep
 argument-hint: [competitor or market]
+compatible-with: claude-code
+tags: [productivity, competitor-analyst]
+
 ---
 
 # Competitor Analyst Mode

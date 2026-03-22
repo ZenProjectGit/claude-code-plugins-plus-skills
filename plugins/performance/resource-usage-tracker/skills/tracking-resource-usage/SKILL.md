@@ -6,6 +6,8 @@ allowed-tools: "Read, Bash(top:*), Bash(ps:*), Bash(vmstat:*), Bash(iostat:*), G
 license: MIT
 author: Jeremy Longshore <jeremy@intentsolutions.io>
 compatible-with: claude-code, codex, openclaw
+tags: [performance, monitoring, cost-optimization]
+
 ---
 # Resource Usage Tracker
 

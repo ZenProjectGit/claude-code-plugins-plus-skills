@@ -6,6 +6,8 @@ allowed-tools: "Read, Write, Edit, Grep, Glob, Bash(curl:*), Bash(monitoring:*)"
 license: MIT
 author: Jeremy Longshore <jeremy@intentsolutions.io>
 compatible-with: claude-code, codex, openclaw
+tags: [performance, api, monitoring]
+
 ---
 # Synthetic Monitoring Setup
 
