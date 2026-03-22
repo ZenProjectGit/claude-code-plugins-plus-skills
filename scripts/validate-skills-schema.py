@@ -2722,12 +2722,103 @@ def populate_compliance_db(db_path: str, skill_results: list, agent_results: lis
             errors = result.get('errors', 0)
             warnings = result.get('warnings', 0)
 
+            # Parse agent frontmatter for field analysis
+            agent_fm = {}
+            try:
+                agent_file = Path(agent_path)
+                if agent_file.exists():
+                    content = agent_file.read_text(encoding='utf-8')
+                    agent_fm, _ = parse_frontmatter(content)
+            except Exception:
+                pass
+
+            anthropic_agent_fields = {'name', 'description', 'model', 'effort', 'maxTurns',
+                                       'tools', 'disallowedTools', 'skills', 'mcpServers',
+                                       'hooks', 'memory', 'background', 'isolation', 'permissionMode'}
+            invalid_agent_set = set(DEPRECATED_AGENT_FIELDS.keys()) | set(INVALID_AGENT_FIELDS.keys())
+
+            a_total = len(agent_fm)
+            a_anthropic = len([k for k in agent_fm if k in anthropic_agent_fields])
+            a_missing = [k for k in ('name', 'description') if k not in agent_fm]
+            a_invalid = [k for k in agent_fm if k in invalid_agent_set]
+            a_has_invalid = 1 if a_invalid else 0
+
+            # Detect if plugin agent (has .claude-plugin/plugin.json ancestor)
+            is_plugin = 0
+            try:
+                for parent in Path(agent_path).parents:
+                    if (parent / '.claude-plugin' / 'plugin.json').exists():
+                        is_plugin = 1
+                        break
+            except Exception:
+                pass
+
             c.execute('''INSERT OR REPLACE INTO agent_compliance
                 (agent_path, total_fields, anthropic_fields, missing_fields,
                  has_invalid_fields, invalid_fields, is_plugin_agent,
                  error_count, warning_count, validated_at, validator_version)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
-                (agent_path, 0, 0, '[]', 0, '[]', 0, errors, warnings, now, validator_version))
+                (agent_path, a_total, a_anthropic, json_module.dumps(a_missing),
+                 a_has_invalid, json_module.dumps(a_invalid), is_plugin,
+                 errors, warnings, now, validator_version))
+
+    # Populate plugin_compliance by rolling up skill scores per plugin
+    if skill_results:
+        plugin_skills = {}  # plugin_path -> list of skill results
+        for result in skill_results:
+            skill_path = result.get('path', '')
+            # Walk up to find plugin root (directory with .claude-plugin/plugin.json)
+            try:
+                for parent in Path(skill_path).parents:
+                    if (parent / '.claude-plugin' / 'plugin.json').exists():
+                        plugin_path = str(parent)
+                        if plugin_path not in plugin_skills:
+                            plugin_skills[plugin_path] = []
+                        plugin_skills[plugin_path].append(result)
+                        break
+            except Exception:
+                pass
+
+        for plugin_path, skills_list in plugin_skills.items():
+            p = Path(plugin_path)
+            # Validate plugin.json
+            pj_valid = 0
+            pj_fields = 0
+            try:
+                pj = p / '.claude-plugin' / 'plugin.json'
+                if pj.exists():
+                    data = json_module.loads(pj.read_text(encoding='utf-8'))
+                    pj_valid = 1
+                    pj_fields = len(data)
+            except Exception:
+                pass
+
+            s_count = len(skills_list)
+            s_scores = [s.get('score', 0) for s in skills_list if s.get('score')]
+            s_avg = sum(s_scores) / len(s_scores) if s_scores else 0.0
+
+            # Count agents
+            agents_dir = p / 'agents'
+            a_count = len(list(agents_dir.glob('*.md'))) if agents_dir.exists() else 0
+
+            # Check optional files
+            has_hooks = 1 if (p / 'hooks' / 'hooks.json').exists() else 0
+            has_mcp = 1 if (p / '.mcp.json').exists() else 0
+            has_license = 1 if (p / 'LICENSE').exists() or (p / 'LICENSE.md').exists() else 0
+            has_changelog = 1 if (p / 'CHANGELOG.md').exists() else 0
+
+            total_errors = sum(s.get('errors', 0) for s in skills_list)
+            total_warnings = sum(s.get('warnings', 0) for s in skills_list)
+
+            c.execute('''INSERT OR REPLACE INTO plugin_compliance
+                (plugin_path, plugin_json_valid, plugin_json_fields, skill_count,
+                 skill_avg_score, agent_count, has_hooks_json, has_mcp_json,
+                 has_license, has_changelog, overall_score,
+                 error_count, warning_count, validated_at, validator_version)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+                (plugin_path, pj_valid, pj_fields, s_count, s_avg, a_count,
+                 has_hooks, has_mcp, has_license, has_changelog, s_avg,
+                 total_errors, total_warnings, now, validator_version))
 
     conn.commit()
     conn.close()
@@ -3046,11 +3137,6 @@ def main() -> int:
         print(json_module.dumps(json_skill_results))
         return 0
 
-    # Populate compliance database if requested
-    if args.populate_db:
-        populate_compliance_db(args.populate_db, json_skill_results, validator_version="5.0.0")
-        print(f"\n📊 Compliance data written to {args.populate_db}")
-
     # Validate commands
     for cmd in commands:
         rel = cmd.relative_to(repo_root)
@@ -3080,6 +3166,7 @@ def main() -> int:
                 print(f"✅ {rel} (command) - OK")
 
     # Validate agents
+    json_agent_results = []
     for agent in agents:
         rel = agent.relative_to(repo_root)
         result = validate_agent(agent)
@@ -3088,7 +3175,12 @@ def main() -> int:
             print(f"❌ {rel} (agent): FATAL - {result['fatal']}")
             total_errors += 1
             files_with_errors.append(str(rel))
+            json_agent_results.append({'path': str(agent), 'errors': 1, 'warnings': 0})
             continue
+
+        err_count = len(result['errors'])
+        warn_count = len(result['warnings'])
+        json_agent_results.append({'path': str(agent), 'errors': err_count, 'warnings': warn_count})
 
         if result['errors']:
             print(f"❌ {rel} (agent):")
@@ -3106,6 +3198,18 @@ def main() -> int:
             files_compliant.append(str(rel))
             if verbose:
                 print(f"✅ {rel} (agent) - OK")
+
+    # Populate compliance database if requested (after all validations complete)
+    if args.populate_db:
+        try:
+            populate_compliance_db(args.populate_db, json_skill_results, agent_results=json_agent_results, validator_version="5.0.0")
+            print(f"\n📊 Compliance data written to {args.populate_db}", flush=True)
+            print(f"   skill_compliance: {len(json_skill_results)} rows", flush=True)
+            print(f"   agent_compliance: {len(json_agent_results)} rows", flush=True)
+        except Exception as e:
+            print(f"\n❌ Failed to write compliance DB: {e}", flush=True)
+            import traceback
+            traceback.print_exc()
 
     # Show low grade skills if requested
     if args.show_low_grades and low_grade_skills:
