@@ -8,6 +8,8 @@ allowed-tools: Read, Edit, Glob, Grep
 version: 1.0.0
 author: Your Name <your@email.com>
 license: MIT
+compatible-with: claude-code
+tags: [your-category, your-topic]
 user-invocable: true
 ---
 
