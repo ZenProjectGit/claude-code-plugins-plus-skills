@@ -49,23 +49,23 @@ Before manual debugging, use Navan's built-in AI assistant:
 ```bash
 # Test OAuth authentication
 AUTH_RESPONSE=$(curl -s -w "\n%{http_code}" \
-  -X POST "https://app.navan.com/api/v1/authenticate" \
-  -H "Content-Type: application/json" \
-  -d "{\"client_id\":\"$NAVAN_CLIENT_ID\",\"client_secret\":\"$NAVAN_CLIENT_SECRET\"}")
+  -X POST "https://api.navan.com/ta-auth/oauth/token" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=client_credentials&client_id=$NAVAN_CLIENT_ID&client_secret=$NAVAN_CLIENT_SECRET")
 
 HTTP_CODE=$(echo "$AUTH_RESPONSE" | tail -1)
 BODY=$(echo "$AUTH_RESPONSE" | sed '$d')
 
 echo "Auth endpoint: HTTP $HTTP_CODE"
-echo "$BODY" | jq '{token_present: (.token != null), error: .error}' 2>/dev/null
+echo "$BODY" | jq '{token_present: (.access_token != null), error: .error}' 2>/dev/null
 ```
 
 ```bash
 # Test booking retrieval (requires valid token)
-TOKEN=$(echo "$BODY" | jq -r '.token')
+TOKEN=$(echo "$BODY" | jq -r '.access_token')
 curl -s -w "\nHTTP %{http_code}" \
   -H "Authorization: Bearer $TOKEN" \
-  "https://app.navan.com/api/v1/get_user_trips" | tail -1
+  "https://api.navan.com/v1/bookings?page=0&size=50" | tail -1
 ```
 
 ### Step 4 — Incident-Specific Playbooks
@@ -77,10 +77,10 @@ curl -s -w "\nHTTP %{http_code}" \
 4. Queue failed booking requests for retry with exponential backoff
 
 **OAuth Token Failure (P1):**
-1. Test with `curl` against `/authenticate` — expect HTTP 200 with `token` field
+1. Test with `curl` against `/ta-auth/oauth/token` — expect HTTP 200 with `access_token` field
 2. If HTTP 401: credentials may be rotated; check Admin > Integrations
 3. If HTTP 403: API access may be revoked; contact Navan admin
-4. Try `/reauthenticate` if the current token is expired but credentials are valid
+4. Re-request a token via `POST /ta-auth/oauth/token` with `grant_type=client_credentials`
 
 **Expense Sync Failure (P2/P3):**
 1. Check the Expense Transaction API status — this endpoint requires separate enablement
@@ -91,7 +91,7 @@ curl -s -w "\nHTTP %{http_code}" \
 **Flight Cancellation / Disruption (P2):**
 1. Use Ava AI to check rebooking options — Ava handles most rebookings automatically
 2. Verify traveler's profile has correct loyalty program numbers
-3. Check `/get_user_trips` for the affected booking UUID
+3. Check `/v1/bookings` for the affected booking UUID
 4. Coordinate with travel admin for policy exception approvals if rebooking exceeds budget
 
 ### Step 5 — Escalation Path
@@ -144,9 +144,9 @@ Quick API status check during an incident:
 ```bash
 # One-liner health probe
 curl -s -o /dev/null -w "Auth: %{http_code} (%{time_total}s)\n" \
-  -X POST "https://app.navan.com/api/v1/authenticate" \
-  -H "Content-Type: application/json" \
-  -d "{\"client_id\":\"$NAVAN_CLIENT_ID\",\"client_secret\":\"$NAVAN_CLIENT_SECRET\"}"
+  -X POST "https://api.navan.com/ta-auth/oauth/token" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=client_credentials&client_id=$NAVAN_CLIENT_ID&client_secret=$NAVAN_CLIENT_SECRET"
 ```
 
 ## Resources

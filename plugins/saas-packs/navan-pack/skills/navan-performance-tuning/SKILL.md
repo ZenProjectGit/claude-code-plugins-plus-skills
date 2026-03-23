@@ -143,13 +143,15 @@ Page through large result sets without missing or duplicating records:
 async function* paginateAll<T>(
   endpoint: string,
   token: string,
-  pageSize: number = 100
+  pageSize: number = 50
 ): AsyncGenerator<T[]> {
-  let cursor: string | null = null;
+  let page = 0;
 
-  do {
-    const params = new URLSearchParams({ limit: String(pageSize) });
-    if (cursor) params.set('cursor', cursor);
+  while (true) {
+    const params = new URLSearchParams({
+      page: String(page),
+      size: String(pageSize),
+    });
 
     const url = `https://api.navan.com/v1/${endpoint}?${params}`;
     const response = await fetch(url, {
@@ -161,18 +163,19 @@ async function* paginateAll<T>(
     }
 
     const body = await response.json();
-    const items = body.data ?? body;
+    const items: T[] = body.data ?? [];
 
     if (items.length === 0) break;
     yield items;
 
-    cursor = body.next_cursor ?? null;
-  } while (cursor);
+    if (items.length < pageSize) break; // Last page
+    page++;
+  }
 }
 
-// Usage: process all bookings in pages of 100
+// Usage: process all bookings in pages of 50
 let totalProcessed = 0;
-for await (const page of paginateAll('bookings', token, 100)) {
+for await (const page of paginateAll('bookings', token, 50)) {
   await processBatch(page);
   totalProcessed += page.length;
   console.log(`Processed ${totalProcessed} bookings`);
@@ -231,7 +234,7 @@ Before (naive sequential):
   Rate limit hits: 12
 
 After (cached + parallel + paginated):
-  API calls: 100 (pages of 100)
+  API calls: 200 (pages of 50)
   Time: 4 minutes
   Rate limit hits: 0
 ```

@@ -34,17 +34,17 @@ Gated production readiness verification for Navan REST API integrations. Navan h
 
 ```bash
 # Verify current credentials work
-curl -s -X POST "https://app.navan.com/api/v1/authenticate" \
-  -H "Content-Type: application/json" \
-  -d "{\"client_id\":\"$NAVAN_CLIENT_ID\",\"client_secret\":\"$NAVAN_CLIENT_SECRET\"}" \
-  | jq '{authenticated: (.token != null), error: .error}'
+curl -s -X POST "https://api.navan.com/ta-auth/oauth/token" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=client_credentials&client_id=$NAVAN_CLIENT_ID&client_secret=$NAVAN_CLIENT_SECRET" \
+  | jq '{authenticated: (.access_token != null), error: .error}'
 ```
 
 **Rotation procedure:**
 1. Generate new credentials in Admin > Integrations (old ones remain valid)
 2. Deploy new credentials to secret manager
 3. Update application configuration to reference new secret version
-4. Verify new credentials with `/authenticate`
+4. Verify new credentials with `/ta-auth/oauth/token`
 5. Revoke old credentials in Admin > Integrations
 6. Confirm old credentials return HTTP 401
 
@@ -59,9 +59,9 @@ curl -s -X POST "https://app.navan.com/api/v1/authenticate" \
 # Health check endpoint pattern
 health_check() {
   RESPONSE=$(curl -s -w "%{http_code}" -o /tmp/navan-health.json \
-    -X POST "https://app.navan.com/api/v1/authenticate" \
-    -H "Content-Type: application/json" \
-    -d "{\"client_id\":\"$NAVAN_CLIENT_ID\",\"client_secret\":\"$NAVAN_CLIENT_SECRET\"}")
+    -X POST "https://api.navan.com/ta-auth/oauth/token" \
+    -H "Content-Type: application/x-www-form-urlencoded" \
+    -d "grant_type=client_credentials&client_id=$NAVAN_CLIENT_ID&client_secret=$NAVAN_CLIENT_SECRET")
 
   if [ "$RESPONSE" = "200" ]; then
     echo '{"status":"healthy","navan_api":"reachable"}'
@@ -93,14 +93,14 @@ health_check() {
 
 ```bash
 # Verify users are synced via API
-TOKEN=$(curl -s -X POST "https://app.navan.com/api/v1/authenticate" \
-  -H "Content-Type: application/json" \
-  -d "{\"client_id\":\"$NAVAN_CLIENT_ID\",\"client_secret\":\"$NAVAN_CLIENT_SECRET\"}" \
-  | jq -r '.token')
+TOKEN=$(curl -s -X POST "https://api.navan.com/ta-auth/oauth/token" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=client_credentials&client_id=$NAVAN_CLIENT_ID&client_secret=$NAVAN_CLIENT_SECRET" \
+  | jq -r '.access_token')
 
 curl -s -H "Authorization: Bearer $TOKEN" \
-  "https://app.navan.com/api/v1/get_users" \
-  | jq '{total_users: (. | length), sample: .[0] | {id, email, status}}'
+  "https://api.navan.com/v1/users" \
+  | jq '{total_users: (.data | length), sample: .data[0] | {id, email, status}}'
 ```
 
 - [ ] **SCIM provisioning active**: User create/update/deactivate syncing from IdP
@@ -139,15 +139,15 @@ Run a quick pre-launch validation:
 # Rapid smoke test — auth + user count + timing
 echo "=== Navan Production Smoke Test ==="
 curl -s -w "Auth: %{http_code} (%{time_total}s)\n" -o /tmp/navan-auth.json \
-  -X POST "https://app.navan.com/api/v1/authenticate" \
-  -H "Content-Type: application/json" \
-  -d "{\"client_id\":\"$NAVAN_CLIENT_ID\",\"client_secret\":\"$NAVAN_CLIENT_SECRET\"}"
+  -X POST "https://api.navan.com/ta-auth/oauth/token" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=client_credentials&client_id=$NAVAN_CLIENT_ID&client_secret=$NAVAN_CLIENT_SECRET"
 
-TOKEN=$(jq -r '.token' /tmp/navan-auth.json)
+TOKEN=$(jq -r '.access_token' /tmp/navan-auth.json)
 curl -s -w "Users: %{http_code} (%{time_total}s)\n" -o /tmp/navan-users.json \
   -H "Authorization: Bearer $TOKEN" \
-  "https://app.navan.com/api/v1/get_users"
-echo "User count: $(jq '. | length' /tmp/navan-users.json)"
+  "https://api.navan.com/v1/users"
+echo "User count: $(jq '.data | length' /tmp/navan-users.json)"
 ```
 
 ## Resources

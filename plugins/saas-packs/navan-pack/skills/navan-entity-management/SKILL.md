@@ -28,25 +28,30 @@ This skill covers organizational entity management in Navan: users, departments,
 
 ## Instructions
 
-### Step 1: Retrieve All Users
+### Step 1: Authenticate and Retrieve Booking Data
 
 ```typescript
-const tokenRes = await fetch(`${process.env.NAVAN_BASE_URL}/authenticate`, {
+const tokenRes = await fetch(`${process.env.NAVAN_BASE_URL}/ta-auth/oauth/token`, {
   method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    client_id: process.env.NAVAN_CLIENT_ID,
-    client_secret: process.env.NAVAN_CLIENT_SECRET,
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  body: new URLSearchParams({
+    grant_type: 'client_credentials',
+    client_id: process.env.NAVAN_CLIENT_ID!,
+    client_secret: process.env.NAVAN_CLIENT_SECRET!,
   }),
 });
 const { access_token } = await tokenRes.json();
 const headers = { Authorization: `Bearer ${access_token}` };
 
-// GET /get_users — retrieve all users in the organization
-const usersRes = await fetch(`${process.env.NAVAN_BASE_URL}/get_users`, {
-  headers,
-});
-const users = await usersRes.json();
+// GET /v1/bookings — retrieve bookings (records in .data array)
+const bookingsRes = await fetch(
+  `${process.env.NAVAN_BASE_URL}/v1/bookings?page=0&size=50`,
+  { headers }
+);
+const { data: bookings } = await bookingsRes.json();
+
+// Extract unique users from booking data
+const users = [...new Map(bookings.map((b: any) => [b.traveler_email, b])).values()];
 
 users.forEach((user: any) => {
   console.log(`${user.email} | Role: ${user.role} | Dept: ${user.department}`);
@@ -198,8 +203,8 @@ Successful execution produces:
 
 | Error | HTTP Code | Cause | Solution |
 |-------|-----------|-------|----------|
-| Unauthorized | 401 | Expired or invalid bearer token | Re-authenticate via POST /authenticate |
-| Forbidden | 403 | Non-admin credentials used | GET /get_users requires admin API credentials |
+| Unauthorized | 401 | Expired or invalid bearer token | Re-authenticate via POST /ta-auth/oauth/token |
+| Forbidden | 403 | Non-admin credentials used | Verify admin-level API credentials |
 | Rate Limited | 429 | Too many requests | Implement exponential backoff (start at 1s) |
 | SCIM Auth Failed | 401 | Invalid SCIM bearer token | Regenerate token in Navan Admin > Identity Provider |
 | SCIM Mapping Error | 400 | Missing required attribute | Verify userName and email mappings in IdP |
@@ -214,14 +219,19 @@ import requests
 import csv
 import os
 
-base_url = os.environ['NAVAN_BASE_URL']
-auth = requests.post(f'{base_url}/authenticate', json={
+base_url = os.environ.get('NAVAN_BASE_URL', 'https://api.navan.com')
+auth = requests.post(f'{base_url}/ta-auth/oauth/token', data={
+    'grant_type': 'client_credentials',
     'client_id': os.environ['NAVAN_CLIENT_ID'],
     'client_secret': os.environ['NAVAN_CLIENT_SECRET'],
 })
 headers = {'Authorization': f'Bearer {auth.json()["access_token"]}'}
 
-users = requests.get(f'{base_url}/get_users', headers=headers).json()
+# Retrieve bookings and extract user data
+resp = requests.get(f'{base_url}/v1/bookings', params={'page': 0, 'size': 50}, headers=headers).json()
+bookings = resp['data']
+# Deduplicate users from booking records
+users = list({b.get('traveler_email'): b for b in bookings}.values())
 
 with open('navan-user-audit.csv', 'w', newline='') as f:
     writer = csv.DictWriter(f, fieldnames=[

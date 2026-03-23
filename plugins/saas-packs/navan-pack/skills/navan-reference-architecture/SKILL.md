@@ -45,7 +45,7 @@ Production-grade architecture for Navan API integrations. Navan provides raw RES
 │  LAYER 2: TOKEN MANAGEMENT SERVICE                                │
 │  ┌──────────────────┐  ┌──────────────┐  ┌────────────────────┐  │
 │  │ OAuth Client Cred │  │ Token Cache  │  │ Auto-Refresh       │  │
-│  │ POST /authenticate│  │ (Redis/KMS)  │  │ (before expiry)    │  │
+│  │ POST /ta-auth/    │  │ (Redis/KMS)  │  │ (before expiry)    │  │
 │  └──────────────────┘  └──────────────┘  └────────────────────┘  │
 └────────┬─────────────────────────────────────────────────────────┘
          │
@@ -84,7 +84,7 @@ The gateway provides rate limiting, request logging, and circuit breaking before
 ```bash
 # Example: test gateway → Navan connectivity
 curl -s -w "connect: %{time_connect}s | ttfb: %{time_starttransfer}s | total: %{time_total}s\n" \
-  -o /dev/null "https://app.navan.com/api/v1/authenticate"
+  -o /dev/null "https://api.navan.com/ta-auth/oauth/token"
 ```
 
 **Key decisions:**
@@ -94,21 +94,17 @@ curl -s -w "connect: %{time_connect}s | ttfb: %{time_starttransfer}s | total: %{
 
 ### Layer 2 — Token Management Service
 
-Centralized OAuth lifecycle management. Navan uses `client_credentials` grant type via `POST /authenticate`.
+Centralized OAuth lifecycle management. Navan uses `client_credentials` grant type via `POST /ta-auth/oauth/token`.
 
 ```bash
 # Token acquisition
-TOKEN_RESPONSE=$(curl -s -X POST "https://app.navan.com/api/v1/authenticate" \
-  -H "Content-Type: application/json" \
-  -d "{\"client_id\":\"$NAVAN_CLIENT_ID\",\"client_secret\":\"$NAVAN_CLIENT_SECRET\"}")
+TOKEN_RESPONSE=$(curl -s -X POST "https://api.navan.com/ta-auth/oauth/token" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=client_credentials&client_id=$NAVAN_CLIENT_ID&client_secret=$NAVAN_CLIENT_SECRET")
 
-TOKEN=$(echo "$TOKEN_RESPONSE" | jq -r '.token')
-EXPIRES=$(echo "$TOKEN_RESPONSE" | jq -r '.expires_at // .expires_in')
-echo "Token acquired, expires: $EXPIRES"
-
-# Token refresh (use /reauthenticate for existing sessions)
-curl -s -X POST "https://app.navan.com/api/v1/reauthenticate" \
-  -H "Authorization: Bearer $TOKEN" | jq '.token'
+TOKEN=$(echo "$TOKEN_RESPONSE" | jq -r '.access_token')
+EXPIRES=$(echo "$TOKEN_RESPONSE" | jq -r '.expires_in')
+echo "Token acquired, expires in: ${EXPIRES}s"
 ```
 
 **Design principles:**
@@ -122,13 +118,9 @@ Thin wrapper around Navan's REST endpoints with consistent error handling:
 
 | Endpoint | Method | Purpose | Data Table |
 |----------|--------|---------|------------|
-| `/authenticate` | POST | OAuth token acquisition | — |
-| `/reauthenticate` | POST | Token refresh | — |
-| `/get_users` | GET | Employee directory | — |
-| `/get_user_trips` | GET | Traveler's bookings | BOOKING |
-| `/get_admin_trips` | GET | All organization bookings | BOOKING |
-| `/get_itineraries_pdf` | GET | Itinerary documents | — |
-| `/get_invoices_poc` | GET | Invoice data | TRANSACTION |
+| `/ta-auth/oauth/token` | POST | OAuth token acquisition | — |
+| `/v1/bookings` | GET | Booking records | BOOKING |
+| `/v1/users` | GET | Employee directory | — |
 
 ### Layer 4 — Data Sync Pipeline
 
@@ -177,16 +169,16 @@ Validate the full stack end-to-end:
 ```bash
 # End-to-end integration test
 echo "1. Auth..." && \
-TOKEN=$(curl -s -X POST "https://app.navan.com/api/v1/authenticate" \
-  -H "Content-Type: application/json" \
-  -d "{\"client_id\":\"$NAVAN_CLIENT_ID\",\"client_secret\":\"$NAVAN_CLIENT_SECRET\"}" \
-  | jq -r '.token') && \
+TOKEN=$(curl -s -X POST "https://api.navan.com/ta-auth/oauth/token" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=client_credentials&client_id=$NAVAN_CLIENT_ID&client_secret=$NAVAN_CLIENT_SECRET" \
+  | jq -r '.access_token') && \
 echo "2. Users..." && \
 curl -s -H "Authorization: Bearer $TOKEN" \
-  "https://app.navan.com/api/v1/get_users" | jq '. | length' && \
-echo "3. Trips..." && \
+  "https://api.navan.com/v1/users" | jq '.data | length' && \
+echo "3. Bookings..." && \
 curl -s -H "Authorization: Bearer $TOKEN" \
-  "https://app.navan.com/api/v1/get_admin_trips" | jq '. | length'
+  "https://api.navan.com/v1/bookings?page=0&size=50" | jq '.data | length'
 ```
 
 ## Resources

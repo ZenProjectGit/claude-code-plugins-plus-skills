@@ -40,9 +40,9 @@ Diagnose and resolve Navan API errors using targeted fix procedures. All errors 
 
 ```bash
 # 1. Verify credentials can still obtain a token
-curl -s -X POST https://app.navan.com/authenticate \
-  -H "Content-Type: application/json" \
-  -d "{\"client_id\":\"$NAVAN_CLIENT_ID\",\"client_secret\":\"$NAVAN_CLIENT_SECRET\",\"grant_type\":\"client_credentials\"}" \
+curl -s -X POST https://api.navan.com/ta-auth/oauth/token \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=client_credentials&client_id=$NAVAN_CLIENT_ID&client_secret=$NAVAN_CLIENT_SECRET" \
   | python3 -c "import sys,json; d=json.load(sys.stdin); print('TOKEN OK' if 'access_token' in d else f'FAIL: {d}')"
 
 # 2. Check if existing token is expired
@@ -57,46 +57,40 @@ echo "Token var length: ${#NAVAN_TOKEN}"
 1. API credentials lack required scopes for the endpoint
 2. Account is on Business tier but endpoint requires Enterprise
 3. Expense Transaction API not enabled (requires separate Navan support request)
-4. User role lacks admin permissions for admin-only endpoints like `/get_admin_trips`
+4. User role lacks admin permissions for admin-only endpoints
 
 **Diagnostic steps:**
 
 ```bash
-# Test a basic endpoint vs an admin endpoint
-TOKEN=$(curl -s -X POST https://app.navan.com/authenticate \
-  -H "Content-Type: application/json" \
-  -d "{\"client_id\":\"$NAVAN_CLIENT_ID\",\"client_secret\":\"$NAVAN_CLIENT_SECRET\",\"grant_type\":\"client_credentials\"}" \
+# Test the bookings endpoint
+TOKEN=$(curl -s -X POST https://api.navan.com/ta-auth/oauth/token \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=client_credentials&client_id=$NAVAN_CLIENT_ID&client_secret=$NAVAN_CLIENT_SECRET" \
   | python3 -c "import sys,json; print(json.load(sys.stdin)['access_token'])")
 
-echo "User trips:" && curl -s -o /dev/null -w "%{http_code}" \
-  https://app.navan.com/get_user_trips -H "Authorization: Bearer $TOKEN"
-echo ""
-echo "Admin trips:" && curl -s -o /dev/null -w "%{http_code}" \
-  https://app.navan.com/get_admin_trips -H "Authorization: Bearer $TOKEN"
+echo "Bookings:" && curl -s -o /dev/null -w "%{http_code}" \
+  "https://api.navan.com/v1/bookings?page=0&size=1" -H "Authorization: Bearer $TOKEN"
 ```
 
-**Fix:** If user endpoints work but admin endpoints return 403, your credentials need admin-level permissions. Contact Navan support. If the Expense API returns 403, it requires separate enablement — request it through your Navan account manager.
+**Fix:** If the bookings endpoint returns 403, your credentials lack the required scope. Contact Navan support. If the Expense API returns 403, it requires separate enablement — request it through your Navan account manager.
 
 ### Error 404 — Not Found (Invalid Endpoint)
 
 **Root causes:**
-1. Typo in endpoint path (e.g., `/get_trips` instead of `/get_user_trips`)
-2. Using a versioned URL that does not exist (e.g., `/v1/get_user_trips`)
+1. Typo in endpoint path
+2. Using a legacy or reverse-engineered endpoint that no longer exists
 3. Referencing an endpoint not available on your Navan tier
 
-**Known valid endpoints:**
+**Known valid endpoints (from Airbyte connector source):**
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/authenticate` | POST | OAuth token exchange |
-| `/reauthenticate` | POST | Token refresh |
-| `/get_user_trips` | GET | User's trip history |
-| `/get_admin_trips` | GET | Organization-wide trips (admin) |
-| `/get_users` | GET | User directory |
-| `/get_itineraries_pdf` | GET | Itineraries as PDF |
-| `/get_invoices_poc` | GET | Invoice data |
+| `/ta-auth/oauth/token` | POST | OAuth token exchange (client_credentials) |
+| `/v1/bookings` | GET | Booking records (paginated with `page` + `size`) |
 
-**Fix:** Verify the endpoint path against the table above. The Navan API does not use version prefixes — call endpoints directly at the base URL.
+> **Note:** Older references to endpoints like `/get_user_trips`, `/get_admin_trips`, `/get_users` originate from Supergood's reverse-engineered browser automation and are not part of the official Navan REST API. Use `/v1/bookings` for booking data.
+
+**Fix:** Verify the endpoint path against the table above. The Navan API uses `/v1/` prefixed paths at `https://api.navan.com`.
 
 ### Error 429 — Rate Limited
 
@@ -109,7 +103,7 @@ echo "Admin trips:" && curl -s -o /dev/null -w "%{http_code}" \
 
 ```bash
 # Check rate limit headers in response
-curl -s -D - https://app.navan.com/get_user_trips \
+curl -s -D - "https://api.navan.com/v1/bookings?page=0&size=1" \
   -H "Authorization: Bearer $TOKEN" \
   -o /dev/null 2>&1 | grep -i "rate\|retry\|limit"
 ```
@@ -140,7 +134,7 @@ async function withBackoff<T>(fn: () => Promise<T>, maxRetries = 3): Promise<T> 
 
 ```bash
 # Test with minimal request to isolate
-curl -s -w "\nHTTP %{http_code}" https://app.navan.com/get_users \
+curl -s -w "\nHTTP %{http_code}" "https://api.navan.com/v1/bookings?page=0&size=1" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
@@ -182,23 +176,17 @@ This error reference delivers:
 #!/bin/bash
 echo "=== Navan API Diagnostic ==="
 echo "1. Testing authentication..."
-AUTH_RESULT=$(curl -s -w "\n%{http_code}" -X POST https://app.navan.com/authenticate \
-  -H "Content-Type: application/json" \
-  -d "{\"client_id\":\"$NAVAN_CLIENT_ID\",\"client_secret\":\"$NAVAN_CLIENT_SECRET\",\"grant_type\":\"client_credentials\"}")
+AUTH_RESULT=$(curl -s -w "\n%{http_code}" -X POST https://api.navan.com/ta-auth/oauth/token \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=client_credentials&client_id=$NAVAN_CLIENT_ID&client_secret=$NAVAN_CLIENT_SECRET")
 AUTH_CODE=$(echo "$AUTH_RESULT" | tail -1)
 echo "   Auth: HTTP $AUTH_CODE"
 
 if [ "$AUTH_CODE" = "200" ]; then
   TOKEN=$(echo "$AUTH_RESULT" | head -1 | python3 -c "import sys,json; print(json.load(sys.stdin)['access_token'])")
-  echo "2. Testing user trips..."
-  curl -s -o /dev/null -w "   User trips: HTTP %{http_code}\n" \
-    https://app.navan.com/get_user_trips -H "Authorization: Bearer $TOKEN"
-  echo "3. Testing admin trips..."
-  curl -s -o /dev/null -w "   Admin trips: HTTP %{http_code}\n" \
-    https://app.navan.com/get_admin_trips -H "Authorization: Bearer $TOKEN"
-  echo "4. Testing users..."
-  curl -s -o /dev/null -w "   Users: HTTP %{http_code}\n" \
-    https://app.navan.com/get_users -H "Authorization: Bearer $TOKEN"
+  echo "2. Testing bookings (page 0)..."
+  curl -s -o /dev/null -w "   Bookings: HTTP %{http_code}\n" \
+    "https://api.navan.com/v1/bookings?page=0&size=1" -H "Authorization: Bearer $TOKEN"
 else
   echo "   Auth failed — check NAVAN_CLIENT_ID and NAVAN_CLIENT_SECRET"
 fi

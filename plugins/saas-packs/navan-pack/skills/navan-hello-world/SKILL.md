@@ -37,13 +37,13 @@ Reuse the token exchange from `navan-install-auth`:
 import 'dotenv/config';
 
 async function getNavanToken(): Promise<string> {
-  const response = await fetch(`${process.env.NAVAN_BASE_URL}/authenticate`, {
+  const response = await fetch(`${process.env.NAVAN_BASE_URL}/ta-auth/oauth/token`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      client_id: process.env.NAVAN_CLIENT_ID,
-      client_secret: process.env.NAVAN_CLIENT_SECRET,
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
       grant_type: 'client_credentials',
+      client_id: process.env.NAVAN_CLIENT_ID!,
+      client_secret: process.env.NAVAN_CLIENT_SECRET!,
     }),
   });
   if (!response.ok) throw new Error(`Auth failed: ${response.status}`);
@@ -52,12 +52,12 @@ async function getNavanToken(): Promise<string> {
 }
 ```
 
-### Step 2: Retrieve User Trips (TypeScript)
+### Step 2: Retrieve Bookings (TypeScript)
 
-Call `GET /get_user_trips` to fetch the authenticated user's trip history:
+Call `GET /v1/bookings` to fetch booking records (paginated with `page` + `size`):
 
 ```typescript
-interface NavanTrip {
+interface NavanBooking {
   uuid: string;           // Primary key for all booking records
   traveler_name: string;
   origin: string;
@@ -68,32 +68,32 @@ interface NavanTrip {
   booking_type: string;   // "flight", "hotel", "car"
 }
 
-async function getUserTrips(token: string): Promise<NavanTrip[]> {
-  const response = await fetch(`${process.env.NAVAN_BASE_URL}/get_user_trips`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-  });
+async function getBookings(token: string): Promise<NavanBooking[]> {
+  const response = await fetch(
+    `${process.env.NAVAN_BASE_URL}/v1/bookings?page=0&size=50`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
 
   if (!response.ok) {
-    throw new Error(`GET /get_user_trips failed: ${response.status} ${response.statusText}`);
+    throw new Error(`GET /v1/bookings failed: ${response.status} ${response.statusText}`);
   }
 
-  const data = await response.json();
-  return data.trips ?? data.results ?? [];
+  const { data } = await response.json(); // records in .data array
+  return data ?? [];
 }
 
 // Execute
 const token = await getNavanToken();
-const trips = await getUserTrips(token);
-console.log(`Retrieved ${trips.length} trips:`);
-trips.forEach((t) =>
-  console.log(`  [${t.uuid}] ${t.origin} -> ${t.destination} (${t.booking_status})`)
+const bookings = await getBookings(token);
+console.log(`Retrieved ${bookings.length} bookings:`);
+bookings.forEach((b) =>
+  console.log(`  [${b.uuid}] ${b.origin} -> ${b.destination} (${b.booking_status})`)
 );
 ```
 
-### Step 3: Retrieve User Trips (Python)
+### Step 3: Retrieve Bookings (Python)
 
 ```python
 import os
@@ -103,49 +103,50 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def get_navan_token() -> str:
-    resp = requests.post(f"{os.environ['NAVAN_BASE_URL']}/authenticate", json={
-        "client_id": os.environ["NAVAN_CLIENT_ID"],
-        "client_secret": os.environ["NAVAN_CLIENT_SECRET"],
-        "grant_type": "client_credentials",
-    })
+    resp = requests.post(
+        f"{os.environ.get('NAVAN_BASE_URL', 'https://api.navan.com')}/ta-auth/oauth/token",
+        data={
+            "grant_type": "client_credentials",
+            "client_id": os.environ["NAVAN_CLIENT_ID"],
+            "client_secret": os.environ["NAVAN_CLIENT_SECRET"],
+        },
+    )
     resp.raise_for_status()
     return resp.json()["access_token"]
 
-def get_user_trips(token: str) -> list[dict]:
+def get_bookings(token: str) -> list[dict]:
+    base_url = os.environ.get('NAVAN_BASE_URL', 'https://api.navan.com')
     resp = requests.get(
-        f"{os.environ['NAVAN_BASE_URL']}/get_user_trips",
+        f"{base_url}/v1/bookings",
+        params={"page": 0, "size": 50},
         headers={"Authorization": f"Bearer {token}"},
     )
     resp.raise_for_status()
-    data = resp.json()
-    return data.get("trips", data.get("results", []))
+    return resp.json()["data"]  # records in .data array
 
 token = get_navan_token()
-trips = get_user_trips(token)
-print(f"Retrieved {len(trips)} trips:")
-for t in trips:
-    print(f"  [{t['uuid']}] {t.get('origin')} -> {t.get('destination')}")
+bookings = get_bookings(token)
+print(f"Retrieved {len(bookings)} bookings:")
+for b in bookings:
+    print(f"  [{b['uuid']}] {b.get('origin')} -> {b.get('destination')}")
 ```
 
-### Step 4: Explore Other Endpoints
+### Step 4: Paginate and Filter Bookings
 
-Once trips work, try these additional endpoints with the same bearer token:
+Once the basic call works, use pagination and date filtering:
 
 ```typescript
-// Admin-level: all trips across the organization
-const adminTrips = await fetch(`${process.env.NAVAN_BASE_URL}/get_admin_trips`, {
-  headers: { Authorization: `Bearer ${token}` },
-});
+// Paginate: page starts at 0, size controls page size
+const page2 = await fetch(
+  `${process.env.NAVAN_BASE_URL}/v1/bookings?page=1&size=50`,
+  { headers: { Authorization: `Bearer ${token}` } }
+);
 
-// User directory
-const users = await fetch(`${process.env.NAVAN_BASE_URL}/get_users`, {
-  headers: { Authorization: `Bearer ${token}` },
-});
-
-// Invoice data (if enabled)
-const invoices = await fetch(`${process.env.NAVAN_BASE_URL}/get_invoices_poc`, {
-  headers: { Authorization: `Bearer ${token}` },
-});
+// Filter by creation date range (incremental params)
+const filtered = await fetch(
+  `${process.env.NAVAN_BASE_URL}/v1/bookings?createdFrom=2026-01-01&createdTo=2026-03-31&page=0&size=50`,
+  { headers: { Authorization: `Bearer ${token}` } }
+);
 ```
 
 ### Step 5: Understand the Response Shape
@@ -163,9 +164,9 @@ Navan API responses use `uuid` as the primary key for booking records. Key field
 ## Output
 
 Successful completion produces:
-- A working API call retrieving real trip data from the Navan organization
-- Parsed response structure with `uuid` primary key identification
-- Tested access to available endpoints (user trips, admin trips, users, invoices)
+- A working API call retrieving real booking data from the Navan organization
+- Parsed response structure with records in `.data` array and `uuid` primary key
+- Tested pagination (`page` + `size`) and date filtering (`createdFrom` / `createdTo`)
 
 ## Error Handling
 
@@ -183,13 +184,13 @@ Successful completion produces:
 **Quick curl test from terminal:**
 
 ```bash
-# Get token and fetch trips in one pipeline
-TOKEN=$(curl -s -X POST https://app.navan.com/authenticate \
-  -H "Content-Type: application/json" \
-  -d "{\"client_id\":\"$NAVAN_CLIENT_ID\",\"client_secret\":\"$NAVAN_CLIENT_SECRET\",\"grant_type\":\"client_credentials\"}" \
+# Get token and fetch bookings in one pipeline
+TOKEN=$(curl -s -X POST https://api.navan.com/ta-auth/oauth/token \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=client_credentials&client_id=$NAVAN_CLIENT_ID&client_secret=$NAVAN_CLIENT_SECRET" \
   | python3 -c "import sys,json; print(json.load(sys.stdin)['access_token'])")
 
-curl -s https://app.navan.com/get_user_trips \
+curl -s "https://api.navan.com/v1/bookings?page=0&size=5" \
   -H "Authorization: Bearer $TOKEN" | python3 -m json.tool
 ```
 

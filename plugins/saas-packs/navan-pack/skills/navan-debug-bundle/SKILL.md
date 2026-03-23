@@ -41,7 +41,7 @@ cat > "$BUNDLE_DIR/env/config.txt" <<ENVEOF
 Timestamp: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
 NAVAN_CLIENT_ID: ${NAVAN_CLIENT_ID:+SET (not empty)}${NAVAN_CLIENT_ID:-UNSET}
 NAVAN_CLIENT_SECRET: ${NAVAN_CLIENT_SECRET:+SET (not empty)}${NAVAN_CLIENT_SECRET:-UNSET}
-NAVAN_TOKEN_URL: ${NAVAN_TOKEN_URL:-https://app.navan.com/api/v1/authenticate}
+NAVAN_TOKEN_URL: ${NAVAN_TOKEN_URL:-https://api.navan.com/ta-auth/oauth/token}
 curl version: $(curl --version | head -1)
 jq version: $(jq --version 2>/dev/null || echo "not installed")
 ENVEOF
@@ -51,11 +51,11 @@ ENVEOF
 
 ```bash
 curl -s -w "\n---HTTP_CODE:%{http_code}---\n" \
-  -X POST "https://app.navan.com/api/v1/authenticate" \
-  -H "Content-Type: application/json" \
-  -d "{\"client_id\":\"$NAVAN_CLIENT_ID\",\"client_secret\":\"$NAVAN_CLIENT_SECRET\"}" \
+  -X POST "https://api.navan.com/ta-auth/oauth/token" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=client_credentials&client_id=$NAVAN_CLIENT_ID&client_secret=$NAVAN_CLIENT_SECRET" \
   | tee "$BUNDLE_DIR/auth/token-response.json" \
-  | jq '{has_token: (.token != null), http_code: .http_code, error: .error}'
+  | jq '{has_token: (.access_token != null), error: .error}'
 ```
 
 If the token response returns HTTP 401, the credentials are invalid or expired. If HTTP 403, the API integration may not be enabled for your organization.
@@ -65,26 +65,26 @@ If the token response returns HTTP 401, the credentials are invalid or expired. 
 Test each core endpoint and capture full response headers:
 
 ```bash
-TOKEN=$(jq -r '.token' "$BUNDLE_DIR/auth/token-response.json")
+TOKEN=$(jq -r '.access_token' "$BUNDLE_DIR/auth/token-response.json")
 
-for ENDPOINT in get_users get_user_trips get_admin_trips; do
-  curl -s -D "$BUNDLE_DIR/api/${ENDPOINT}-headers.txt" \
-    -w "\n---HTTP_CODE:%{http_code}---\n" \
-    -H "Authorization: Bearer $TOKEN" \
-    "https://app.navan.com/api/v1/${ENDPOINT}" \
-    > "$BUNDLE_DIR/api/${ENDPOINT}-body.json" 2>&1
-  echo "$ENDPOINT: $(grep 'HTTP_CODE' "$BUNDLE_DIR/api/${ENDPOINT}-body.json")"
-done
+# Test the primary bookings endpoint
+ENDPOINT="v1/bookings"
+curl -s -D "$BUNDLE_DIR/api/bookings-headers.txt" \
+  -w "\n---HTTP_CODE:%{http_code}---\n" \
+  -H "Authorization: Bearer $TOKEN" \
+  "https://api.navan.com/${ENDPOINT}?page=0&size=1" \
+  > "$BUNDLE_DIR/api/bookings-body.json" 2>&1
+echo "bookings: $(grep 'HTTP_CODE' "$BUNDLE_DIR/api/bookings-body.json")"
 ```
 
 ### Step 5 — Connectivity and DNS Tests
 
 ```bash
 curl -s -o /dev/null -w "connect_time: %{time_connect}\nttfb: %{time_starttransfer}\ntotal: %{time_total}\nhttp_code: %{http_code}\n" \
-  "https://app.navan.com/api/v1/authenticate" \
+  "https://api.navan.com/ta-auth/oauth/token" \
   > "$BUNDLE_DIR/connectivity/timing.txt"
 
-nslookup app.navan.com > "$BUNDLE_DIR/connectivity/dns.txt" 2>&1
+nslookup api.navan.com > "$BUNDLE_DIR/connectivity/dns.txt" 2>&1
 ```
 
 ### Step 6 — Sanitize and Package
@@ -130,7 +130,7 @@ Parse a specific error from the bundle:
 
 ```bash
 # Extract error details from a failed endpoint
-jq '.error, .message, .status' "$BUNDLE_DIR/api/get_users-body.json"
+jq '.error, .message, .status' "$BUNDLE_DIR/api/bookings-body.json"
 
 # Check if token is expired
 jq '.expires_at' "$BUNDLE_DIR/auth/token-response.json"

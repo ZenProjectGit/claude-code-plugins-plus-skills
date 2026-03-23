@@ -28,31 +28,32 @@ This skill covers data extraction and transformation patterns for Navan booking 
 
 ## Instructions
 
-### Step 1: Direct API — Paginated Trip Extraction
+### Step 1: Direct API — Paginated Booking Extraction
 
 ```typescript
-const tokenRes = await fetch(`${process.env.NAVAN_BASE_URL}/authenticate`, {
+const tokenRes = await fetch(`${process.env.NAVAN_BASE_URL}/ta-auth/oauth/token`, {
   method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    client_id: process.env.NAVAN_CLIENT_ID,
-    client_secret: process.env.NAVAN_CLIENT_SECRET,
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  body: new URLSearchParams({
+    grant_type: 'client_credentials',
+    client_id: process.env.NAVAN_CLIENT_ID!,
+    client_secret: process.env.NAVAN_CLIENT_SECRET!,
   }),
 });
 const { access_token } = await tokenRes.json();
 const headers = { Authorization: `Bearer ${access_token}` };
 
-// Paginate through all admin trips using date ranges
-async function extractAllTrips(startDate: string, endDate: string) {
-  const allTrips: any[] = [];
-  let offset = 0;
-  const limit = 100;
+// Paginate through all bookings using page + size params
+async function extractAllBookings(startDate: string, endDate: string) {
+  const allBookings: any[] = [];
+  let page = 0;
+  const size = 50;
 
   while (true) {
     const res = await fetch(
-      `${process.env.NAVAN_BASE_URL}/get_admin_trips` +
-      `?start_date=${startDate}&end_date=${endDate}` +
-      `&limit=${limit}&offset=${offset}`,
+      `${process.env.NAVAN_BASE_URL}/v1/bookings` +
+      `?createdFrom=${startDate}&createdTo=${endDate}` +
+      `&page=${page}&size=${size}`,
       { headers }
     );
 
@@ -63,18 +64,19 @@ async function extractAllTrips(startDate: string, endDate: string) {
       continue;
     }
 
-    const trips = await res.json();
-    if (!trips.length) break;
+    const { data } = await res.json();
+    if (!data || !data.length) break;
 
-    allTrips.push(...trips);
-    offset += limit;
-    console.log(`Fetched ${allTrips.length} trips...`);
+    allBookings.push(...data);
+    if (data.length < size) break; // last page
+    page++;
+    console.log(`Fetched ${allBookings.length} bookings...`);
   }
-  return allTrips;
+  return allBookings;
 }
 
-const trips = await extractAllTrips('2026-01-01', '2026-03-31');
-console.log(`Total trips extracted: ${trips.length}`);
+const bookings = await extractAllBookings('2026-01-01', '2026-03-31');
+console.log(`Total bookings extracted: ${bookings.length}`);
 ```
 
 ### Step 2: UUID-Based Deduplication
@@ -119,8 +121,8 @@ function* dateChunks(start: string, end: string, daysPerChunk: number) {
 
 // Extract in 30-day chunks
 for (const chunk of dateChunks('2025-01-01', '2026-03-31', 30)) {
-  const chunkTrips = await extractAllTrips(chunk.start, chunk.end);
-  console.log(`${chunk.start} to ${chunk.end}: ${chunkTrips.length} trips`);
+  const chunkBookings = await extractAllBookings(chunk.start, chunk.end);
+  console.log(`${chunk.start} to ${chunk.end}: ${chunkBookings.length} bookings`);
 }
 ```
 
@@ -220,7 +222,7 @@ Successful execution produces:
 
 | Error | HTTP Code | Cause | Solution |
 |-------|-----------|-------|----------|
-| Unauthorized | 401 | Expired or invalid bearer token | Re-authenticate via POST /authenticate |
+| Unauthorized | 401 | Expired or invalid bearer token | Re-authenticate via POST /ta-auth/oauth/token |
 | Forbidden | 403 | Insufficient API scope for admin endpoints | Verify admin-level credentials |
 | Rate Limited | 429 | Too many API requests | Use exponential backoff; chunk date ranges |
 | Timeout | 504 | Date range too large | Split into 30-day chunks |
@@ -236,8 +238,9 @@ import requests
 import time
 import os
 
-base_url = os.environ['NAVAN_BASE_URL']
-auth = requests.post(f'{base_url}/authenticate', json={
+base_url = os.environ.get('NAVAN_BASE_URL', 'https://api.navan.com')
+auth = requests.post(f'{base_url}/ta-auth/oauth/token', data={
+    'grant_type': 'client_credentials',
     'client_id': os.environ['NAVAN_CLIENT_ID'],
     'client_secret': os.environ['NAVAN_CLIENT_SECRET'],
 })
@@ -256,10 +259,12 @@ def extract_with_retry(endpoint, params, max_retries=3):
             res.raise_for_status()
     raise Exception(f'Failed after {max_retries} retries')
 
-trips = extract_with_retry('get_admin_trips', {
-    'start_date': '2026-01-01', 'end_date': '2026-03-31'
+# Records in .data array, paginated with page + size
+resp = extract_with_retry('v1/bookings', {
+    'createdFrom': '2026-01-01', 'createdTo': '2026-03-31', 'page': 0, 'size': 50
 })
-print(f'Extracted {len(trips)} trips')
+bookings = resp['data']
+print(f'Extracted {len(bookings)} bookings')
 ```
 
 ## Resources

@@ -41,12 +41,13 @@ The Expense Transaction API is not self-service. To enable it:
 ### Step 2: Authenticate
 
 ```typescript
-const tokenRes = await fetch(`${process.env.NAVAN_BASE_URL}/authenticate`, {
+const tokenRes = await fetch(`${process.env.NAVAN_BASE_URL}/ta-auth/oauth/token`, {
   method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    client_id: process.env.NAVAN_CLIENT_ID,
-    client_secret: process.env.NAVAN_CLIENT_SECRET,
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  body: new URLSearchParams({
+    grant_type: 'client_credentials',
+    client_id: process.env.NAVAN_CLIENT_ID!,
+    client_secret: process.env.NAVAN_CLIENT_SECRET!,
   }),
 });
 const { access_token } = await tokenRes.json();
@@ -57,12 +58,14 @@ const headers = { Authorization: `Bearer ${access_token}` };
 
 ```typescript
 // Expense transactions are incremental — use date ranges for efficient pulls
+// Note: The bookings endpoint is the primary data endpoint; expense data
+// may require separate enablement from Navan support
 const txnRes = await fetch(
-  `${process.env.NAVAN_BASE_URL}/get_expense_transactions` +
-  `?start_date=2026-03-01&end_date=2026-03-31`,
+  `${process.env.NAVAN_BASE_URL}/v1/bookings` +
+  `?createdFrom=2026-03-01&createdTo=2026-03-31&page=0&size=50`,
   { headers }
 );
-const transactions = await txnRes.json();
+const { data: transactions } = await txnRes.json();
 
 transactions.forEach((txn: any) => {
   console.log(`ID: ${txn.transaction_id}`);
@@ -169,7 +172,7 @@ Successful execution produces:
 
 | Error | HTTP Code | Cause | Solution |
 |-------|-----------|-------|----------|
-| Unauthorized | 401 | Expired or invalid bearer token | Re-authenticate via POST /authenticate |
+| Unauthorized | 401 | Expired or invalid bearer token | Re-authenticate via POST /ta-auth/oauth/token |
 | Forbidden | 403 | Expense API not enabled | Contact Navan support to enable Expense Transaction API |
 | Bad Request | 400 | Invalid date range or parameters | Verify date format is YYYY-MM-DD |
 | Rate Limited | 429 | Too many requests | Implement exponential backoff (start at 1s) |
@@ -185,18 +188,20 @@ import requests
 import os
 from collections import defaultdict
 
-base_url = os.environ['NAVAN_BASE_URL']
-auth = requests.post(f'{base_url}/authenticate', json={
+base_url = os.environ.get('NAVAN_BASE_URL', 'https://api.navan.com')
+auth = requests.post(f'{base_url}/ta-auth/oauth/token', data={
+    'grant_type': 'client_credentials',
     'client_id': os.environ['NAVAN_CLIENT_ID'],
     'client_secret': os.environ['NAVAN_CLIENT_SECRET'],
 })
 headers = {'Authorization': f'Bearer {auth.json()["access_token"]}'}
 
-txns = requests.get(
-    f'{base_url}/get_expense_transactions',
-    params={'start_date': '2026-03-01', 'end_date': '2026-03-31'},
+resp = requests.get(
+    f'{base_url}/v1/bookings',
+    params={'createdFrom': '2026-03-01', 'createdTo': '2026-03-31', 'page': 0, 'size': 50},
     headers=headers,
 ).json()
+txns = resp['data']
 
 # Category breakdown
 by_category = defaultdict(float)

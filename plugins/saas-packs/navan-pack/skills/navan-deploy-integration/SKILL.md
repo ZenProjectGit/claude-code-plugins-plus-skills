@@ -139,10 +139,10 @@ Each integration deployment produces:
 set -euo pipefail
 
 # Authenticate
-TOKEN=$(curl -sf -X POST https://api.navan.com/oauth2/token \
-  -d "grant_type=client_credentials" \
-  -d "client_id=${NAVAN_CLIENT_ID}" \
-  -d "client_secret=${NAVAN_CLIENT_SECRET}" | jq -r '.access_token')
+TOKEN=$(curl -sf -X POST https://api.navan.com/ta-auth/oauth/token \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=client_credentials&client_id=${NAVAN_CLIENT_ID}&client_secret=${NAVAN_CLIENT_SECRET}" \
+  | jq -r '.access_token')
 
 # Fetch yesterday's approved expenses
 YESTERDAY=$(date -d "yesterday" +%Y-%m-%d)

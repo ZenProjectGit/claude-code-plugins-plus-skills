@@ -31,19 +31,19 @@ Defensive patterns for maintaining Navan API integrations over time. Navan does 
 Store known-good API responses as reference schemas. Compare against these regularly to detect drift.
 
 ```bash
-TOKEN=$(curl -s -X POST "https://app.navan.com/api/v1/authenticate" \
-  -H "Content-Type: application/json" \
-  -d "{\"client_id\":\"$NAVAN_CLIENT_ID\",\"client_secret\":\"$NAVAN_CLIENT_SECRET\"}" \
-  | jq -r '.token')
+TOKEN=$(curl -s -X POST "https://api.navan.com/ta-auth/oauth/token" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=client_credentials&client_id=$NAVAN_CLIENT_ID&client_secret=$NAVAN_CLIENT_SECRET" \
+  | jq -r '.access_token')
 
 BASELINE_DIR="navan-api-baselines/$(date +%Y%m%d)"
 mkdir -p "$BASELINE_DIR"
 
 # Capture response structure (keys only, no values)
-for ENDPOINT in get_users get_user_trips get_admin_trips; do
+for ENDPOINT in users bookings; do
   curl -s -H "Authorization: Bearer $TOKEN" \
-    "https://app.navan.com/api/v1/${ENDPOINT}" \
-    | jq '[.[] | keys] | .[0]' > "$BASELINE_DIR/${ENDPOINT}-schema.json" 2>/dev/null
+    "https://api.navan.com/v1/${ENDPOINT}?page=0&size=1" \
+    | jq '[.data[] | keys] | .[0]' > "$BASELINE_DIR/${ENDPOINT}-schema.json" 2>/dev/null
   echo "Captured: $ENDPOINT → $(cat "$BASELINE_DIR/${ENDPOINT}-schema.json" | jq length) fields"
 done
 ```
@@ -55,10 +55,10 @@ Run this periodically (daily cron or CI pipeline) to detect API changes:
 ```bash
 LATEST_BASELINE=$(ls -d navan-api-baselines/*/ | sort | tail -1)
 
-for ENDPOINT in get_users get_user_trips get_admin_trips; do
+for ENDPOINT in users bookings; do
   CURRENT=$(curl -s -H "Authorization: Bearer $TOKEN" \
-    "https://app.navan.com/api/v1/${ENDPOINT}" \
-    | jq '[.[] | keys] | .[0]' 2>/dev/null)
+    "https://api.navan.com/v1/${ENDPOINT}?page=0&size=1" \
+    | jq '[.data[] | keys] | .[0]' 2>/dev/null)
 
   BASELINE=$(cat "${LATEST_BASELINE}${ENDPOINT}-schema.json" 2>/dev/null)
 
@@ -111,12 +111,12 @@ Check HTTP response headers for deprecation or sunset signals:
 # Capture and inspect response headers for deprecation notices
 curl -s -D - -o /dev/null \
   -H "Authorization: Bearer $TOKEN" \
-  "https://app.navan.com/api/v1/get_users" \
+  "https://api.navan.com/v1/users" \
   | grep -iE "deprecat|sunset|warning|x-api-version|x-deprecated"
 
 # Check response body for deprecation warnings
 curl -s -H "Authorization: Bearer $TOKEN" \
-  "https://app.navan.com/api/v1/get_users" \
+  "https://api.navan.com/v1/users" \
   | jq '{
     has_deprecation_warning: (._deprecated // .deprecated // .warning // null),
     has_version_header: (.api_version // ._api_version // null)
@@ -159,24 +159,24 @@ Run regression tests against live API responses on a schedule:
 FAILURES=0
 
 USERS_RESPONSE=$(curl -s -H "Authorization: Bearer $TOKEN" \
-  "https://app.navan.com/api/v1/get_users")
+  "https://api.navan.com/v1/users")
 
 # Check required fields exist
 for FIELD in id email; do
-  HAS_FIELD=$(echo "$USERS_RESPONSE" | jq ".[0] | has(\"$FIELD\")")
+  HAS_FIELD=$(echo "$USERS_RESPONSE" | jq ".data[0] | has(\"$FIELD\")")
   if [ "$HAS_FIELD" != "true" ]; then
-    echo "REGRESSION: /get_users missing required field: $FIELD"
+    echo "REGRESSION: /v1/users missing required field: $FIELD"
     FAILURES=$((FAILURES + 1))
   fi
 done
 
-TRIPS_RESPONSE=$(curl -s -H "Authorization: Bearer $TOKEN" \
-  "https://app.navan.com/api/v1/get_user_trips")
+BOOKINGS_RESPONSE=$(curl -s -H "Authorization: Bearer $TOKEN" \
+  "https://api.navan.com/v1/bookings?page=0&size=1")
 
-for FIELD in id status; do
-  HAS_FIELD=$(echo "$TRIPS_RESPONSE" | jq ".[0] | has(\"$FIELD\")")
+for FIELD in uuid; do
+  HAS_FIELD=$(echo "$BOOKINGS_RESPONSE" | jq ".data[0] | has(\"$FIELD\")")
   if [ "$HAS_FIELD" != "true" ]; then
-    echo "REGRESSION: /get_user_trips missing required field: $FIELD"
+    echo "REGRESSION: /v1/bookings missing required field: $FIELD"
     FAILURES=$((FAILURES + 1))
   fi
 done
@@ -196,7 +196,7 @@ When a schema change is detected:
 | Field removed | Critical | Identify impact, implement fallback, alert team |
 | Type changed (string to int) | High | Update parser, add type coercion |
 | Endpoint URL changed | Critical | Update client config, monitor old URL for redirect |
-| Auth flow changed | Critical | Immediate attention — test `/authenticate` and `/reauthenticate` |
+| Auth flow changed | Critical | Immediate attention — test `/ta-auth/oauth/token` |
 
 ## Output
 
@@ -214,7 +214,7 @@ When a schema change is detected:
 | Required field missing | Regression test failure | Roll back to cached data, alert team, open support ticket |
 | Response type changed | jq parse error | Add type checking, coerce if possible, alert if not |
 | Endpoint returns 404 | Health check failure | Check for URL changes, contact Navan support |
-| Auth endpoint behavior change | Token acquisition failure | Test `/authenticate` manually, check Admin > Integrations |
+| Auth endpoint behavior change | Token acquisition failure | Test `/ta-auth/oauth/token` manually, check Admin > Integrations |
 
 ## Examples
 
@@ -222,15 +222,15 @@ Quick schema health check:
 
 ```bash
 # One-liner: check if API response structure matches expectations
-TOKEN=$(curl -s -X POST "https://app.navan.com/api/v1/authenticate" \
-  -H "Content-Type: application/json" \
-  -d "{\"client_id\":\"$NAVAN_CLIENT_ID\",\"client_secret\":\"$NAVAN_CLIENT_SECRET\"}" \
-  | jq -r '.token')
+TOKEN=$(curl -s -X POST "https://api.navan.com/ta-auth/oauth/token" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=client_credentials&client_id=$NAVAN_CLIENT_ID&client_secret=$NAVAN_CLIENT_SECRET" \
+  | jq -r '.access_token')
 
 echo "Users fields: $(curl -s -H "Authorization: Bearer $TOKEN" \
-  "https://app.navan.com/api/v1/get_users" | jq '.[0] | keys | length') keys"
-echo "Trips fields: $(curl -s -H "Authorization: Bearer $TOKEN" \
-  "https://app.navan.com/api/v1/get_user_trips" | jq '.[0] | keys | length') keys"
+  "https://api.navan.com/v1/users" | jq '.data[0] | keys | length') keys"
+echo "Bookings fields: $(curl -s -H "Authorization: Bearer $TOKEN" \
+  "https://api.navan.com/v1/bookings?page=0&size=1" | jq '.data[0] | keys | length') keys"
 ```
 
 ## Resources

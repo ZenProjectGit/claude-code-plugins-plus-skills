@@ -34,24 +34,34 @@ This skill provides production-grade sync strategies for Navan data. The two pri
 The BOOKING table is re-imported weekly by Navan. Every record is refreshed, so your sync must use merge-upsert logic to avoid duplicates while capturing updates.
 
 ```typescript
-const tokenRes = await fetch(`${process.env.NAVAN_BASE_URL}/authenticate`, {
+const tokenRes = await fetch(`${process.env.NAVAN_BASE_URL}/ta-auth/oauth/token`, {
   method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    client_id: process.env.NAVAN_CLIENT_ID,
-    client_secret: process.env.NAVAN_CLIENT_SECRET,
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  body: new URLSearchParams({
+    grant_type: 'client_credentials',
+    client_id: process.env.NAVAN_CLIENT_ID!,
+    client_secret: process.env.NAVAN_CLIENT_SECRET!,
   }),
 });
 const { access_token } = await tokenRes.json();
 const headers = { Authorization: `Bearer ${access_token}` };
 
-// Full extraction — no date filter for weekly refresh
-const bookingsRes = await fetch(
-  `${process.env.NAVAN_BASE_URL}/get_admin_trips`,
-  { headers }
-);
-const bookings = await bookingsRes.json();
-console.log(`Extracted ${bookings.length} bookings for full refresh`);
+// Full extraction — paginate through all bookings for weekly refresh
+let allBookings: any[] = [];
+let page = 0;
+const size = 50;
+while (true) {
+  const res = await fetch(
+    `${process.env.NAVAN_BASE_URL}/v1/bookings?page=${page}&size=${size}`,
+    { headers }
+  );
+  const { data } = await res.json();
+  if (!data || !data.length) break;
+  allBookings.push(...data);
+  if (data.length < size) break;
+  page++;
+}
+console.log(`Extracted ${allBookings.length} bookings for full refresh`);
 ```
 
 **SQL merge-upsert pattern (PostgreSQL):**
@@ -118,16 +128,16 @@ async function saveSyncState(state: SyncState) {
   fs.writeFileSync('.navan-sync-state.json', JSON.stringify(state, null, 2));
 }
 
-// Pull transactions since last watermark
+// Pull bookings since last watermark
 const state = await loadSyncState();
 const today = new Date().toISOString().split('T')[0];
 
 const txnRes = await fetch(
-  `${process.env.NAVAN_BASE_URL}/get_expense_transactions` +
-  `?start_date=${state.lastSyncDate}&end_date=${today}`,
+  `${process.env.NAVAN_BASE_URL}/v1/bookings` +
+  `?createdFrom=${state.lastSyncDate}&createdTo=${today}&page=0&size=50`,
   { headers }
 );
-const transactions = await txnRes.json();
+const { data: transactions } = await txnRes.json();
 
 // Filter out already-seen transactions
 const newTxns = transactions.filter(
@@ -313,7 +323,7 @@ Successful execution produces:
 
 | Error | HTTP Code | Cause | Solution |
 |-------|-----------|-------|----------|
-| Unauthorized | 401 | Expired or invalid bearer token | Re-authenticate via POST /authenticate; use POST /reauthenticate |
+| Unauthorized | 401 | Expired or invalid bearer token | Re-authenticate via POST /ta-auth/oauth/token |
 | Rate Limited | 429 | Too many API requests | Use exponential backoff; increase sync interval |
 | Timeout | 504 | Full refresh too large | Chunk by date range (30-day windows) |
 | Webhook Sig Invalid | 401 | Tampered or replayed event | Verify NAVAN_WEBHOOK_SECRET; check clock skew |
@@ -330,8 +340,9 @@ import json
 import os
 from datetime import datetime
 
-base_url = os.environ['NAVAN_BASE_URL']
-auth = requests.post(f'{base_url}/authenticate', json={
+base_url = os.environ.get('NAVAN_BASE_URL', 'https://api.navan.com')
+auth = requests.post(f'{base_url}/ta-auth/oauth/token', data={
+    'grant_type': 'client_credentials',
     'client_id': os.environ['NAVAN_CLIENT_ID'],
     'client_secret': os.environ['NAVAN_CLIENT_SECRET'],
 })
@@ -345,13 +356,14 @@ except FileNotFoundError:
     state = {'last_sync_date': '2025-01-01'}
 
 today = datetime.now().strftime('%Y-%m-%d')
-txns = requests.get(
-    f'{base_url}/get_expense_transactions',
-    params={'start_date': state['last_sync_date'], 'end_date': today},
+resp = requests.get(
+    f'{base_url}/v1/bookings',
+    params={'createdFrom': state['last_sync_date'], 'createdTo': today, 'page': 0, 'size': 50},
     headers=headers,
 ).json()
+txns = resp['data']
 
-print(f'Fetched {len(txns)} transactions since {state["last_sync_date"]}')
+print(f'Fetched {len(txns)} records since {state["last_sync_date"]}')
 
 # Save updated watermark
 with open('.navan-sync-state.json', 'w') as f:

@@ -103,7 +103,7 @@ async function navanRequest(
 ```typescript
 async function refreshToken(clientId: string, clientSecret: string): Promise<string> {
   const start = performance.now();
-  const response = await fetch('https://api.navan.com/oauth2/token', {
+  const response = await fetch('https://api.navan.com/ta-auth/oauth/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({

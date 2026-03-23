@@ -43,8 +43,8 @@ my-navan-integration/
 │   └── index.ts            # Entry point
 ├── tests/
 │   ├── fixtures/           # Recorded API responses for offline dev
-│   │   ├── get_user_trips.json
-│   │   └── get_users.json
+│   │   ├── bookings.json
+│   │   └── users.json
 │   └── navan-client.test.ts
 ├── logs/                   # Request/response logs (gitignored)
 ├── .token-cache            # Cached OAuth token (gitignored)
@@ -60,7 +60,7 @@ Create `.env.example` as a safe template and enforce `.gitignore`:
 # .env.example — commit this file, NOT .env
 NAVAN_CLIENT_ID="your-client-id"
 NAVAN_CLIENT_SECRET="your-client-secret"
-NAVAN_BASE_URL="https://app.navan.com"
+NAVAN_BASE_URL="https://api.navan.com"
 NAVAN_LOG_REQUESTS="true"
 NAVAN_USE_FIXTURES="false"
 ```
@@ -74,7 +74,7 @@ echo "logs/" >> .gitignore
 
 ### Step 3: Token Cache Implementation
 
-Persist tokens to disk to avoid hitting `/authenticate` on every script run:
+Persist tokens to disk to avoid hitting `/ta-auth/oauth/token` on every script run:
 
 ```typescript
 // src/token-cache.ts
@@ -116,13 +116,13 @@ async function getNavanToken(): Promise<string> {
   const cached = getCachedToken();
   if (cached) return cached;
 
-  const response = await fetch(`${process.env.NAVAN_BASE_URL}/authenticate`, {
+  const response = await fetch(`${process.env.NAVAN_BASE_URL}/ta-auth/oauth/token`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      client_id: process.env.NAVAN_CLIENT_ID,
-      client_secret: process.env.NAVAN_CLIENT_SECRET,
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
       grant_type: 'client_credentials',
+      client_id: process.env.NAVAN_CLIENT_ID!,
+      client_secret: process.env.NAVAN_CLIENT_SECRET!,
     }),
   });
   if (!response.ok) throw new Error(`Auth failed: ${response.status}`);
@@ -171,9 +171,9 @@ logRequest('GET', url, response.status, Date.now() - start, body);
 Record real API responses and replay them during development:
 
 ```typescript
-// tests/fixtures/get_user_trips.json
+// tests/fixtures/bookings.json
 {
-  "trips": [
+  "data": [
     {
       "uuid": "trip-001-abc-def",
       "traveler_name": "Jane Smith",
@@ -244,7 +244,7 @@ const FIXTURE_DIR = 'tests/fixtures';
 mkdirSync(FIXTURE_DIR, { recursive: true });
 
 const token = await getNavanToken();
-const endpoints = ['/get_user_trips', '/get_users'];
+const endpoints = ['/v1/bookings?page=0&size=50', '/v1/users'];
 
 for (const endpoint of endpoints) {
   const response = await fetch(`${process.env.NAVAN_BASE_URL}${endpoint}`, {

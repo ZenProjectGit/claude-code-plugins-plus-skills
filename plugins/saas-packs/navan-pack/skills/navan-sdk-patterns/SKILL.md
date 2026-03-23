@@ -79,7 +79,7 @@ export class NavanAPI {
   private tokenExpiry: number = 0;
 
   constructor() {
-    this.baseUrl = process.env.NAVAN_BASE_URL ?? 'https://app.navan.com';
+    this.baseUrl = process.env.NAVAN_BASE_URL ?? 'https://api.navan.com';
     this.clientId = process.env.NAVAN_CLIENT_ID ?? '';
     this.clientSecret = process.env.NAVAN_CLIENT_SECRET ?? '';
     if (!this.clientId || !this.clientSecret) {
@@ -93,18 +93,18 @@ export class NavanAPI {
       return this.accessToken;
     }
 
-    const response = await fetch(`${this.baseUrl}/authenticate`, {
+    const response = await fetch(`${this.baseUrl}/ta-auth/oauth/token`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        grant_type: 'client_credentials',
         client_id: this.clientId,
         client_secret: this.clientSecret,
-        grant_type: 'client_credentials',
       }),
     });
 
     if (!response.ok) {
-      throw this.toApiError(response.status, 'Authentication failed', '/authenticate');
+      throw this.toApiError(response.status, 'Authentication failed', '/ta-auth/oauth/token');
     }
 
     const data = await response.json();
@@ -157,23 +157,14 @@ export class NavanAPI {
 
   // --- Public API methods ---
 
-  async getUserTrips(): Promise<NavanTrip[]> {
-    const data = await this.request<{ trips: NavanTrip[] }>('/get_user_trips');
-    return data.trips ?? [];
-  }
-
-  async getAdminTrips(): Promise<NavanTrip[]> {
-    const data = await this.request<{ trips: NavanTrip[] }>('/get_admin_trips');
-    return data.trips ?? [];
+  async getBookings(page = 0, size = 50): Promise<NavanTrip[]> {
+    const data = await this.request<{ data: NavanTrip[] }>(`/v1/bookings?page=${page}&size=${size}`);
+    return data.data ?? [];
   }
 
   async getUsers(): Promise<NavanUser[]> {
-    const data = await this.request<{ users: NavanUser[] }>('/get_users');
-    return data.users ?? [];
-  }
-
-  async refreshToken(): Promise<void> {
-    await this.request('/reauthenticate', { method: 'POST' });
+    const data = await this.request<{ data: NavanUser[] }>('/v1/users');
+    return data.data ?? [];
   }
 }
 ```
@@ -195,7 +186,7 @@ export function getNavanClient(): NavanAPI {
 
 // Usage
 const navan = getNavanClient();
-const trips = await navan.getUserTrips();
+const bookings = await navan.getBookings();
 const users = await navan.getUsers();
 ```
 
@@ -249,7 +240,7 @@ class NavanAPIError(Exception):
 
 class NavanAPI:
     def __init__(self):
-        self.base_url = os.environ.get("NAVAN_BASE_URL", "https://app.navan.com")
+        self.base_url = os.environ.get("NAVAN_BASE_URL", "https://api.navan.com")
         self.client_id = os.environ["NAVAN_CLIENT_ID"]
         self.client_secret = os.environ["NAVAN_CLIENT_SECRET"]
         self._token: str | None = None
@@ -258,10 +249,10 @@ class NavanAPI:
     def _authenticate(self) -> str:
         if self._token and time.time() < self._token_expiry:
             return self._token
-        resp = requests.post(f"{self.base_url}/authenticate", json={
+        resp = requests.post(f"{self.base_url}/ta-auth/oauth/token", data={
+            "grant_type": "client_credentials",
             "client_id": self.client_id,
             "client_secret": self.client_secret,
-            "grant_type": "client_credentials",
         })
         resp.raise_for_status()
         data = resp.json()
@@ -286,14 +277,11 @@ class NavanAPI:
             raise NavanAPIError(resp.status_code, resp.text, endpoint)
         raise NavanAPIError(0, "Max retries exceeded", endpoint)
 
-    def get_user_trips(self) -> list[dict]:
-        return self._request("GET", "/get_user_trips").get("trips", [])
-
-    def get_admin_trips(self) -> list[dict]:
-        return self._request("GET", "/get_admin_trips").get("trips", [])
+    def get_bookings(self, page: int = 0, size: int = 50) -> list[dict]:
+        return self._request("GET", f"/v1/bookings?page={page}&size={size}").get("data", [])
 
     def get_users(self) -> list[dict]:
-        return self._request("GET", "/get_users").get("users", [])
+        return self._request("GET", "/v1/users").get("data", [])
 ```
 
 ## Output
@@ -317,11 +305,11 @@ Successful implementation produces:
 
 ## Examples
 
-**Fetch all admin trips with error handling:**
+**Fetch all bookings with error handling:**
 
 ```typescript
 const navan = getNavanClient();
-const result = await safeCall(() => navan.getAdminTrips());
+const result = await safeCall(() => navan.getBookings());
 if (result.ok) {
   const flights = result.data.filter((t) => t.booking_type === 'flight');
   console.log(`${flights.length} flight bookings found`);

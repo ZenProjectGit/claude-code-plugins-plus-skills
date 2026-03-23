@@ -22,7 +22,7 @@ Navan has no SDK — all CI integration uses raw REST calls against `https://api
 - **Navan Admin access** to create OAuth 2.0 application credentials (Admin > API Settings)
 - **GitHub repo** with Actions enabled
 - **GitHub Secrets** configured: `NAVAN_CLIENT_ID`, `NAVAN_CLIENT_SECRET`
-- Navan API base URL: `https://api.navan.com/v1`
+- Navan API base URL: `https://api.navan.com`
 
 ## Instructions
 
@@ -49,7 +49,7 @@ jobs:
   navan-health:
     runs-on: ubuntu-latest
     env:
-      NAVAN_BASE_URL: https://api.navan.com/v1
+      NAVAN_BASE_URL: https://api.navan.com
     steps:
       - uses: actions/checkout@v4
 
@@ -57,7 +57,7 @@ jobs:
         id: auth
         run: |
           TOKEN_RESPONSE=$(curl -s -X POST \
-            https://api.navan.com/oauth2/token \
+            https://api.navan.com/ta-auth/oauth/token \
             -H "Content-Type: application/x-www-form-urlencoded" \
             -d "grant_type=client_credentials" \
             -d "client_id=${{ secrets.NAVAN_CLIENT_ID }}" \
@@ -72,38 +72,31 @@ jobs:
           echo "::add-mask::$ACCESS_TOKEN"
           echo "token=$ACCESS_TOKEN" >> "$GITHUB_OUTPUT"
 
-      - name: API Health Check
+      - name: API Health Check — Fetch Bookings
         run: |
-          HTTP_CODE=$(curl -s -o /tmp/health.json -w "%{http_code}" \
-            "$NAVAN_BASE_URL/users/me" \
+          HTTP_CODE=$(curl -s -o /tmp/bookings.json -w "%{http_code}" \
+            "$NAVAN_BASE_URL/v1/bookings?page=0&size=5" \
             -H "Authorization: Bearer ${{ steps.auth.outputs.token }}")
           echo "Health check status: $HTTP_CODE"
           if [ "$HTTP_CODE" != "200" ]; then
             echo "::error::API health check failed with HTTP $HTTP_CODE"
-            cat /tmp/health.json
+            cat /tmp/bookings.json
             exit 1
           fi
 
       - name: Validate Booking Data Schema
         run: |
-          HTTP_CODE=$(curl -s -o /tmp/bookings.json -w "%{http_code}" \
-            "$NAVAN_BASE_URL/bookings?limit=5&status=confirmed" \
-            -H "Authorization: Bearer ${{ steps.auth.outputs.token }}")
-          if [ "$HTTP_CODE" != "200" ]; then
-            echo "::error::Booking fetch failed with HTTP $HTTP_CODE"
-            exit 1
-          fi
-          # Validate expected fields exist in response
+          # Response structure: records in .data array, primary key uuid
           REQUIRED_FIELDS='["uuid","traveler","status","created_at"]'
           echo "$REQUIRED_FIELDS" | jq -r '.[]' | while read field; do
-            if ! jq -e ".[0].$field" /tmp/bookings.json > /dev/null 2>&1; then
+            if ! jq -e ".data[0].$field" /tmp/bookings.json > /dev/null 2>&1; then
               echo "::warning::Missing expected field: $field"
             fi
           done
 
       - name: Generate Compliance Report
         run: |
-          curl -s "$NAVAN_BASE_URL/reports/policy-compliance" \
+          curl -s "$NAVAN_BASE_URL/v1/bookings?page=0&size=50" \
             -H "Authorization: Bearer ${{ steps.auth.outputs.token }}" \
             -o /tmp/compliance.json
           echo "## Navan Compliance Report" >> "$GITHUB_STEP_SUMMARY"
@@ -118,16 +111,16 @@ jobs:
 # scripts/navan-smoke-test.sh — Run locally or in CI
 set -euo pipefail
 
-BASE_URL="${NAVAN_BASE_URL:-https://api.navan.com/v1}"
+BASE_URL="${NAVAN_BASE_URL:-https://api.navan.com}"
 
 # Obtain token
-TOKEN=$(curl -sf -X POST https://api.navan.com/oauth2/token \
-  -d "grant_type=client_credentials" \
-  -d "client_id=${NAVAN_CLIENT_ID}" \
-  -d "client_secret=${NAVAN_CLIENT_SECRET}" | jq -r '.access_token')
+TOKEN=$(curl -sf -X POST https://api.navan.com/ta-auth/oauth/token \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=client_credentials&client_id=${NAVAN_CLIENT_ID}&client_secret=${NAVAN_CLIENT_SECRET}" \
+  | jq -r '.access_token')
 
-# Test endpoints
-ENDPOINTS=("users/me" "bookings?limit=1" "expenses?limit=1")
+# Test endpoints (records returned in .data array)
+ENDPOINTS=("v1/bookings?page=0&size=1")
 FAILED=0
 for ep in "${ENDPOINTS[@]}"; do
   CODE=$(curl -s -o /dev/null -w "%{http_code}" \
@@ -177,7 +170,7 @@ jobs:
       - name: Check ${{ matrix.endpoint }}
         run: |
           CODE=$(curl -s -o /dev/null -w "%{http_code}" \
-            "https://api.navan.com/v1/${{ matrix.endpoint }}?limit=1" \
+            "https://api.navan.com/v1/${{ matrix.endpoint }}?page=0&size=1" \
             -H "Authorization: Bearer $TOKEN")
           [ "$CODE" = "200" ] || exit 1
 ```

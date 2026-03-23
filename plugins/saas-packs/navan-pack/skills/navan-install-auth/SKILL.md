@@ -43,7 +43,7 @@ Create a `.env` file in your project root:
 # .env — NEVER commit this file
 NAVAN_CLIENT_ID="your-client-id-here"
 NAVAN_CLIENT_SECRET="your-client-secret-here"
-NAVAN_BASE_URL="https://app.navan.com"
+NAVAN_BASE_URL="https://api.navan.com"
 ```
 
 Ensure `.env` is in your `.gitignore`:
@@ -70,13 +70,13 @@ interface TokenResponse {
 }
 
 async function getNavanToken(): Promise<string> {
-  const response = await fetch(`${process.env.NAVAN_BASE_URL}/authenticate`, {
+  const response = await fetch(`${process.env.NAVAN_BASE_URL}/ta-auth/oauth/token`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      client_id: process.env.NAVAN_CLIENT_ID,
-      client_secret: process.env.NAVAN_CLIENT_SECRET,
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
       grant_type: 'client_credentials',
+      client_id: process.env.NAVAN_CLIENT_ID!,
+      client_secret: process.env.NAVAN_CLIENT_SECRET!,
     }),
   });
 
@@ -110,11 +110,11 @@ load_dotenv()
 def get_navan_token() -> str:
     """Exchange client credentials for an OAuth 2.0 bearer token."""
     response = requests.post(
-        f"{os.environ['NAVAN_BASE_URL']}/authenticate",
-        json={
+        f"{os.environ['NAVAN_BASE_URL']}/ta-auth/oauth/token",
+        data={
+            "grant_type": "client_credentials",
             "client_id": os.environ["NAVAN_CLIENT_ID"],
             "client_secret": os.environ["NAVAN_CLIENT_SECRET"],
-            "grant_type": "client_credentials",
         },
     )
     response.raise_for_status()
@@ -129,15 +129,15 @@ print("Auth successful — token acquired")
 Make an authenticated API call to confirm credentials work:
 
 ```typescript
-const trips = await fetch(`${process.env.NAVAN_BASE_URL}/get_user_trips`, {
+const bookings = await fetch(`${process.env.NAVAN_BASE_URL}/v1/bookings?page=0&size=50`, {
   headers: { Authorization: `Bearer ${token}` },
 });
 
-if (trips.ok) {
-  const data = await trips.json();
-  console.log(`Connection verified — retrieved trip data`);
+if (bookings.ok) {
+  const { data } = await bookings.json();
+  console.log(`Connection verified — retrieved ${data.length} bookings`);
 } else {
-  console.error(`Verification failed: ${trips.status}`);
+  console.error(`Verification failed: ${bookings.status}`);
 }
 ```
 
@@ -155,7 +155,7 @@ Successful completion produces:
 | Invalid credentials | 401 | Wrong client_id or client_secret | Regenerate credentials in Admin > Integrations |
 | Insufficient permissions | 403 | Account lacks API access or wrong tier | Contact Navan support to enable API access |
 | Rate limited | 429 | Too many auth requests | Implement token caching (see navan-local-dev-loop) |
-| Endpoint not found | 404 | Wrong base URL or path | Verify NAVAN_BASE_URL is `https://app.navan.com` |
+| Endpoint not found | 404 | Wrong base URL or path | Verify NAVAN_BASE_URL is `https://api.navan.com` |
 | Server error | 500 | Navan service issue | Retry after 30 seconds; check Navan status page |
 | Service unavailable | 503 | Navan maintenance window | Wait and retry; check for scheduled maintenance |
 
@@ -165,9 +165,9 @@ Successful completion produces:
 
 ```bash
 # Quick credential test with curl
-curl -s -X POST https://app.navan.com/authenticate \
-  -H "Content-Type: application/json" \
-  -d "{\"client_id\":\"$NAVAN_CLIENT_ID\",\"client_secret\":\"$NAVAN_CLIENT_SECRET\",\"grant_type\":\"client_credentials\"}" \
+curl -s -X POST https://api.navan.com/ta-auth/oauth/token \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=client_credentials&client_id=$NAVAN_CLIENT_ID&client_secret=$NAVAN_CLIENT_SECRET" \
   | python3 -c "import sys,json; d=json.load(sys.stdin); print('OK' if 'access_token' in d else 'FAIL')"
 ```
 

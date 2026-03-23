@@ -22,96 +22,98 @@ This skill provides the complete travel booking workflow through the Navan REST 
 
 - Navan account with API credentials (client_id + client_secret)
 - Credentials created in Admin > Travel admin > Settings > Integrations > Navan API Credentials
-- OAuth 2.0 token obtained via POST /authenticate (see `navan-install-auth`)
+- OAuth 2.0 token obtained via POST `/ta-auth/oauth/token` (see `navan-install-auth`)
 - Node.js 18+ with `node-fetch` or Python 3.8+ with `requests`
 - Environment variables: `NAVAN_CLIENT_ID`, `NAVAN_CLIENT_SECRET`, `NAVAN_BASE_URL`
+- `NAVAN_BASE_URL` should be set to `https://api.navan.com`
 
 ## Instructions
 
 ### Step 1: Authenticate and Obtain Bearer Token
 
 ```typescript
-const tokenRes = await fetch(`${process.env.NAVAN_BASE_URL}/authenticate`, {
+const tokenRes = await fetch(`${process.env.NAVAN_BASE_URL}/ta-auth/oauth/token`, {
   method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    client_id: process.env.NAVAN_CLIENT_ID,
-    client_secret: process.env.NAVAN_CLIENT_SECRET,
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  body: new URLSearchParams({
+    grant_type: 'client_credentials',
+    client_id: process.env.NAVAN_CLIENT_ID!,
+    client_secret: process.env.NAVAN_CLIENT_SECRET!,
   }),
 });
 const { access_token } = await tokenRes.json();
 const headers = { Authorization: `Bearer ${access_token}` };
 ```
 
-### Step 2: Retrieve User Trips
+### Step 2: Retrieve Bookings
 
 ```typescript
-// GET /get_user_trips — returns trips for the authenticated user
-const tripsRes = await fetch(`${process.env.NAVAN_BASE_URL}/get_user_trips`, {
-  headers,
-});
-const trips = await tripsRes.json();
-
-trips.forEach((trip: any) => {
-  console.log(`UUID: ${trip.uuid}`);
-  console.log(`  Route: ${trip.origin} -> ${trip.destination}`);
-  console.log(`  Status: ${trip.status}`);
-  console.log(`  Dates: ${trip.start_date} to ${trip.end_date}`);
-});
-```
-
-### Step 3: Retrieve Admin Trips (All Employees)
-
-```typescript
-// GET /get_admin_trips — returns trips across the organization
-// Requires admin-level API credentials
-const adminTripsRes = await fetch(
-  `${process.env.NAVAN_BASE_URL}/get_admin_trips?start_date=2026-01-01&end_date=2026-03-31`,
+// GET /v1/bookings — returns booking records (paginated via page + size)
+// Response: records in .data array, primary key uuid
+const bookingsRes = await fetch(
+  `${process.env.NAVAN_BASE_URL}/v1/bookings?page=0&size=50`,
   { headers }
 );
-const adminTrips = await adminTripsRes.json();
-console.log(`Total org trips: ${adminTrips.length}`);
-```
+const { data: bookings } = await bookingsRes.json();
 
-### Step 4: Download Itinerary PDFs
-
-```typescript
-// GET /get_itineraries_pdf — download formatted itinerary documents
-const pdfRes = await fetch(
-  `${process.env.NAVAN_BASE_URL}/get_itineraries_pdf?trip_uuid=${trip.uuid}`,
-  { headers }
-);
-const pdfBuffer = await pdfRes.arrayBuffer();
-const fs = await import('fs');
-fs.writeFileSync(`itinerary-${trip.uuid}.pdf`, Buffer.from(pdfBuffer));
-console.log(`Saved itinerary for trip ${trip.uuid}`);
-```
-
-### Step 5: Retrieve Invoices
-
-```typescript
-// GET /get_invoices_poc — pull invoices for finance reconciliation
-const invoicesRes = await fetch(
-  `${process.env.NAVAN_BASE_URL}/get_invoices_poc?start_date=2026-01-01&end_date=2026-03-31`,
-  { headers }
-);
-const invoices = await invoicesRes.json();
-invoices.forEach((inv: any) => {
-  console.log(`Invoice: ${inv.invoice_id} | Amount: $${inv.total} | Date: ${inv.date}`);
+bookings.forEach((booking: any) => {
+  console.log(`UUID: ${booking.uuid}`);
+  console.log(`  Route: ${booking.origin} -> ${booking.destination}`);
+  console.log(`  Status: ${booking.status}`);
+  console.log(`  Dates: ${booking.start_date} to ${booking.end_date}`);
 });
 ```
 
-### Step 6: Token Refresh
+### Step 3: Retrieve Bookings with Date Filtering
 
 ```typescript
-// POST /reauthenticate — refresh an expired token
-const refreshRes = await fetch(`${process.env.NAVAN_BASE_URL}/reauthenticate`, {
+// GET /v1/bookings with createdFrom/createdTo for incremental pulls
+const filteredRes = await fetch(
+  `${process.env.NAVAN_BASE_URL}/v1/bookings?createdFrom=2026-01-01&createdTo=2026-03-31&page=0&size=50`,
+  { headers }
+);
+const { data: filteredBookings } = await filteredRes.json();
+console.log(`Total bookings in range: ${filteredBookings.length}`);
+```
+
+### Step 4: Paginate Through All Bookings
+
+```typescript
+// Paginate using page + size query params (start from page 0, page_size 50)
+async function getAllBookings(): Promise<any[]> {
+  const allBookings: any[] = [];
+  let page = 0;
+  const size = 50;
+
+  while (true) {
+    const res = await fetch(
+      `${process.env.NAVAN_BASE_URL}/v1/bookings?page=${page}&size=${size}`,
+      { headers }
+    );
+    const { data } = await res.json();
+    if (!data || data.length === 0) break;
+    allBookings.push(...data);
+    if (data.length < size) break; // last page
+    page++;
+  }
+  return allBookings;
+}
+
+const allBookings = await getAllBookings();
+console.log(`Total bookings: ${allBookings.length}`);
+```
+
+### Step 5: Token Refresh
+
+```typescript
+// Re-authenticate by requesting a new token (same client_credentials flow)
+const refreshRes = await fetch(`${process.env.NAVAN_BASE_URL}/ta-auth/oauth/token`, {
   method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    client_id: process.env.NAVAN_CLIENT_ID,
-    client_secret: process.env.NAVAN_CLIENT_SECRET,
-    access_token: access_token,  // current (possibly expired) token
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  body: new URLSearchParams({
+    grant_type: 'client_credentials',
+    client_id: process.env.NAVAN_CLIENT_ID!,
+    client_secret: process.env.NAVAN_CLIENT_SECRET!,
   }),
 });
 const refreshed = await refreshRes.json();
@@ -121,17 +123,17 @@ console.log('Token refreshed successfully');
 ## Output
 
 Successful execution returns:
-- Trip objects with UUID primary keys, origin/destination, dates, and status
-- PDF itinerary documents saved to local filesystem
-- Invoice records with amounts, dates, and reconciliation IDs
+- Booking objects in `.data` array with UUID primary keys, origin/destination, dates, and status
+- Paginated results using `page` + `size` query params
+- Incremental filtering via `createdFrom` / `createdTo` params
 
 ## Error Handling
 
 | Error | HTTP Code | Cause | Solution |
 |-------|-----------|-------|----------|
-| Unauthorized | 401 | Expired or invalid bearer token | Re-authenticate via POST /authenticate |
-| Forbidden | 403 | Insufficient API scope | Verify admin credentials for /get_admin_trips |
-| Not Found | 404 | Invalid trip UUID | Confirm UUID exists via /get_user_trips |
+| Unauthorized | 401 | Expired or invalid bearer token | Re-authenticate via POST /ta-auth/oauth/token |
+| Forbidden | 403 | Insufficient API scope | Verify credentials have correct permissions |
+| Not Found | 404 | Invalid endpoint or UUID | Confirm endpoint path starts with /v1/ |
 | Rate Limited | 429 | Too many requests | Implement exponential backoff (start at 1s) |
 | Server Error | 500 | Navan platform issue | Retry with backoff; check Navan status page |
 
@@ -143,25 +145,26 @@ Successful execution returns:
 import requests
 import os
 
-base_url = os.environ['NAVAN_BASE_URL']
+base_url = os.environ.get('NAVAN_BASE_URL', 'https://api.navan.com')
 
-# Authenticate
-auth = requests.post(f'{base_url}/authenticate', json={
+# Authenticate (form-encoded, not JSON)
+auth = requests.post(f'{base_url}/ta-auth/oauth/token', data={
+    'grant_type': 'client_credentials',
     'client_id': os.environ['NAVAN_CLIENT_ID'],
     'client_secret': os.environ['NAVAN_CLIENT_SECRET'],
 })
 token = auth.json()['access_token']
 headers = {'Authorization': f'Bearer {token}'}
 
-# Get admin trips for Q1
-trips = requests.get(
-    f'{base_url}/get_admin_trips',
-    params={'start_date': '2026-01-01', 'end_date': '2026-03-31'},
+# Get bookings for Q1 (records in .data array)
+resp = requests.get(
+    f'{base_url}/v1/bookings',
+    params={'createdFrom': '2026-01-01', 'createdTo': '2026-03-31', 'page': 0, 'size': 50},
     headers=headers,
 ).json()
 
-for trip in trips:
-    print(f"{trip['uuid']}: {trip['origin']} -> {trip['destination']}")
+for booking in resp['data']:
+    print(f"{booking['uuid']}: {booking.get('origin')} -> {booking.get('destination')}")
 ```
 
 ## Resources

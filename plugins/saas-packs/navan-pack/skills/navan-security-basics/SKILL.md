@@ -31,7 +31,7 @@ Navan holds SOC 1 Type II, SOC 2 Type II, ISO 27001, PCI DSS Level 1, GDPR, CSA,
 cat > .env << 'EOF'
 NAVAN_CLIENT_ID=your-client-id
 NAVAN_CLIENT_SECRET=your-client-secret
-NAVAN_TOKEN_URL=https://api.navan.com/v1/oauth/token
+NAVAN_TOKEN_URL=https://api.navan.com/ta-auth/oauth/token
 EOF
 
 # Ensure .env is gitignored

@@ -60,15 +60,15 @@ End-to-end migration playbook for moving from SAP Concur or legacy travel manage
 **Verify provisioned users via API:**
 
 ```bash
-TOKEN=$(curl -s -X POST "https://app.navan.com/api/v1/authenticate" \
-  -H "Content-Type: application/json" \
-  -d "{\"client_id\":\"$NAVAN_CLIENT_ID\",\"client_secret\":\"$NAVAN_CLIENT_SECRET\"}" \
-  | jq -r '.token')
+TOKEN=$(curl -s -X POST "https://api.navan.com/ta-auth/oauth/token" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=client_credentials&client_id=$NAVAN_CLIENT_ID&client_secret=$NAVAN_CLIENT_SECRET" \
+  | jq -r '.access_token')
 
 # Count provisioned users
 curl -s -H "Authorization: Bearer $TOKEN" \
-  "https://app.navan.com/api/v1/get_users" \
-  | jq '{total: length, sample: [.[:3][] | {email, status}]}'
+  "https://api.navan.com/v1/users" \
+  | jq '{total: (.data | length), sample: [.data[:3][] | {email, status}]}'
 ```
 
 ### Phase 3 — Policy Recreation (Weeks 3-4)
@@ -100,8 +100,8 @@ Run both systems simultaneously to validate the migration:
 ```bash
 # Monitor booking volume in Navan during parallel run
 curl -s -H "Authorization: Bearer $TOKEN" \
-  "https://app.navan.com/api/v1/get_admin_trips" \
-  | jq '{total_bookings: length, this_week: [.[] | select(.created_at > "'"$(date -d '7 days ago' +%Y-%m-%d)"'")] | length}'
+  "https://api.navan.com/v1/bookings?page=0&size=50&createdFrom=$(date -d '7 days ago' +%Y-%m-%d)" \
+  | jq '{total_bookings: (.data | length)}'
 ```
 
 **Reconciliation checks:**
@@ -169,18 +169,18 @@ Quick migration readiness assessment:
 ```bash
 # Verify Navan API access and user count
 echo "=== Migration Readiness Check ==="
-TOKEN=$(curl -s -X POST "https://app.navan.com/api/v1/authenticate" \
-  -H "Content-Type: application/json" \
-  -d "{\"client_id\":\"$NAVAN_CLIENT_ID\",\"client_secret\":\"$NAVAN_CLIENT_SECRET\"}" \
-  | jq -r '.token')
+TOKEN=$(curl -s -X POST "https://api.navan.com/ta-auth/oauth/token" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=client_credentials&client_id=$NAVAN_CLIENT_ID&client_secret=$NAVAN_CLIENT_SECRET" \
+  | jq -r '.access_token')
 
 echo "API Auth: $([ -n "$TOKEN" ] && echo 'OK' || echo 'FAILED')"
 USERS=$(curl -s -H "Authorization: Bearer $TOKEN" \
-  "https://app.navan.com/api/v1/get_users" | jq 'length')
+  "https://api.navan.com/v1/users" | jq '.data | length')
 echo "Provisioned users: $USERS"
-TRIPS=$(curl -s -H "Authorization: Bearer $TOKEN" \
-  "https://app.navan.com/api/v1/get_admin_trips" | jq 'length')
-echo "Total bookings: $TRIPS"
+BOOKINGS=$(curl -s -H "Authorization: Bearer $TOKEN" \
+  "https://api.navan.com/v1/bookings?page=0&size=50" | jq '.data | length')
+echo "Total bookings: $BOOKINGS"
 ```
 
 ## Resources

@@ -33,18 +33,19 @@ Pull booking data to identify where money is being lost:
 
 ```bash
 # Authenticate
-ACCESS_TOKEN=$(curl -sf -X POST https://api.navan.com/oauth2/token \
-  -d "grant_type=client_credentials" \
-  -d "client_id=${NAVAN_CLIENT_ID}" \
-  -d "client_secret=${NAVAN_CLIENT_SECRET}" | jq -r '.access_token')
+ACCESS_TOKEN=$(curl -sf -X POST https://api.navan.com/ta-auth/oauth/token \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=client_credentials&client_id=${NAVAN_CLIENT_ID}&client_secret=${NAVAN_CLIENT_SECRET}" \
+  | jq -r '.access_token')
 
-# Fetch last 90 days of bookings for analysis
-curl -s "https://api.navan.com/v1/bookings?created_after=2026-01-01T00:00:00Z&limit=100" \
+# Fetch last 90 days of bookings for analysis (page + size pagination)
+curl -s "https://api.navan.com/v1/bookings?createdFrom=2026-01-01&page=0&size=50" \
   -H "Authorization: Bearer ${ACCESS_TOKEN}" \
   -o bookings.json
 
 # Analyze: average booking lead time (days before travel)
-jq '[.[] | ((.departure_date | fromdate) - (.created_at | fromdate)) / 86400] | add / length' \
+# Response structure: records in .data array
+jq '[.data[] | ((.departure_date | fromdate) - (.created_at | fromdate)) / 86400] | add / length' \
   bookings.json
 # Target: 14+ days average lead time for maximum savings
 ```
@@ -61,12 +62,12 @@ interface BookingAnalysis {
 
 async function analyzeSpend(token: string): Promise<BookingAnalysis> {
   const response = await fetch(
-    'https://api.navan.com/v1/bookings?status=completed&limit=100',
+    'https://api.navan.com/v1/bookings?page=0&size=50',
     { headers: { 'Authorization': `Bearer ${token}` } }
   );
 
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
-  const bookings = await response.json();
+  const { data: bookings } = await response.json();
 
   const routeMap = new Map<string, { spend: number; trips: number }>();
   let totalSpend = 0;
@@ -113,20 +114,12 @@ Set up travel policies in Navan Admin > Policies with these recommended tiers:
 
 ```bash
 # Check if negotiated rates are being utilized
-curl -s "https://api.navan.com/v1/bookings?has_negotiated_rate=true&limit=50" \
+curl -s "https://api.navan.com/v1/bookings?page=0&size=50" \
   -H "Authorization: Bearer ${ACCESS_TOKEN}" | \
   jq '{
-    total_with_negotiated: length,
-    savings: [.[].negotiated_savings] | add,
-    avg_savings_per_booking: ([.[].negotiated_savings] | add) / length
-  }'
-
-# Compare to bookings that missed negotiated rates
-curl -s "https://api.navan.com/v1/bookings?has_negotiated_rate=false&limit=50" \
-  -H "Authorization: Bearer ${ACCESS_TOKEN}" | \
-  jq '{
-    total_without_negotiated: length,
-    top_missed_hotels: [.[].hotel_name] | group_by(.) | map({name: .[0], count: length}) | sort_by(-.count) | .[0:5]
+    total_bookings: (.data | length),
+    bookings_with_negotiated: [.data[] | select(.negotiated_savings != null)] | length,
+    total_savings: [.data[].negotiated_savings // 0] | add
   }'
 ```
 
@@ -136,12 +129,11 @@ Upload negotiated rates in Navan Admin > Rates. Navan automatically surfaces the
 
 ```bash
 # Identify unused or partially used tickets
-curl -s "https://api.navan.com/v1/bookings?status=cancelled&refund_status=credit" \
+curl -s "https://api.navan.com/v1/bookings?page=0&size=50" \
   -H "Authorization: Bearer ${ACCESS_TOKEN}" | \
   jq '{
-    unused_tickets: length,
-    total_credit_value: [.[].credit_amount] | add,
-    expiring_soon: [.[] | select((.credit_expiry | fromdate) < (now + 2592000))] | length
+    cancelled: [.data[] | select(.status == "cancelled")] | length,
+    total_credit_value: [.data[] | select(.status == "cancelled") | .credit_amount // 0] | add
   }'
 # Credits expiring within 30 days should be rebooked or refunded
 ```

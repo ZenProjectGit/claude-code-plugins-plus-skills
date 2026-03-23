@@ -118,7 +118,7 @@ class NavanClient {
   }
 
   private async authenticate(): Promise<string> {
-    const res = await fetch(`${this.config.apiBase}/oauth/token`, {
+    const res = await fetch('https://api.navan.com/ta-auth/oauth/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
@@ -204,7 +204,7 @@ const mockData = {
 };
 
 // OAuth token endpoint
-mock.post('/v1/oauth/token', (req, res) => {
+mock.post('/ta-auth/oauth/token', (req, res) => {
   res.json({ access_token: 'mock-token-ci', expires_in: 3600, token_type: 'Bearer' });
 });
 
