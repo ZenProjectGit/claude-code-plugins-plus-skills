@@ -2,33 +2,40 @@
 name: sentry-sdk-patterns
 description: |
   Best practices for using Sentry SDK in TypeScript and Python.
-  Use when implementing error handling patterns, structuring Sentry code,
-  or optimizing SDK usage.
-  Trigger with phrases like "sentry best practices", "sentry patterns",
-  "sentry sdk usage", "sentry code structure".
+  Use when implementing structured error context with scopes, breadcrumb
+  strategies, beforeSend/beforeBreadcrumb filtering, custom fingerprinting,
+  user context, or performance span creation.
+  Trigger: "sentry best practices", "sentry patterns", "sentry sdk usage",
+  "sentry scope", "sentry breadcrumbs", "sentry beforeSend", "sentry fingerprint".
 allowed-tools: Read, Write, Edit, Grep
 version: 1.0.0
 license: MIT
 author: Jeremy Longshore <jeremy@intentsolutions.io>
 compatible-with: claude-code, codex, openclaw
-tags: [saas, sentry, python, typescript, best-practices]
-
+tags: [saas, sentry, python, typescript, best-practices, error-handling]
 ---
+
 # Sentry SDK Patterns
 
+## Overview
+
+Production patterns for `@sentry/node` (v8+) and `sentry-sdk` (Python 2.x+) covering scoped error context, breadcrumb strategies, event filtering with `beforeSend`, custom fingerprinting for issue grouping, and performance instrumentation with spans. All examples use real Sentry SDK APIs.
+
 ## Prerequisites
-- Sentry SDK v8 installed and initialized
-- Understanding of async/await patterns
-- Familiarity with error handling in TypeScript or Python
+
+- Sentry SDK v8+ installed (`@sentry/node`, `@sentry/react`, or `sentry-sdk`)
+- `SENTRY_DSN` environment variable configured
+- Familiarity with async/await (TypeScript) or context managers (Python)
 
 ## Instructions
 
-### 1. Centralized Error Handler Module
+### Step 1 -- Structured Error Context with Scopes
 
-Create a single module that wraps all Sentry interactions:
+Use `Sentry.withScope()` (TypeScript) or `sentry_sdk.new_scope()` (Python) to attach context to individual events without leaking state across requests.
+
+**TypeScript -- Scoped error capture:**
 
 ```typescript
-// lib/error-handler.ts
 import * as Sentry from '@sentry/node';
 
 type ErrorSeverity = 'low' | 'medium' | 'high' | 'critical';
@@ -57,15 +64,12 @@ export function captureError(error: Error, options: ErrorOptions = {}) {
         scope.setTag(key, value);
       });
     }
-
     if (options.context) {
       scope.setContext('app', options.context);
     }
-
     if (options.user) {
       scope.setUser(options.user);
     }
-
     if (options.fingerprint) {
       scope.setFingerprint(options.fingerprint);
     }
@@ -73,89 +77,34 @@ export function captureError(error: Error, options: ErrorOptions = {}) {
     Sentry.captureException(error);
   });
 }
-
-export function captureMessage(
-  message: string,
-  level: Sentry.SeverityLevel = 'info',
-  tags?: Record<string, string>
-) {
-  Sentry.withScope((scope) => {
-    if (tags) {
-      Object.entries(tags).forEach(([k, v]) => scope.setTag(k, v));
-    }
-    Sentry.captureMessage(message, level);
-  });
-}
 ```
 
-### 2. Framework Error Boundaries
+**Python -- Scoped error capture:**
 
-**Express middleware pattern:**
-```typescript
-// middleware/sentry-error.ts
-import * as Sentry from '@sentry/node';
-import { Request, Response, NextFunction } from 'express';
+```python
+import sentry_sdk
 
-export function sentryRequestContext(req: Request, res: Response, next: NextFunction) {
-  Sentry.setUser({
-    id: req.user?.id,
-    ip_address: req.ip,
-  });
-
-  Sentry.setTag('route', req.route?.path || req.path);
-  Sentry.setTag('method', req.method);
-
-  Sentry.addBreadcrumb({
-    category: 'http',
-    message: `${req.method} ${req.path}`,
-    data: { query: req.query, params: req.params },
-  });
-
-  next();
-}
-
-// Register AFTER routes, BEFORE Sentry error handler
-export function applicationErrorHandler(
-  err: Error,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  Sentry.withScope((scope) => {
-    scope.setContext('request', {
-      method: req.method,
-      url: req.originalUrl,
-      params: req.params,
-      query: req.query,
-    });
-    Sentry.captureException(err);
-  });
-  next(err);
-}
+def capture_error(error, severity="error", tags=None, context=None, user=None):
+    """Capture exception with isolated scope context."""
+    with sentry_sdk.new_scope() as scope:
+        scope.set_level(severity)
+        if tags:
+            for key, value in tags.items():
+                scope.set_tag(key, value)
+        if context:
+            scope.set_context("app", context)
+        if user:
+            scope.set_user(user)
+        sentry_sdk.capture_exception(error)
 ```
 
-**React Error Boundary (browser):**
-```tsx
-import * as Sentry from '@sentry/react';
+**Key rule:** Never call `Sentry.setTag()` or `sentry_sdk.set_tag()` at the module level inside request handlers. Those mutate the global scope and leak between concurrent requests. Always use `withScope()` or `new_scope()`.
 
-// Sentry v8 provides a built-in error boundary
-const SentryErrorBoundary = Sentry.withErrorBoundary(App, {
-  fallback: ({ error, resetError }) => (
-    <div>
-      <h2>Something went wrong</h2>
-      <button onClick={resetError}>Try again</button>
-    </div>
-  ),
-  beforeCapture: (scope) => {
-    scope.setTag('location', 'error-boundary');
-  },
-});
-```
+### Step 2 -- Breadcrumbs, Filtering, and Fingerprints
 
-### 3. Structured Breadcrumb Strategy
+#### Structured breadcrumb helpers
 
 ```typescript
-// lib/breadcrumbs.ts
 import * as Sentry from '@sentry/node';
 
 export const breadcrumb = {
@@ -167,12 +116,12 @@ export const breadcrumb = {
     });
   },
 
-  db(operation: string, table: string, duration?: number) {
+  db(operation: string, table: string, durationMs?: number) {
     Sentry.addBreadcrumb({
       category: 'db',
       message: `${operation} on ${table}`,
       level: 'info',
-      data: { table, operation, ...(duration && { duration_ms: duration }) },
+      data: { table, operation, ...(durationMs && { duration_ms: durationMs }) },
     });
   },
 
@@ -184,80 +133,166 @@ export const breadcrumb = {
       data: { method, url, status_code: status },
     });
   },
-
-  business(action: string, data?: Record<string, unknown>) {
-    Sentry.addBreadcrumb({
-      category: 'business',
-      message: action,
-      level: 'info',
-      data,
-    });
-  },
 };
-
-// Usage
-breadcrumb.auth('login', user.id);
-breadcrumb.db('SELECT', 'users', 12);
-breadcrumb.http('POST', '/api/orders', 201);
-breadcrumb.business('Order placed', { orderId, total });
 ```
 
-### 4. Async Error Handling Patterns
-
-```typescript
-// Pattern: wrap async route handlers
-function asyncHandler(fn: (req: Request, res: Response) => Promise<void>) {
-  return (req: Request, res: Response, next: NextFunction) => {
-    fn(req, res).catch((error) => {
-      Sentry.captureException(error);
-      next(error);
-    });
-  };
-}
-
-app.get('/api/data', asyncHandler(async (req, res) => {
-  const data = await fetchData();
-  res.json(data);
-}));
-
-// Pattern: concurrent operations with error isolation
-async function processItems(items: Item[]) {
-  const results = await Promise.allSettled(
-    items.map((item) =>
-      Sentry.startSpan({ name: `process.${item.type}`, op: 'task' }, () =>
-        processItem(item)
-      )
-    )
-  );
-
-  const failures = results.filter(
-    (r): r is PromiseRejectedResult => r.status === 'rejected'
-  );
-
-  if (failures.length > 0) {
-    Sentry.captureMessage(`${failures.length}/${items.length} items failed`, 'warning');
-    failures.forEach((f) => Sentry.captureException(f.reason));
-  }
-}
-```
-
-### 5. Python SDK Patterns
+**Python breadcrumbs:**
 
 ```python
-# lib/sentry_utils.py
+sentry_sdk.add_breadcrumb(
+    category="auth", message="User logged in",
+    level="info", data={"user_id": user_id, "method": "oauth"},
+)
+```
+
+#### beforeSend -- Drop noise, scrub PII
+
+```typescript
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  beforeSend(event, hint) {
+    const error = hint?.originalException;
+    // Drop non-actionable errors
+    if (error instanceof Error) {
+      if (error.message.includes('ResizeObserver loop')) return null;
+      if (error.message.includes('Network request failed')) return null;
+    }
+    // Scrub PII from user context
+    if (event.user) {
+      delete event.user.ip_address;
+      delete event.user.email;
+    }
+    return event;
+  },
+});
+```
+
+**Python beforeSend:**
+
+```python
+def before_send(event, hint):
+    if "exc_info" in hint:
+        exc_type, exc_value, tb = hint["exc_info"]
+        if isinstance(exc_value, (KeyboardInterrupt, SystemExit)):
+            return None
+    if "user" in event:
+        event["user"].pop("email", None)
+        event["user"].pop("ip_address", None)
+    return event
+
+sentry_sdk.init(dsn=os.environ["SENTRY_DSN"], before_send=before_send)
+```
+
+#### beforeBreadcrumb -- Filter noisy breadcrumbs
+
+```typescript
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  beforeBreadcrumb(breadcrumb, hint) {
+    // Drop console.log breadcrumbs in production
+    if (breadcrumb.category === 'console' && breadcrumb.level === 'log') {
+      return null;
+    }
+    // Redact auth tokens from HTTP breadcrumbs
+    if (breadcrumb.category === 'fetch' && breadcrumb.data?.url) {
+      const url = new URL(breadcrumb.data.url);
+      url.searchParams.delete('token');
+      breadcrumb.data.url = url.toString();
+    }
+    return breadcrumb;
+  },
+});
+```
+
+#### Custom fingerprints for issue grouping
+
+Override default stack-trace grouping when the same root cause produces different stacks:
+
+```typescript
+Sentry.withScope((scope) => {
+  // Group all payment gateway timeouts together
+  scope.setFingerprint(['payment-gateway-timeout', gatewayName]);
+  Sentry.captureException(error);
+});
+```
+
+```python
+with sentry_sdk.new_scope() as scope:
+    scope.fingerprint = ["payment-gateway-timeout", gateway_name]
+    sentry_sdk.capture_exception(error)
+```
+
+### Step 3 -- Framework Integration and Performance Spans
+
+#### Express middleware (Sentry v8)
+
+```typescript
+import * as Sentry from '@sentry/node';
+import express from 'express';
+
+const app = express();
+
+// Sentry v8: register error handler
+Sentry.setupExpressErrorHandler(app);
+
+// Request context middleware (register BEFORE routes)
+app.use((req, res, next) => {
+  Sentry.setUser({ id: req.user?.id, ip_address: req.ip });
+  Sentry.addBreadcrumb({
+    category: 'http',
+    message: `${req.method} ${req.path}`,
+    data: { query: req.query, params: req.params },
+  });
+  next();
+});
+```
+
+#### React Error Boundary
+
+```tsx
+import * as Sentry from '@sentry/react';
+
+const SentryErrorBoundary = Sentry.withErrorBoundary(App, {
+  fallback: ({ error, resetError }) => (
+    <div>
+      <h2>Something went wrong</h2>
+      <button onClick={resetError}>Try again</button>
+    </div>
+  ),
+  beforeCapture: (scope) => {
+    scope.setTag('location', 'error-boundary');
+    scope.setLevel('fatal');
+  },
+});
+```
+
+#### Performance spans (TypeScript)
+
+```typescript
+async function processOrder(orderId: string) {
+  return Sentry.startSpan(
+    { name: 'processOrder', op: 'task', attributes: { orderId } },
+    async (span) => {
+      const order = await Sentry.startSpan(
+        { name: 'db.getOrder', op: 'db.query' },
+        () => db.orders.findById(orderId),
+      );
+      await Sentry.startSpan(
+        { name: 'payment.charge', op: 'http.client' },
+        () => chargePayment(order),
+      );
+      span.setStatus({ code: 1, message: 'ok' });
+      return order;
+    },
+  );
+}
+```
+
+#### Performance spans (Python)
+
+```python
 import sentry_sdk
 from functools import wraps
-
-def capture_error(error, severity="error", tags=None, context=None):
-    """Centralized error capture with context."""
-    with sentry_sdk.new_scope() as scope:
-        scope.set_level(severity)
-        if tags:
-            for key, value in tags.items():
-                scope.set_tag(key, value)
-        if context:
-            scope.set_context("app", context)
-        sentry_sdk.capture_exception(error)
 
 def sentry_traced(op="function"):
     """Decorator to wrap functions in Sentry spans."""
@@ -269,72 +304,88 @@ def sentry_traced(op="function"):
         return wrapper
     return decorator
 
-# Usage
 @sentry_traced(op="db.query")
 def get_user(user_id: str):
     return db.users.find_one({"_id": user_id})
-
-# Django middleware
-class SentryUserMiddleware:
-    def __init__(self, get_response):
-        self.get_response = get_response
-
-    def __call__(self, request):
-        if hasattr(request, "user") and request.user.is_authenticated:
-            sentry_sdk.set_user({
-                "id": str(request.user.id),
-                "email": request.user.email,
-            })
-        return self.get_response(request)
 ```
 
-### 6. Testing Sentry Integration
+#### Async batch processing with error isolation
 
 ```typescript
-// Mocking Sentry in tests
-import * as Sentry from '@sentry/node';
-
-vi.mock('@sentry/node', () => ({
-  captureException: vi.fn(),
-  captureMessage: vi.fn(),
-  withScope: vi.fn((cb) => cb({
-    setTag: vi.fn(),
-    setContext: vi.fn(),
-    setUser: vi.fn(),
-    setLevel: vi.fn(),
-    setFingerprint: vi.fn(),
-  })),
-  addBreadcrumb: vi.fn(),
-  setUser: vi.fn(),
-  setTag: vi.fn(),
-}));
-
-it('captures payment errors with correct context', async () => {
-  await processPayment({ amount: -1 });
-  expect(Sentry.captureException).toHaveBeenCalledWith(
-    expect.objectContaining({ message: expect.stringContaining('Invalid amount') })
+async function processItems(items: Item[]) {
+  const results = await Promise.allSettled(
+    items.map((item) =>
+      Sentry.startSpan({ name: `process.${item.type}`, op: 'task' }, () =>
+        processItem(item),
+      ),
+    ),
   );
-});
+
+  const failures = results.filter(
+    (r): r is PromiseRejectedResult => r.status === 'rejected',
+  );
+
+  if (failures.length > 0) {
+    Sentry.withScope((scope) => {
+      scope.setTag('batch_size', String(items.length));
+      scope.setTag('failure_count', String(failures.length));
+      Sentry.captureMessage(`${failures.length}/${items.length} items failed`, 'warning');
+    });
+    failures.forEach((f) => Sentry.captureException(f.reason));
+  }
+}
 ```
 
+See [implementation.md](references/implementation.md) for Django middleware, test mocking patterns, and additional framework examples.
+
 ## Output
-- Centralized error handler module with consistent context
-- Framework-specific error boundaries (Express, React)
-- Structured breadcrumb strategy for debugging
-- Async error handling with proper scope propagation
-- Testable Sentry integration with mock patterns
+
+After applying these patterns you will have:
+
+- Centralized error handler module with typed severity and scoped context
+- Structured breadcrumb helpers for auth, db, and http events
+- `beforeSend` filter that drops noise and scrubs PII
+- `beforeBreadcrumb` callback that redacts sensitive query parameters
+- Custom fingerprinting for accurate issue grouping
+- Framework error boundaries for Express and React
+- Performance spans for tracing critical code paths
 
 ## Error Handling
 
 | Error | Cause | Solution |
 |-------|-------|----------|
-| Scope leaking between requests | Global scope mutations in async context | Use `withScope()` for per-event context, never `Sentry.setTag()` globally in request handlers |
-| Duplicate events | Error caught and re-thrown, captured twice | Capture at one level only — either middleware or handler, not both |
-| Missing breadcrumbs | Breadcrumbs from wrong request | Sentry isolates breadcrumbs per async context in v8 |
-| `beforeSend` returns undefined | Missing return statement | Always return `event` or `null` explicitly |
+| Scope leaking between requests | Global scope mutations in async handlers | Use `withScope()` / `new_scope()` for per-event context |
+| Duplicate events | Error caught and re-thrown at two layers | Capture at one level only -- middleware or handler, not both |
+| Missing breadcrumbs | Cleared after max count (default 100) | Set `maxBreadcrumbs` in `Sentry.init()` |
+| `beforeSend` returns `undefined` | Missing return statement | Always return `event` or `null` explicitly |
+| Events grouped incorrectly | Default stack-trace fingerprinting | Use `scope.setFingerprint()` with semantic keys |
+| `Sentry is not defined` | SDK not imported | Verify `import * as Sentry from '@sentry/node'` |
+| Spans not appearing | Missing tracing config | Set `tracesSampleRate` in `Sentry.init()` |
+
+## Examples
+
+**Centralized error handler:** Create `lib/error-handler.ts` wrapping `Sentry.withScope()` with typed severity, tags, context, user, and fingerprint support.
+
+**Breadcrumb trail for checkout:** Add `breadcrumb.auth('login')`, `breadcrumb.db('SELECT', 'orders')`, `breadcrumb.http('POST', '/api/payments', 201)` before critical operations so errors include full context timeline.
+
+**Noise filtering:** Configure `beforeSend` to drop `ResizeObserver loop` and `Network request failed`, scrub PII from user context and cookies.
+
+**Fix issue grouping:** Add `scope.setFingerprint(['payment-gateway-timeout', gatewayName])` to group all payment timeouts by gateway.
+
+See [examples.md](references/examples.md) for full worked scenarios with Python context managers and async wrappers.
 
 ## Resources
-- [SDK Best Practices](https://docs.sentry.io/platforms/javascript/best-practices/)
-- [Scopes & Context](https://docs.sentry.io/platforms/javascript/enriching-events/scopes/)
-- [Express Guide](https://docs.sentry.io/platforms/javascript/guides/express/)
-- [Python SDK](https://docs.sentry.io/platforms/python/)
+
+- [Sentry JavaScript SDK Best Practices](https://docs.sentry.io/platforms/javascript/best-practices/)
+- [Scopes and Context](https://docs.sentry.io/platforms/javascript/enriching-events/scopes/)
+- [Express Integration Guide](https://docs.sentry.io/platforms/javascript/guides/express/)
+- [Python SDK Documentation](https://docs.sentry.io/platforms/python/)
+- [Custom Fingerprinting](https://docs.sentry.io/platforms/javascript/enriching-events/fingerprinting/)
+- [Performance Monitoring](https://docs.sentry.io/platforms/javascript/tracing/)
+
+## Next Steps
+
+- **sentry-error-capture** -- Deep dive on `captureException` vs `captureMessage` semantics
+- **sentry-performance-tracing** -- Full distributed tracing with `tracesSampleRate` and custom instrumentation
+- **sentry-data-handling** -- PII scrubbing, data residency, and GDPR-compliant configuration
+- **sentry-common-errors** -- Troubleshooting guide for frequent SDK issues
