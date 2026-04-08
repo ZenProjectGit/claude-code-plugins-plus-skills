@@ -9,7 +9,6 @@ description: >
   or invokes /hyperfocus.
 author: Nestor Magalhaes
 license: MIT
-allowed-tools: []
 compatible-with: claude-code
 tags: [accessibility, adhd, neurodivergent, formatting]
 ---
