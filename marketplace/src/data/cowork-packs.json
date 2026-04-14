@@ -40,13 +40,13 @@
       "isSaasPack": true
     },
     {
-      "id": "stripe-pack",
-      "name": "Stripe",
-      "description": "Payment processing, subscriptions, Connect, webhooks, and Stripe API integration",
-      "icon": "dollar-sign",
-      "color": "#635BFF",
+      "id": "clerk-pack",
+      "name": "Clerk",
+      "description": "Authentication, user management, organizations, and Clerk SDK integration",
+      "icon": "shield",
+      "color": "#6C47FF",
       "category": "saas-packs",
-      "packName": "stripe-pack",
+      "packName": "clerk-pack",
       "featured": true,
       "isSaasPack": true
     },
