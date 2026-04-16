@@ -43,7 +43,7 @@ If tools are unavailable, proceed to Phase 2 with pattern-based scanning.
 # API keys and tokens
 rg "(api[_-]?key|secret|password|token|auth)\s*[:=]\s*['\"][^'\"]{8,}" -i -n
 rg "(AKIA[A-Z0-9]{16})"  # AWS access keys
-rg "-----BEGIN (RSA |EC |DSA )?PRIVATE KEY-----"
+rg "-----BEGIN (RSA |EC |DSA )?PRIVATE.KEY-----"
 rg "(ghp_|gho_|ghu_|ghs_|ghr_)[A-Za-z0-9_]{36,}"  # GitHub tokens
 rg "(sk-[a-zA-Z0-9]{20,})"  # OpenAI/Stripe secret keys
 rg "xox[bpors]-[a-zA-Z0-9-]+"  # Slack tokens
