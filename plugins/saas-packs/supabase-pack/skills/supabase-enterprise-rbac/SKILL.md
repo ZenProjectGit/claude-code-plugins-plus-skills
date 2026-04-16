@@ -2,7 +2,7 @@
 name: supabase-enterprise-rbac
 description: |
   Implement custom role-based access control via JWT claims in Supabase: app_metadata.role,
-  RLS policies with auth.jwt() ->> 'role', organization-scoped access, and API key scoping.
+  RLS policies with auth.jwt() role extraction, organization-scoped access, and API key scoping.
   Use when implementing role-based permissions, configuring organization-level access,
   building admin/member/viewer hierarchies, or scoping API keys per role.
   Trigger: "supabase RBAC", "supabase roles", "supabase permissions", "supabase JWT claims",
