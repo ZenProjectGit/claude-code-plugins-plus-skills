@@ -21,17 +21,17 @@ Or use Claude's built-in command:
 
 **[Browse the marketplace](https://tonsofskills.com)** | **[Explore plugins](https://tonsofskills.com/explore)** | **[Download bundles](https://tonsofskills.com/cowork)**
 
-> **Killer Skill of the Week** — [token-optimizer](https://github.com/alexgreensh/token-optimizer) by Alex Greenshpun ([@alexgreensh](https://github.com/alexgreensh))
+> **Killer Skill of the Week** — [web-analytics](https://tonsofskills.com/plugins/web-analytics) by Jeremy Longshore ([@jeremylongshore](https://github.com/jeremylongshore))
 >
-> **Ghost tokens eat your context. Find them. Fix them. Prevent rot.**
+> **Your dashboards don't talk. This skill does.**
 >
-> Claude gets measurably dumber as your context fills. Compaction destroys 60-70% of your conversation. Ghost tokens burn through your rate limits on every message. Token Optimizer tracks all of it: live quality scoring on your status line, smart compaction that saves your decisions before they're lost, full analytics dashboard with per-session cost breakdowns, and 6 parallel audit agents that optimize your entire setup. Not a one-time scan. An ongoing intelligence layer for your Claude Code workflow.
+> A push-based analytics intelligence team — 9 specialist agents that fetch your data, detect anomalies, analyze funnels, verify claims, and deliver narrative reports. Not a dashboard you check. An analytics team that finds you. Three tiers: `/analytics` for a 30-second pulse, `/analytics medium` for a daily brief with traffic + content + anomaly detection, `/analytics full` for a deep dive across all sites with adversarial verification. Backed by self-hosted Umami via MCP, with GA4 fallback. Universal config — swap one file and it works for any site portfolio.
 >
-> *"My Claude Code kept leaking tokens. So I built this. Now my limits last longer, context stays fresh, and I have full visibility and control over my usage & setup."* — Alex Greenshpun
+> *"I stopped checking dashboards. Now my analytics team wakes me up when something matters."* — Jeremy Longshore
 >
-> Grade: A | Week of March 23, 2026 | [Install from GitHub](https://github.com/alexgreensh/token-optimizer)
+> Grade: A | Week of April 17, 2026 | [Browse on Marketplace](https://tonsofskills.com/plugins/web-analytics)
 >
-> Previous picks: [executive-assistant-skills](https://tonsofskills.com/plugins/executive-assistant-skills), [skill-creator](https://tonsofskills.com/plugins/skill-creator), [cursor-pack](https://tonsofskills.com/plugins/cursor-pack), [crypto-portfolio-tracker](https://tonsofskills.com/plugins/crypto-portfolio-tracker). See all at [tonsofskills.com](https://tonsofskills.com).
+> Previous picks: [token-optimizer](https://github.com/alexgreensh/token-optimizer), [executive-assistant-skills](https://tonsofskills.com/plugins/executive-assistant-skills), [skill-creator](https://tonsofskills.com/plugins/skill-creator), [cursor-pack](https://tonsofskills.com/plugins/cursor-pack), [crypto-portfolio-tracker](https://tonsofskills.com/plugins/crypto-portfolio-tracker). See all at [tonsofskills.com](https://tonsofskills.com).
 
 ---
 
