@@ -62,31 +62,31 @@ ccpi update                     # Pull latest versions
 
 ### 📦 Live npm Downloads
 
-Across **26 published packages** in the 
+Across **320 published packages** in the 
 [claude-code-plugins](https://www.npmjs.com/~jeremylongshore) namespace. Updated daily by GitHub Actions.
 
 | Window | Downloads |
 |--------|----------:|
-| Last 24 hours | 11 |
-| Last 7 days | 117 |
-| Last 30 days | 665 |
+| Last 24 hours | 31,282 |
+| Last 7 days | 31,372 |
+| Last 30 days | 31,931 |
 
 **Top 10 by last 30 days:**
 
 | # | Package | Last 30d |
 |---|---------|---------:|
-| 1 | [`@intentsolutionsio/ccpi`](https://www.npmjs.com/package/@intentsolutionsio/ccpi) | 274 |
-| 2 | [`@intentsolutionsio/langchain-pack`](https://www.npmjs.com/package/@intentsolutionsio/langchain-pack) | 56 |
-| 3 | [`@intentsolutionsio/openrouter-pack`](https://www.npmjs.com/package/@intentsolutionsio/openrouter-pack) | 52 |
-| 4 | [`@intentsolutionsio/retellai-pack`](https://www.npmjs.com/package/@intentsolutionsio/retellai-pack) | 33 |
-| 5 | [`@intentsolutionsio/windsurf-pack`](https://www.npmjs.com/package/@intentsolutionsio/windsurf-pack) | 33 |
-| 6 | [`@intentsolutionsio/firecrawl-pack`](https://www.npmjs.com/package/@intentsolutionsio/firecrawl-pack) | 22 |
-| 7 | [`@intentsolutionsio/sentry-pack`](https://www.npmjs.com/package/@intentsolutionsio/sentry-pack) | 20 |
-| 8 | [`@intentsolutionsio/supabase-pack`](https://www.npmjs.com/package/@intentsolutionsio/supabase-pack) | 17 |
-| 9 | [`@intentsolutionsio/vercel-pack`](https://www.npmjs.com/package/@intentsolutionsio/vercel-pack) | 13 |
-| 10 | [`@intentsolutionsio/customerio-pack`](https://www.npmjs.com/package/@intentsolutionsio/customerio-pack) | 12 |
+| 1 | [`@intentsolutionsio/ccpi`](https://www.npmjs.com/package/@intentsolutionsio/ccpi) | 280 |
+| 2 | [`@intentsolutionsio/compliance-checker`](https://www.npmjs.com/package/@intentsolutionsio/compliance-checker) | 126 |
+| 3 | [`@intentsolutionsio/ml-model-trainer`](https://www.npmjs.com/package/@intentsolutionsio/ml-model-trainer) | 125 |
+| 4 | [`@intentsolutionsio/api-test-automation`](https://www.npmjs.com/package/@intentsolutionsio/api-test-automation) | 122 |
+| 5 | [`@intentsolutionsio/blockchain-explorer-cli`](https://www.npmjs.com/package/@intentsolutionsio/blockchain-explorer-cli) | 122 |
+| 6 | [`@intentsolutionsio/crypto-news-aggregator`](https://www.npmjs.com/package/@intentsolutionsio/crypto-news-aggregator) | 122 |
+| 7 | [`@intentsolutionsio/database-audit-logger`](https://www.npmjs.com/package/@intentsolutionsio/database-audit-logger) | 120 |
+| 8 | [`@intentsolutionsio/persona-pack`](https://www.npmjs.com/package/@intentsolutionsio/persona-pack) | 120 |
+| 9 | [`@intentsolutionsio/wallet-portfolio-tracker`](https://www.npmjs.com/package/@intentsolutionsio/wallet-portfolio-tracker) | 120 |
+| 10 | [`@intentsolutionsio/wallet-security-auditor`](https://www.npmjs.com/package/@intentsolutionsio/wallet-security-auditor) | 120 |
 
-<sub>Last refreshed 2026-04-21T01:30:15.018Z.</sub>
+<sub>Last refreshed 2026-04-23T04:09:45.970Z.</sub>
 
 <!-- NPM-STATS:END -->
 
