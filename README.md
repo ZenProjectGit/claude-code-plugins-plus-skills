@@ -67,26 +67,26 @@ Across **320 published packages** in the
 
 | Window | Downloads |
 |--------|----------:|
-| Last 24 hours | 31,282 |
-| Last 7 days | 31,372 |
-| Last 30 days | 31,931 |
+| Last 24 hours | 2,779 |
+| Last 7 days | 34,251 |
+| Last 30 days | 34,767 |
 
 **Top 10 by last 30 days:**
 
 | # | Package | Last 30d |
 |---|---------|---------:|
-| 1 | [`@intentsolutionsio/ccpi`](https://www.npmjs.com/package/@intentsolutionsio/ccpi) | 280 |
-| 2 | [`@intentsolutionsio/compliance-checker`](https://www.npmjs.com/package/@intentsolutionsio/compliance-checker) | 126 |
-| 3 | [`@intentsolutionsio/ml-model-trainer`](https://www.npmjs.com/package/@intentsolutionsio/ml-model-trainer) | 125 |
-| 4 | [`@intentsolutionsio/api-test-automation`](https://www.npmjs.com/package/@intentsolutionsio/api-test-automation) | 122 |
-| 5 | [`@intentsolutionsio/blockchain-explorer-cli`](https://www.npmjs.com/package/@intentsolutionsio/blockchain-explorer-cli) | 122 |
-| 6 | [`@intentsolutionsio/crypto-news-aggregator`](https://www.npmjs.com/package/@intentsolutionsio/crypto-news-aggregator) | 122 |
-| 7 | [`@intentsolutionsio/database-audit-logger`](https://www.npmjs.com/package/@intentsolutionsio/database-audit-logger) | 120 |
-| 8 | [`@intentsolutionsio/persona-pack`](https://www.npmjs.com/package/@intentsolutionsio/persona-pack) | 120 |
-| 9 | [`@intentsolutionsio/wallet-portfolio-tracker`](https://www.npmjs.com/package/@intentsolutionsio/wallet-portfolio-tracker) | 120 |
-| 10 | [`@intentsolutionsio/wallet-security-auditor`](https://www.npmjs.com/package/@intentsolutionsio/wallet-security-auditor) | 120 |
+| 1 | [`@intentsolutionsio/ccpi`](https://www.npmjs.com/package/@intentsolutionsio/ccpi) | 281 |
+| 2 | [`@intentsolutionsio/cohere-pack`](https://www.npmjs.com/package/@intentsolutionsio/cohere-pack) | 133 |
+| 3 | [`@intentsolutionsio/api-test-automation`](https://www.npmjs.com/package/@intentsolutionsio/api-test-automation) | 132 |
+| 4 | [`@intentsolutionsio/ml-model-trainer`](https://www.npmjs.com/package/@intentsolutionsio/ml-model-trainer) | 132 |
+| 5 | [`@intentsolutionsio/contract-test-validator`](https://www.npmjs.com/package/@intentsolutionsio/contract-test-validator) | 131 |
+| 6 | [`@intentsolutionsio/database-backup-automator`](https://www.npmjs.com/package/@intentsolutionsio/database-backup-automator) | 131 |
+| 7 | [`@intentsolutionsio/blockchain-explorer-cli`](https://www.npmjs.com/package/@intentsolutionsio/blockchain-explorer-cli) | 130 |
+| 8 | [`@intentsolutionsio/skill-creator`](https://www.npmjs.com/package/@intentsolutionsio/skill-creator) | 130 |
+| 9 | [`@intentsolutionsio/unit-test-generator`](https://www.npmjs.com/package/@intentsolutionsio/unit-test-generator) | 130 |
+| 10 | [`@intentsolutionsio/visual-regression-tester`](https://www.npmjs.com/package/@intentsolutionsio/visual-regression-tester) | 130 |
 
-<sub>Last refreshed 2026-04-23T04:09:45.970Z.</sub>
+<sub>Last refreshed 2026-04-24T04:13:38.836Z.</sub>
 
 <!-- NPM-STATS:END -->
 
