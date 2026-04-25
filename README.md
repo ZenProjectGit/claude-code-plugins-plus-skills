@@ -62,31 +62,31 @@ ccpi update                     # Pull latest versions
 
 ### 📦 Live npm Downloads
 
-Across **320 published packages** in the 
+Across **347 published packages** in the 
 [claude-code-plugins](https://www.npmjs.com/~jeremylongshore) namespace. Updated daily by GitHub Actions.
 
 | Window | Downloads |
 |--------|----------:|
-| Last 24 hours | 2,779 |
-| Last 7 days | 34,251 |
-| Last 30 days | 34,767 |
+| Last 24 hours | 1,708 |
+| Last 7 days | 38,297 |
+| Last 30 days | 38,646 |
 
 **Top 10 by last 30 days:**
 
 | # | Package | Last 30d |
 |---|---------|---------:|
-| 1 | [`@intentsolutionsio/ccpi`](https://www.npmjs.com/package/@intentsolutionsio/ccpi) | 281 |
-| 2 | [`@intentsolutionsio/cohere-pack`](https://www.npmjs.com/package/@intentsolutionsio/cohere-pack) | 133 |
-| 3 | [`@intentsolutionsio/api-test-automation`](https://www.npmjs.com/package/@intentsolutionsio/api-test-automation) | 132 |
-| 4 | [`@intentsolutionsio/ml-model-trainer`](https://www.npmjs.com/package/@intentsolutionsio/ml-model-trainer) | 132 |
-| 5 | [`@intentsolutionsio/contract-test-validator`](https://www.npmjs.com/package/@intentsolutionsio/contract-test-validator) | 131 |
-| 6 | [`@intentsolutionsio/database-backup-automator`](https://www.npmjs.com/package/@intentsolutionsio/database-backup-automator) | 131 |
-| 7 | [`@intentsolutionsio/blockchain-explorer-cli`](https://www.npmjs.com/package/@intentsolutionsio/blockchain-explorer-cli) | 130 |
-| 8 | [`@intentsolutionsio/skill-creator`](https://www.npmjs.com/package/@intentsolutionsio/skill-creator) | 130 |
-| 9 | [`@intentsolutionsio/unit-test-generator`](https://www.npmjs.com/package/@intentsolutionsio/unit-test-generator) | 130 |
-| 10 | [`@intentsolutionsio/visual-regression-tester`](https://www.npmjs.com/package/@intentsolutionsio/visual-regression-tester) | 130 |
+| 1 | [`@intentsolutionsio/crypto-portfolio-tracker`](https://www.npmjs.com/package/@intentsolutionsio/crypto-portfolio-tracker) | 143 |
+| 2 | [`@intentsolutionsio/ml-model-trainer`](https://www.npmjs.com/package/@intentsolutionsio/ml-model-trainer) | 139 |
+| 3 | [`@intentsolutionsio/api-test-automation`](https://www.npmjs.com/package/@intentsolutionsio/api-test-automation) | 138 |
+| 4 | [`@intentsolutionsio/compliance-checker`](https://www.npmjs.com/package/@intentsolutionsio/compliance-checker) | 138 |
+| 5 | [`@intentsolutionsio/cohere-pack`](https://www.npmjs.com/package/@intentsolutionsio/cohere-pack) | 138 |
+| 6 | [`@intentsolutionsio/local-tts`](https://www.npmjs.com/package/@intentsolutionsio/local-tts) | 137 |
+| 7 | [`@intentsolutionsio/wondelai-design-everyday-things`](https://www.npmjs.com/package/@intentsolutionsio/wondelai-design-everyday-things) | 137 |
+| 8 | [`@intentsolutionsio/database-backup-automator`](https://www.npmjs.com/package/@intentsolutionsio/database-backup-automator) | 135 |
+| 9 | [`@intentsolutionsio/persona-pack`](https://www.npmjs.com/package/@intentsolutionsio/persona-pack) | 135 |
+| 10 | [`@intentsolutionsio/skill-creator`](https://www.npmjs.com/package/@intentsolutionsio/skill-creator) | 135 |
 
-<sub>Last refreshed 2026-04-24T04:13:38.836Z.</sub>
+<sub>Last refreshed 2026-04-25T03:51:33.503Z.</sub>
 
 <!-- NPM-STATS:END -->
 
