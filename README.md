@@ -62,31 +62,31 @@ ccpi update                     # Pull latest versions
 
 ### 📦 Live npm Downloads
 
-Across **347 published packages** in the 
+Across **317 published packages** in the 
 [claude-code-plugins](https://www.npmjs.com/~jeremylongshore) namespace. Updated daily by GitHub Actions.
 
 | Window | Downloads |
 |--------|----------:|
-| Last 24 hours | 1,708 |
-| Last 7 days | 38,297 |
-| Last 30 days | 38,646 |
+| Last 24 hours | 1,581 |
+| Last 7 days | 35,234 |
+| Last 30 days | 35,577 |
 
 **Top 10 by last 30 days:**
 
 | # | Package | Last 30d |
 |---|---------|---------:|
 | 1 | [`@intentsolutionsio/crypto-portfolio-tracker`](https://www.npmjs.com/package/@intentsolutionsio/crypto-portfolio-tracker) | 143 |
-| 2 | [`@intentsolutionsio/ml-model-trainer`](https://www.npmjs.com/package/@intentsolutionsio/ml-model-trainer) | 139 |
-| 3 | [`@intentsolutionsio/api-test-automation`](https://www.npmjs.com/package/@intentsolutionsio/api-test-automation) | 138 |
-| 4 | [`@intentsolutionsio/compliance-checker`](https://www.npmjs.com/package/@intentsolutionsio/compliance-checker) | 138 |
-| 5 | [`@intentsolutionsio/cohere-pack`](https://www.npmjs.com/package/@intentsolutionsio/cohere-pack) | 138 |
-| 6 | [`@intentsolutionsio/local-tts`](https://www.npmjs.com/package/@intentsolutionsio/local-tts) | 137 |
-| 7 | [`@intentsolutionsio/wondelai-design-everyday-things`](https://www.npmjs.com/package/@intentsolutionsio/wondelai-design-everyday-things) | 137 |
-| 8 | [`@intentsolutionsio/database-backup-automator`](https://www.npmjs.com/package/@intentsolutionsio/database-backup-automator) | 135 |
-| 9 | [`@intentsolutionsio/persona-pack`](https://www.npmjs.com/package/@intentsolutionsio/persona-pack) | 135 |
-| 10 | [`@intentsolutionsio/skill-creator`](https://www.npmjs.com/package/@intentsolutionsio/skill-creator) | 135 |
+| 2 | [`@intentsolutionsio/api-test-automation`](https://www.npmjs.com/package/@intentsolutionsio/api-test-automation) | 138 |
+| 3 | [`@intentsolutionsio/compliance-checker`](https://www.npmjs.com/package/@intentsolutionsio/compliance-checker) | 138 |
+| 4 | [`@intentsolutionsio/blockchain-explorer-cli`](https://www.npmjs.com/package/@intentsolutionsio/blockchain-explorer-cli) | 137 |
+| 5 | [`@intentsolutionsio/local-tts`](https://www.npmjs.com/package/@intentsolutionsio/local-tts) | 137 |
+| 6 | [`@intentsolutionsio/wondelai-design-everyday-things`](https://www.npmjs.com/package/@intentsolutionsio/wondelai-design-everyday-things) | 137 |
+| 7 | [`@intentsolutionsio/persona-pack`](https://www.npmjs.com/package/@intentsolutionsio/persona-pack) | 135 |
+| 8 | [`@intentsolutionsio/wallet-portfolio-tracker`](https://www.npmjs.com/package/@intentsolutionsio/wallet-portfolio-tracker) | 135 |
+| 9 | [`@intentsolutionsio/wondelai-predictable-revenue`](https://www.npmjs.com/package/@intentsolutionsio/wondelai-predictable-revenue) | 135 |
+| 10 | [`@intentsolutionsio/crypto-news-aggregator`](https://www.npmjs.com/package/@intentsolutionsio/crypto-news-aggregator) | 134 |
 
-<sub>Last refreshed 2026-04-25T03:51:33.503Z.</sub>
+<sub>Last refreshed 2026-04-26T04:20:49.551Z.</sub>
 
 <!-- NPM-STATS:END -->
 
